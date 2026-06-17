@@ -14,7 +14,153 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      assessments: {
+        Row: {
+          created_at: string
+          id: string
+          responses: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          responses: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          responses?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
+      career_reports: {
+        Row: {
+          career_paths: Json
+          created_at: string
+          id: string
+          next_steps: Json
+          obstacles: Json
+          personality: string
+          strengths: Json
+          user_id: string
+        }
+        Insert: {
+          career_paths: Json
+          created_at?: string
+          id?: string
+          next_steps: Json
+          obstacles: Json
+          personality: string
+          strengths: Json
+          user_id: string
+        }
+        Update: {
+          career_paths?: Json
+          created_at?: string
+          id?: string
+          next_steps?: Json
+          obstacles?: Json
+          personality?: string
+          strengths?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          age: number | null
+          city: string | null
+          created_at: string
+          education_level: string | null
+          id: string
+          language: string | null
+          name: string | null
+          onboarded: boolean
+          updated_at: string
+        }
+        Insert: {
+          age?: number | null
+          city?: string | null
+          created_at?: string
+          education_level?: string | null
+          id: string
+          language?: string | null
+          name?: string | null
+          onboarded?: boolean
+          updated_at?: string
+        }
+        Update: {
+          age?: number | null
+          city?: string | null
+          created_at?: string
+          education_level?: string | null
+          id?: string
+          language?: string | null
+          name?: string | null
+          onboarded?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      roadmap_tasks: {
+        Row: {
+          completed: boolean
+          created_at: string
+          description: string
+          id: string
+          task_order: number
+          title: string
+          user_id: string
+          week: number
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          description: string
+          id?: string
+          task_order: number
+          title: string
+          user_id: string
+          week: number
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          description?: string
+          id?: string
+          task_order?: number
+          title?: string
+          user_id?: string
+          week?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
