@@ -178,7 +178,7 @@ Total tasks ≈ duration_days. Tasks must be specific and doable.` },
       career_id: career?.id ?? null,
       goal: plan.goal,
       duration: `${data.duration_days} days`,
-      generated_plan: plan,
+      generated_plan: plan as unknown as Record<string, unknown>,
       status: "active",
     }).select().single();
     if (rErr) throw new Error(rErr.message);
