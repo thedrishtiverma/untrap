@@ -41,9 +41,13 @@ export const matchCareers = createServerFn({ method: "POST" })
         career_name: m.career_name,
         match_percentage: Math.min(100, Math.max(0, m.match_score)),
         reasoning: m.reasoning,
-        why_it_matches: m.why_it_matches,
-        skills_required: m.skills_required,
-        potential_challenges: m.potential_challenges,
+        strength_alignment: {
+          why_it_matches: m.why_it_matches,
+          skills_required: m.skills_required,
+        },
+        weakness_alignment: {
+          potential_challenges: m.potential_challenges,
+        },
       })));
     }
     await sb.from("analytics_events").insert({ user_id: uid, event_name: "careers_matched", properties: { count: out.matches?.length ?? 0 } });
