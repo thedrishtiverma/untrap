@@ -44,6 +44,48 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_prompts: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          id: string
+          model: string
+          name: string
+          prompt_template: string
+          response_format: string
+          temperature: number | null
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          model?: string
+          name: string
+          prompt_template: string
+          response_format?: string
+          temperature?: number | null
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          model?: string
+          name?: string
+          prompt_template?: string
+          response_format?: string
+          temperature?: number | null
+          updated_at?: string
+          version?: number
+        }
+        Relationships: []
+      }
       analytics_events: {
         Row: {
           created_at: string
@@ -546,6 +588,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      student_memories: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          importance: number
+          memory_type: string
+          source: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          importance?: number
+          memory_type: string
+          source?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          importance?: number
+          memory_type?: string
+          source?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       student_profiles: {
         Row: {
