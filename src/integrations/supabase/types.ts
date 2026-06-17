@@ -14,6 +14,137 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_chat_history: {
+        Row: {
+          ai_response: string | null
+          context_used: Json | null
+          created_at: string
+          id: string
+          message_role: string
+          user_id: string
+          user_message: string | null
+        }
+        Insert: {
+          ai_response?: string | null
+          context_used?: Json | null
+          created_at?: string
+          id?: string
+          message_role: string
+          user_id: string
+          user_message?: string | null
+        }
+        Update: {
+          ai_response?: string | null
+          context_used?: Json | null
+          created_at?: string
+          id?: string
+          message_role?: string
+          user_id?: string
+          user_message?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_name: string
+          id: string
+          properties: Json
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_name: string
+          id?: string
+          properties?: Json
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_name?: string
+          id?: string
+          properties?: Json
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      assessment_questions: {
+        Row: {
+          active_status: boolean
+          career_mapping: Json
+          category: string
+          created_at: string
+          difficulty_level: string | null
+          display_order: number
+          id: string
+          options: Json
+          question_text: string
+          question_type: string
+          weightage: Json
+        }
+        Insert: {
+          active_status?: boolean
+          career_mapping?: Json
+          category: string
+          created_at?: string
+          difficulty_level?: string | null
+          display_order?: number
+          id?: string
+          options?: Json
+          question_text: string
+          question_type?: string
+          weightage?: Json
+        }
+        Update: {
+          active_status?: boolean
+          career_mapping?: Json
+          category?: string
+          created_at?: string
+          difficulty_level?: string | null
+          display_order?: number
+          id?: string
+          options?: Json
+          question_text?: string
+          question_type?: string
+          weightage?: Json
+        }
+        Relationships: []
+      }
+      assessment_responses: {
+        Row: {
+          created_at: string
+          id: string
+          question_id: string | null
+          response: Json
+          score: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          question_id?: string | null
+          response: Json
+          score?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          question_id?: string | null
+          response?: Json
+          score?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_responses_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assessments: {
         Row: {
           created_at: string
@@ -34,6 +165,50 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      career_matches: {
+        Row: {
+          career_id: string | null
+          career_name: string
+          created_at: string
+          id: string
+          match_percentage: number
+          reasoning: string | null
+          strength_alignment: Json | null
+          user_id: string
+          weakness_alignment: Json | null
+        }
+        Insert: {
+          career_id?: string | null
+          career_name: string
+          created_at?: string
+          id?: string
+          match_percentage: number
+          reasoning?: string | null
+          strength_alignment?: Json | null
+          user_id: string
+          weakness_alignment?: Json | null
+        }
+        Update: {
+          career_id?: string | null
+          career_name?: string
+          created_at?: string
+          id?: string
+          match_percentage?: number
+          reasoning?: string | null
+          strength_alignment?: Json | null
+          user_id?: string
+          weakness_alignment?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "career_matches_career_id_fkey"
+            columns: ["career_id"]
+            isOneToOne: false
+            referencedRelation: "careers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       career_reports: {
         Row: {
@@ -68,6 +243,99 @@ export type Database = {
         }
         Relationships: []
       }
+      career_traps: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          recommended_actions: Json
+          solutions: Json
+          symptoms: Json
+          trap_name: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          recommended_actions?: Json
+          solutions?: Json
+          symptoms?: Json
+          trap_name: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          recommended_actions?: Json
+          solutions?: Json
+          symptoms?: Json
+          trap_name?: string
+        }
+        Relationships: []
+      }
+      careers: {
+        Row: {
+          beginner_steps: Json
+          career_name: string
+          career_summary: string | null
+          category: string | null
+          common_myths: Json
+          created_at: string
+          description: string | null
+          difficulty_level: string | null
+          education_paths: Json
+          future_scope: string | null
+          id: string
+          ideal_personality: Json
+          required_interests: Json
+          required_skills: Json
+          required_strengths: Json
+          salary_information: Json
+          updated_at: string
+        }
+        Insert: {
+          beginner_steps?: Json
+          career_name: string
+          career_summary?: string | null
+          category?: string | null
+          common_myths?: Json
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string | null
+          education_paths?: Json
+          future_scope?: string | null
+          id?: string
+          ideal_personality?: Json
+          required_interests?: Json
+          required_skills?: Json
+          required_strengths?: Json
+          salary_information?: Json
+          updated_at?: string
+        }
+        Update: {
+          beginner_steps?: Json
+          career_name?: string
+          career_summary?: string | null
+          category?: string | null
+          common_myths?: Json
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string | null
+          education_paths?: Json
+          future_scope?: string | null
+          id?: string
+          ideal_personality?: Json
+          required_interests?: Json
+          required_skills?: Json
+          required_strengths?: Json
+          salary_information?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           content: string
@@ -89,6 +357,86 @@ export type Database = {
           id?: string
           role?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      daily_tasks: {
+        Row: {
+          completed: boolean
+          completion_date: string | null
+          created_at: string
+          day_number: number | null
+          description: string | null
+          difficulty: string | null
+          estimated_time: string | null
+          id: string
+          roadmap_id: string
+          task_title: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          completion_date?: string | null
+          created_at?: string
+          day_number?: number | null
+          description?: string | null
+          difficulty?: string | null
+          estimated_time?: string | null
+          id?: string
+          roadmap_id: string
+          task_title: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          completion_date?: string | null
+          created_at?: string
+          day_number?: number | null
+          description?: string | null
+          difficulty?: string | null
+          estimated_time?: string | null
+          id?: string
+          roadmap_id?: string
+          task_title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_tasks_roadmap_id_fkey"
+            columns: ["roadmap_id"]
+            isOneToOne: false
+            referencedRelation: "user_roadmaps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      knowledge_base: {
+        Row: {
+          category: string | null
+          content: string
+          created_at: string
+          embedding: Json | null
+          id: string
+          metadata: Json
+          title: string
+        }
+        Insert: {
+          category?: string | null
+          content: string
+          created_at?: string
+          embedding?: Json | null
+          id?: string
+          metadata?: Json
+          title: string
+        }
+        Update: {
+          category?: string | null
+          content?: string
+          created_at?: string
+          embedding?: Json | null
+          id?: string
+          metadata?: Json
+          title?: string
         }
         Relationships: []
       }
@@ -161,15 +509,288 @@ export type Database = {
         }
         Relationships: []
       }
+      roadmap_templates: {
+        Row: {
+          career_id: string | null
+          created_at: string
+          duration: string
+          id: string
+          milestones: Json
+          skills: Json
+          weeks: Json
+        }
+        Insert: {
+          career_id?: string | null
+          created_at?: string
+          duration?: string
+          id?: string
+          milestones?: Json
+          skills?: Json
+          weeks?: Json
+        }
+        Update: {
+          career_id?: string | null
+          created_at?: string
+          duration?: string
+          id?: string
+          milestones?: Json
+          skills?: Json
+          weeks?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "roadmap_templates_career_id_fkey"
+            columns: ["career_id"]
+            isOneToOne: false
+            referencedRelation: "careers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_profiles: {
+        Row: {
+          age: number | null
+          city: string | null
+          created_at: string
+          current_stage: string | null
+          education_level: string | null
+          family_background: string | null
+          financial_condition: string | null
+          full_name: string | null
+          id: string
+          language_preference: string | null
+          learning_preference: string | null
+          state: string | null
+          time_available_daily: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age?: number | null
+          city?: string | null
+          created_at?: string
+          current_stage?: string | null
+          education_level?: string | null
+          family_background?: string | null
+          financial_condition?: string | null
+          full_name?: string | null
+          id?: string
+          language_preference?: string | null
+          learning_preference?: string | null
+          state?: string | null
+          time_available_daily?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age?: number | null
+          city?: string | null
+          created_at?: string
+          current_stage?: string | null
+          education_level?: string | null
+          family_background?: string | null
+          financial_condition?: string | null
+          full_name?: string | null
+          id?: string
+          language_preference?: string | null
+          learning_preference?: string | null
+          state?: string | null
+          time_available_daily?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_progress: {
+        Row: {
+          career_clarity_score: number
+          confidence_score: number
+          current_streak: number
+          id: string
+          skill_progress: Json
+          tasks_completed: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          career_clarity_score?: number
+          confidence_score?: number
+          current_streak?: number
+          id?: string
+          skill_progress?: Json
+          tasks_completed?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          career_clarity_score?: number
+          confidence_score?: number
+          current_streak?: number
+          id?: string
+          skill_progress?: Json
+          tasks_completed?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roadmaps: {
+        Row: {
+          career_id: string | null
+          created_at: string
+          duration: string
+          generated_plan: Json
+          goal: string | null
+          id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          career_id?: string | null
+          created_at?: string
+          duration?: string
+          generated_plan?: Json
+          goal?: string | null
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          career_id?: string | null
+          created_at?: string
+          duration?: string
+          generated_plan?: Json
+          goal?: string | null
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roadmaps_career_id_fkey"
+            columns: ["career_id"]
+            isOneToOne: false
+            referencedRelation: "careers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_traps: {
+        Row: {
+          created_at: string
+          explanation: string | null
+          id: string
+          recommended_solution: string | null
+          severity: string
+          status: string
+          trap_id: string | null
+          trap_name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          recommended_solution?: string | null
+          severity?: string
+          status?: string
+          trap_id?: string | null
+          trap_name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          recommended_solution?: string | null
+          severity?: string
+          status?: string
+          trap_id?: string | null
+          trap_name?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_traps_trap_id_fkey"
+            columns: ["trap_id"]
+            isOneToOne: false
+            referencedRelation: "career_traps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      weekly_reflections: {
+        Row: {
+          confidence_rating: number | null
+          created_at: string
+          feedback: string | null
+          id: string
+          user_id: string
+          week_number: number
+          what_learned: string | null
+          what_was_difficult: string | null
+        }
+        Insert: {
+          confidence_rating?: number | null
+          created_at?: string
+          feedback?: string | null
+          id?: string
+          user_id: string
+          week_number: number
+          what_learned?: string | null
+          what_was_difficult?: string | null
+        }
+        Update: {
+          confidence_rating?: number | null
+          created_at?: string
+          feedback?: string | null
+          id?: string
+          user_id?: string
+          week_number?: number
+          what_learned?: string | null
+          what_was_difficult?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -296,6 +917,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
