@@ -52,16 +52,20 @@ function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen untrap-ivory">
       <div className="mx-auto flex min-h-screen max-w-md flex-col px-5 py-8">
         <Link to="/"><Logo size="md" /></Link>
 
-        <div className="mt-10">
-          <h1 className="text-3xl font-bold tracking-tight">
-            {mode === "signup" ? "Start your clarity journey" : "Welcome back"}
+        <div className="mt-12 animate-break-up">
+          <h1 className="text-4xl font-extrabold tracking-tight text-foreground">
+            {mode === "signup" ? (
+              <>Start <span className="font-serif italic font-light">discovering</span> yourself.</>
+            ) : (
+              <>Welcome <span className="font-serif italic font-light">back</span>.</>
+            )}
           </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {mode === "signup" ? "Create an account in 30 seconds." : "Sign in to continue where you left off."}
+          <p className="mt-3 text-base text-foreground/60">
+            {mode === "signup" ? "Your AI career companion is one minute away." : "Sign in to continue where you left off."}
           </p>
         </div>
 
@@ -93,10 +97,10 @@ function AuthPage() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-pop transition hover:translate-y-[-1px] disabled:opacity-60"
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-accent px-4 py-3.5 text-sm font-semibold text-accent-foreground orange-glow transition hover:translate-y-[-1px] disabled:opacity-60"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-            {mode === "signup" ? "Create account" : "Sign in"}
+            {mode === "signup" ? "Start discovering" : "Sign in"}
           </button>
         </form>
 
