@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import logoAsset from "@/assets/untrap-logo.png.asset.json";
+import logoAsset from "@/assets/untrap-logo-nobg.png.asset.json";
 
 interface LogoProps {
   className?: string;
@@ -14,13 +14,13 @@ interface LogoProps {
  */
 export function Logo({ className, size = "md", showTagline = false, variant = "dark" }: LogoProps) {
   const heights = {
-    sm: "h-7",
-    md: "h-10",
-    lg: "h-14",
-    xl: "h-20 sm:h-24",
+    sm: "h-9",
+    md: "h-12",
+    lg: "h-16",
+    xl: "h-24 sm:h-28",
   } as const;
   const tagTone = variant === "light" ? "text-primary-foreground/60" : "text-muted-foreground";
-  const invert = variant === "light" ? "invert" : "";
+  const invert = variant === "light" ? "invert brightness-0" : "";
 
   return (
     <div className={cn("inline-flex flex-col items-start leading-none", className)}>

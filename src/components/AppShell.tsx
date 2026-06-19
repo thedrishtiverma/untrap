@@ -20,7 +20,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen untrap-ivory">
       <header className="sticky top-0 z-20 border-b border-foreground/8 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="mx-auto flex max-w-2xl items-center justify-between px-5 py-3.5">
-          <Link to="/dashboard"><Logo size="sm" /></Link>
+          <Link to="/dashboard"><Logo size="md" /></Link>
           <button
             onClick={async () => { await supabase.auth.signOut(); window.location.href = "/"; }}
             className="text-xs font-semibold text-foreground/50 hover:text-foreground"
