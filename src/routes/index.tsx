@@ -145,7 +145,7 @@ function Landing() {
       {/* FOOTER */}
       <footer className="mx-auto max-w-6xl px-5 pb-12 sm:px-8">
         <div className="flex flex-col items-start justify-between gap-6 border-t border-foreground/10 pt-8 sm:flex-row sm:items-center">
-          <Logo size="sm" showTagline />
+          <Logo size="md" showTagline />
           <p className="text-xs text-foreground/50">© {new Date().getFullYear()} UNTRAP. Made for students who refuse to stay stuck.</p>
         </div>
       </footer>
