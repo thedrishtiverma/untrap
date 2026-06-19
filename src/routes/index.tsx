@@ -19,7 +19,7 @@ function Landing() {
     <div className="min-h-screen untrap-ivory">
       {/* NAV */}
       <header className="mx-auto flex max-w-6xl items-center justify-between px-5 py-6 sm:px-8 sm:py-8">
-        <Logo size="md" />
+        <Logo size="lg" />
         <nav className="hidden items-center gap-8 sm:flex">
           <a href="#how" className="text-sm font-medium text-foreground/70 hover:text-foreground">How it works</a>
           <a href="#saarthi" className="text-sm font-medium text-foreground/70 hover:text-foreground">Saarthi AI</a>
