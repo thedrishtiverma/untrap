@@ -252,6 +252,105 @@ export type Database = {
           },
         ]
       }
+      career_profiles: {
+        Row: {
+          advanced_skills: Json
+          alternative_careers: Json
+          beginner_entry_path: Json
+          career_growth_path: Json
+          career_identity: string | null
+          career_name: string
+          category: string | null
+          common_misconceptions: Json
+          common_traps: Json
+          created_at: string
+          education_paths: Json
+          financial_barriers: string | null
+          future_scope: string | null
+          global_opportunities: string | null
+          id: string
+          ideal_personality: Json
+          interest_alignment: Json
+          one_year_growth_path: Json
+          portfolio_projects: Json
+          required_skills: Json
+          salary_reality_india: Json
+          short_description: string | null
+          six_month_growth_path: Json
+          strength_alignment: Json
+          time_commitment: string | null
+          tools_and_technologies: Json
+          untrap_first_step: string | null
+          updated_at: string
+          who_should_avoid: string | null
+          who_should_consider: string | null
+        }
+        Insert: {
+          advanced_skills?: Json
+          alternative_careers?: Json
+          beginner_entry_path?: Json
+          career_growth_path?: Json
+          career_identity?: string | null
+          career_name: string
+          category?: string | null
+          common_misconceptions?: Json
+          common_traps?: Json
+          created_at?: string
+          education_paths?: Json
+          financial_barriers?: string | null
+          future_scope?: string | null
+          global_opportunities?: string | null
+          id?: string
+          ideal_personality?: Json
+          interest_alignment?: Json
+          one_year_growth_path?: Json
+          portfolio_projects?: Json
+          required_skills?: Json
+          salary_reality_india?: Json
+          short_description?: string | null
+          six_month_growth_path?: Json
+          strength_alignment?: Json
+          time_commitment?: string | null
+          tools_and_technologies?: Json
+          untrap_first_step?: string | null
+          updated_at?: string
+          who_should_avoid?: string | null
+          who_should_consider?: string | null
+        }
+        Update: {
+          advanced_skills?: Json
+          alternative_careers?: Json
+          beginner_entry_path?: Json
+          career_growth_path?: Json
+          career_identity?: string | null
+          career_name?: string
+          category?: string | null
+          common_misconceptions?: Json
+          common_traps?: Json
+          created_at?: string
+          education_paths?: Json
+          financial_barriers?: string | null
+          future_scope?: string | null
+          global_opportunities?: string | null
+          id?: string
+          ideal_personality?: Json
+          interest_alignment?: Json
+          one_year_growth_path?: Json
+          portfolio_projects?: Json
+          required_skills?: Json
+          salary_reality_india?: Json
+          short_description?: string | null
+          six_month_growth_path?: Json
+          strength_alignment?: Json
+          time_commitment?: string | null
+          tools_and_technologies?: Json
+          untrap_first_step?: string | null
+          updated_at?: string
+          who_should_avoid?: string | null
+          who_should_consider?: string | null
+        }
+        Relationships: []
+      }
       career_reports: {
         Row: {
           career_paths: Json
