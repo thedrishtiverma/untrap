@@ -2,6 +2,14 @@
 @source "../src";
 @import "tw-animate-css";
 
+/* Self-hosted typography — premium AI startup feel */
+@import "@fontsource/open-sauce-sans/400.css";
+@import "@fontsource/open-sauce-sans/500.css";
+@import "@fontsource/open-sauce-sans/600.css";
+@import "@fontsource/open-sauce-sans/700.css";
+@import "@fontsource/open-sauce-sans/800.css";
+@import "@fontsource-variable/fraunces";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -31,6 +39,7 @@
   --color-accent-soft: var(--accent-soft);
   --color-indigo: var(--indigo);
   --color-indigo-foreground: var(--indigo-foreground);
+  --color-indigo-soft: var(--indigo-soft);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--success);
@@ -53,49 +62,50 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* DM Sans = friendly geometric sans (Open Sauce equivalent). Fraunces = emotional serif. */
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Open Sauce Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Open Sauce Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces Variable", "Fraunces", ui-serif, Georgia, serif;
 
   --shadow-soft: 0 1px 0 0 oklch(0.92 0.005 80 / 0.7), 0 12px 32px -16px oklch(0.1 0 0 / 0.10);
   --shadow-card: 0 1px 0 0 oklch(0.92 0.005 80 / 0.7), 0 18px 40px -22px oklch(0.1 0 0 / 0.12);
   --shadow-pop: 0 24px 60px -24px oklch(0.1 0 0 / 0.28);
   --shadow-orange: 0 16px 40px -16px oklch(0.68 0.2 39 / 0.45);
+  --shadow-indigo: 0 16px 40px -16px oklch(0.32 0.15 280 / 0.45);
 }
 
 :root {
-  --radius: 1.25rem; /* 20px base; cards land at 24-32px */
+  --radius: 1.25rem;
 
-  /* Soft Ivory background */
+  /* Warm Ivory #FAFAF7 */
   --background: oklch(0.985 0.004 95);
-  --foreground: oklch(0.16 0.005 80); /* near Obsidian #0B0B0B */
+  /* UNTRAP Black #080808 */
+  --foreground: oklch(0.14 0.005 80);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.16 0.005 80);
+  --card-foreground: oklch(0.14 0.005 80);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.16 0.005 80);
+  --popover-foreground: oklch(0.14 0.005 80);
 
-  /* Primary = Obsidian Black */
-  --primary: oklch(0.16 0.005 80);
+  /* Primary = UNTRAP Black */
+  --primary: oklch(0.14 0.005 80);
   --primary-foreground: oklch(0.985 0.004 95);
   --primary-soft: oklch(0.95 0.005 80);
 
   --secondary: oklch(0.95 0.005 80);
-  --secondary-foreground: oklch(0.16 0.005 80);
+  --secondary-foreground: oklch(0.14 0.005 80);
 
   --muted: oklch(0.96 0.004 80);
   --muted-foreground: oklch(0.5 0.01 80);
 
-  /* Accent = Obsidian Black (monochrome brand) */
-  --accent: oklch(0.16 0.005 80);
-  --accent-foreground: oklch(0.985 0.004 95);
-  --accent-soft: oklch(0.94 0.004 80);
+  /* Accent = Breakthrough Orange #FF6B2C */
+  --accent: oklch(0.68 0.2 39);
+  --accent-foreground: oklch(0.99 0.005 95);
+  --accent-soft: oklch(0.96 0.04 50);
 
-
-  /* Indigo = Deep Indigo #312E81 */
+  /* AI Accent = Deep Indigo #312E81 */
   --indigo: oklch(0.32 0.15 280);
   --indigo-foreground: oklch(0.99 0.005 95);
+  --indigo-soft: oklch(0.95 0.03 280);
 
   --destructive: oklch(0.58 0.22 27);
   --destructive-foreground: oklch(0.99 0.005 95);
@@ -103,24 +113,25 @@
   --success: oklch(0.68 0.16 155);
   --success-foreground: oklch(0.18 0.04 155);
 
+  /* Soft Gray #E8E8E3 */
   --border: oklch(0.91 0.005 80);
   --input: oklch(0.94 0.005 80);
-  --ring: oklch(0.16 0.005 80);
+  --ring: oklch(0.68 0.2 39);
 
-  --chart-1: oklch(0.16 0.005 80);
+  --chart-1: oklch(0.14 0.005 80);
   --chart-2: oklch(0.68 0.2 39);
   --chart-3: oklch(0.32 0.15 280);
   --chart-4: oklch(0.68 0.16 155);
   --chart-5: oklch(0.55 0.18 250);
 
   --sidebar: oklch(0.985 0.004 95);
-  --sidebar-foreground: oklch(0.16 0.005 80);
-  --sidebar-primary: oklch(0.16 0.005 80);
+  --sidebar-foreground: oklch(0.14 0.005 80);
+  --sidebar-primary: oklch(0.14 0.005 80);
   --sidebar-primary-foreground: oklch(0.99 0.005 95);
   --sidebar-accent: oklch(0.95 0.005 80);
-  --sidebar-accent-foreground: oklch(0.16 0.005 80);
+  --sidebar-accent-foreground: oklch(0.14 0.005 80);
   --sidebar-border: oklch(0.91 0.005 80);
-  --sidebar-ring: oklch(0.16 0.005 80);
+  --sidebar-ring: oklch(0.68 0.2 39);
 }
 
 .dark {
@@ -137,21 +148,19 @@
   --secondary-foreground: oklch(0.97 0.005 80);
   --muted: oklch(0.22 0.005 80);
   --muted-foreground: oklch(0.7 0.01 80);
-  --accent: oklch(0.97 0.005 80);
+  --accent: oklch(0.72 0.2 39);
   --accent-foreground: oklch(0.14 0.005 80);
-  --accent-soft: oklch(0.24 0.005 80);
-
+  --accent-soft: oklch(0.30 0.06 50);
   --indigo: oklch(0.62 0.18 280);
   --indigo-foreground: oklch(0.14 0.005 80);
+  --indigo-soft: oklch(0.28 0.06 280);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.97 0.005 80);
+  --ring: oklch(0.72 0.2 39);
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
+  * { border-color: var(--color-border); }
   html, body {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -165,6 +174,10 @@
     letter-spacing: -0.025em;
     font-weight: 700;
   }
+  /* 44px minimum tap target on all interactive controls */
+  button, a[role="button"], [data-slot="button"] {
+    min-height: 2.75rem;
+  }
 }
 
 @utility font-serif {
@@ -176,39 +189,57 @@
 
 @utility untrap-ivory {
   background-image:
-    radial-gradient(1200px 600px at 110% -10%, oklch(0.92 0.004 80 / 0.7), transparent 60%),
-    radial-gradient(900px 500px at -10% 110%, oklch(0.90 0.004 80 / 0.6), transparent 60%),
+    radial-gradient(1200px 600px at 110% -10%, oklch(0.96 0.03 50 / 0.4), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, oklch(0.95 0.04 280 / 0.35), transparent 60%),
     linear-gradient(180deg, oklch(0.985 0.004 95), oklch(0.96 0.004 80));
 }
 
 @utility untrap-obsidian {
   background-image:
-    radial-gradient(800px 400px at 100% 0%, oklch(0.24 0.005 80 / 0.8), transparent 60%),
-    radial-gradient(700px 400px at 0% 100%, oklch(0.20 0.005 80 / 0.7), transparent 60%),
+    radial-gradient(800px 400px at 100% 0%, oklch(0.30 0.10 39 / 0.35), transparent 60%),
+    radial-gradient(700px 400px at 0% 100%, oklch(0.25 0.10 280 / 0.35), transparent 60%),
     linear-gradient(180deg, oklch(0.14 0.005 80), oklch(0.10 0.005 80));
 }
-
 
 @utility orange-glow {
   box-shadow: var(--shadow-orange);
 }
+@utility indigo-glow {
+  box-shadow: var(--shadow-indigo);
+}
 
 @utility ring-brand {
-  box-shadow: 0 0 0 4px oklch(0.16 0.005 80 / 0.10);
+  box-shadow: 0 0 0 4px oklch(0.68 0.2 39 / 0.18);
 }
 
 @utility lift {
-  transition: transform 200ms cubic-bezier(.2,.7,.2,1), box-shadow 200ms;
-}
-@utility lift-hover {
+  transition: transform 220ms cubic-bezier(.2,.7,.2,1), box-shadow 220ms;
   &:hover { transform: translateY(-2px); box-shadow: var(--shadow-pop); }
 }
 
 @keyframes break-up {
-  0%   { transform: translateY(6px); opacity: 0; }
+  0%   { transform: translateY(8px); opacity: 0; }
   60%  { transform: translateY(-2px); opacity: 1; }
   100% { transform: translateY(0); opacity: 1; }
 }
 @utility animate-break-up {
   animation: break-up 600ms cubic-bezier(.2,.7,.2,1) both;
+}
+
+@keyframes breakthrough {
+  0%   { transform: translateY(4px); opacity: 0.6; }
+  50%  { transform: translateY(-6px); opacity: 1; }
+  100% { transform: translateY(4px); opacity: 0.6; }
+}
+@utility animate-breakthrough {
+  animation: breakthrough 2.4s cubic-bezier(.4,.0,.2,1) infinite;
+}
+
+@keyframes rise-loop {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+@utility animate-rise {
+  animation: rise-loop 3s ease-in-out infinite;
 }
