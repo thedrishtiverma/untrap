@@ -337,7 +337,7 @@ export const importCareerProfiles = createServerFn({ method: "POST" })
     if (!isAdmin) throw new Error("Forbidden: admin only");
 
     const { data: count, error } = await context.supabase.rpc("import_career_profiles", {
-      _payload: data.profiles as unknown as object,
+      _payload: data.profiles as never,
     });
     if (error) throw new Error(error.message);
     return { imported: count ?? 0 };
