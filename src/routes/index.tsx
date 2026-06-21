@@ -19,7 +19,7 @@ function Landing() {
     <div className="min-h-screen untrap-ivory">
       {/* NAV */}
       <header className="mx-auto flex max-w-6xl items-center justify-between px-5 py-6 sm:px-8 sm:py-8">
-        <Logo size="lg" />
+        <Link to="/" aria-label="UNTRAP home" className="flex items-center"><Logo size="lg" /></Link>
         <nav className="hidden items-center gap-8 sm:flex">
           <a href="#how" className="text-sm font-medium text-foreground/70 hover:text-foreground">How it works</a>
           <a href="#saarthi" className="text-sm font-medium text-foreground/70 hover:text-foreground">Saarthi AI</a>
@@ -144,8 +144,8 @@ function Landing() {
 
       {/* FOOTER */}
       <footer className="mx-auto max-w-6xl px-5 pb-12 sm:px-8">
-        <div className="flex flex-col items-start justify-between gap-6 border-t border-foreground/10 pt-8 sm:flex-row sm:items-center">
-          <Logo size="md" showTagline />
+        <div className="flex flex-col items-start justify-between gap-8 border-t border-foreground/10 pt-12 sm:flex-row sm:items-center">
+          <Logo size="lg" showTagline />
           <p className="text-xs text-foreground/50">© {new Date().getFullYear()} UNTRAP. Made for students who refuse to stay stuck.</p>
         </div>
       </footer>
