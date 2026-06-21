@@ -169,7 +169,18 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
+  html { transition: background-color 300ms ease, color 300ms ease; }
+  body, [data-themed] { transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease; }
   h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+    font-weight: 700;
+  }
+  /* 44px minimum tap target on all interactive controls */
+  button, a[role="button"], [data-slot="button"] {
+    min-height: 2.75rem;
+  }
+}
     font-family: var(--font-display);
     letter-spacing: -0.025em;
     font-weight: 700;
