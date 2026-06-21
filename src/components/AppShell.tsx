@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Home, Compass, Map, MessageCircle, User } from "lucide-react";
 import type { ReactNode } from "react";
 import { Logo } from "./Logo";
+import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -18,10 +19,10 @@ export function AppShell({ children }: { children: ReactNode }) {
     path === to || (to !== "/dashboard" && path.startsWith(to));
 
   return (
-    <div className="min-h-screen untrap-ivory">
+    <div className="min-h-screen untrap-ivory transition-colors duration-300">
       <header className="sticky top-0 z-20 border-b border-foreground/8 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3.5">
-          <Link to="/dashboard" aria-label="UNTRAP home">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-5 md:py-6">
+          <Link to="/dashboard" aria-label="UNTRAP home" className="flex items-center">
             <Logo size="md" />
           </Link>
 
@@ -47,8 +48,8 @@ export function AppShell({ children }: { children: ReactNode }) {
             })}
           </nav>
 
-          <div className="md:hidden text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/40">
-            V1
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
           </div>
         </div>
       </header>
