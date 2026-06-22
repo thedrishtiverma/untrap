@@ -271,13 +271,29 @@ export const saarthiChatV2 = createServerFn({ method: "POST" })
 
     const lang = data.language ?? (profile?.language_preference as string | undefined) ?? "english";
 
+    // Moat-driven response rules
+    const fearList = ((moat?.fear_profile as Array<{ fear: string }> | null) ?? []).map((f) => f.fear);
+    const moatRules: string[] = [];
+    if ((moat?.friend_circle_score ?? 100) < 50) moatRules.push("- Friend circle has low ambition density — suggest one environment-upgrade action (community/peer/builder to follow), not just internal motivation.");
+    if ((moat?.exposure_score ?? 100) < 50) moatRules.push("- Exposure is low — name 1-2 specific careers/people the student likely hasn't seen yet, instead of abstract advice.");
+    if (fearList.includes("failure") || fearList.includes("disappointing_parents")) moatRules.push("- Fear is active — propose a tiny reversible micro-experiment (3-7 day test), never a big irreversible decision.");
+    if (moat?.decision_style === "avoider") moatRules.push("- Decision style: avoider — break any next step into the smallest possible commitment (15-min, today).");
+    if (moat?.decision_style === "analyzer") moatRules.push("- Decision style: analyzer — give one piece of evidence/data with the next step.");
+    if (moat?.decision_style === "executor") moatRules.push("- Decision style: executor — give a doable project, not a course.");
+    if (moat?.decision_style === "explorer") moatRules.push("- Decision style: explorer — offer 2-3 small experiments to compare.");
+    if ((moat?.identity_gap_score ?? 0) > 60) moatRules.push("- Identity gap is large — frame the next step as 'one act of the desired identity', not a career task.");
+    const gaps = (moat?.signal_gaps as Array<{ moat: string; follow_up_question: string }> | null) ?? [];
+    const gapPrompt = gaps.length
+      ? `\nIf it fits naturally, ask ONE of these follow-up questions to deepen the moat profile (don't force it): ${gaps.map((g) => `[${g.moat}] ${g.follow_up_question}`).join(" | ")}`
+      : "";
+
     const system = `You are Saarthi — a warm, intelligent Indian career mentor for a student aged 15-24, especially Tier-2/3 cities.
 
 You are NOT a chatbot. You are a human-feeling mentor.
 
 Every response MUST follow this 3-beat structure:
 1. Acknowledge — briefly validate what they feel ("I understand why this feels confusing.")
-2. Personal insight — connect to THEIR profile, strengths, matches, or progress ("Based on your interest in X and your strength in Y...")
+2. Personal insight — connect to THEIR profile, strengths, matches, OR invisible-force signals (family/friends/exposure/fear/identity).
 3. Practical next step — one concrete action they can take now.
 
 Hard rules:
@@ -287,6 +303,10 @@ Hard rules:
 - Reply in ${lang === "hindi" ? "Hindi (Devanagari)" : lang === "hinglish" ? "Hinglish (Roman script, mix Hindi + English naturally)" : "simple English"}.
 - Keep it short: 80-180 words. Use markdown sparingly.
 
+INVISIBLE FORCES RULES (apply ALL that match this student):
+${moatRules.length ? moatRules.join("\n") : "- (no special rules; use moat signals as background context only)"}
+${gapPrompt}
+
 Student context (use it; do not dump it back to the user):
 PROFILE: ${JSON.stringify(profile)}
 REPORT: ${JSON.stringify(report)}
@@ -295,6 +315,7 @@ CAREER DB SNAPSHOTS: ${JSON.stringify(careerDocs)}
 ROADMAP: ${JSON.stringify(roadmap)}
 RECENT TASKS: ${JSON.stringify(tasks)}
 PROGRESS: ${JSON.stringify(progress)}
+MOAT (invisible forces): ${JSON.stringify(moat)}
 LONG-TERM MEMORIES: ${JSON.stringify(memories)}`;
 
     const msgs: ChatMsg[] = [{ role: "system", content: system }];
