@@ -25,6 +25,18 @@ interface State {
 function Dashboard() {
   const navigate = useNavigate();
   const [s, setS] = useState<State | null>(null);
+  const [moat, setMoat] = useState<MoatRow | null>(null);
+  const [generating, setGenerating] = useState(false);
+  const genMoat = useServerFn(generateMoatProfile);
+
+  const loadMoat = async (userId: string) => {
+    const { data } = await supabase
+      .from("student_moat_profile")
+      .select("*")
+      .eq("user_id", userId)
+      .maybeSingle();
+    setMoat((data as unknown as MoatRow) ?? null);
+  };
 
   useEffect(() => {
     (async () => {
@@ -49,8 +61,23 @@ function Dashboard() {
         hasReport: !!report,
         nextTask: next ? { id: next.id, title: next.title, description: next.description } : undefined,
       });
+      void loadMoat(user.id);
     })();
   }, [navigate]);
+
+  const handleGenerateMoat = async () => {
+    setGenerating(true);
+    try {
+      await genMoat();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) await loadMoat(user.id);
+      toast.success("Your invisible-forces map is ready");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not map invisible forces");
+    } finally {
+      setGenerating(false);
+    }
+  };
 
   if (!s) return <AppShell><div className="h-40 animate-pulse rounded-3xl bg-secondary" /></AppShell>;
 
