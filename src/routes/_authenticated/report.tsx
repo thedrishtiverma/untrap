@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
-import { Sparkles, Target, TrendingUp, Zap, MapPin, Compass, ArrowRight } from "lucide-react";
+import { Sparkles, Target, TrendingUp, Zap, MapPin, Compass, ArrowRight, Eye, Heart, Users, Brain } from "lucide-react";
+import type { MoatRow } from "@/components/MoatMeters";
 
 export const Route = createFileRoute("/_authenticated/report")({
   head: () => ({ meta: [{ title: "Your career report · UNTRAP" }] }),
