@@ -136,6 +136,10 @@ function Dashboard() {
           <p className="mt-3 text-xs text-foreground/55">{s.done} of {s.total || "—"} tasks completed</p>
         </div>
 
+        {/* Invisible Forces — UNTRAP moat */}
+        <MoatMeters moat={moat} onGenerate={handleGenerateMoat} generating={generating} />
+
+
         {/* Today's mission */}
         <div className="rounded-[24px] border border-foreground/8 bg-card p-5 shadow-soft">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent">
