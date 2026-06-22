@@ -89,7 +89,10 @@ function ReportPage() {
           </ul>
         </Card>
 
+        {moat && <InvisibleForces moat={moat} />}
+
         <Card title="What's holding you back" icon={<MapPin className="h-4 w-4" />}>
+
           <ul className="space-y-2">
             {report.obstacles.map((o) => (
               <li key={o} className="flex items-start gap-2 text-sm text-foreground">
