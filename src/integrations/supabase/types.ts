@@ -730,6 +730,108 @@ export type Database = {
         }
         Relationships: []
       }
+      student_moat_profile: {
+        Row: {
+          ambition_density: string | null
+          career_experiment_status: Json
+          childhood_pattern_tags: Json
+          confidence_score: number | null
+          created_at: string
+          current_identity: string | null
+          decision_style: Database["public"]["Enums"]["decision_style"] | null
+          desired_identity: string | null
+          digital_twin_state: Json
+          energy_profile: Json
+          environment_upgrade_actions: Json
+          exposure_insight: string | null
+          exposure_score: number | null
+          family_dynamics_score: number | null
+          family_insight: string | null
+          family_value_orientation: string | null
+          fear_profile: Json
+          friend_circle_insight: string | null
+          friend_circle_score: number | null
+          id: string
+          identity_bridge: string | null
+          identity_gap_score: number | null
+          last_inferred_at: string | null
+          life_story_summary: string | null
+          mentor_memory_graph: Json
+          parent_bridge_status: Json
+          primary_fear: string | null
+          reality_constraints: Json
+          signal_gaps: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ambition_density?: string | null
+          career_experiment_status?: Json
+          childhood_pattern_tags?: Json
+          confidence_score?: number | null
+          created_at?: string
+          current_identity?: string | null
+          decision_style?: Database["public"]["Enums"]["decision_style"] | null
+          desired_identity?: string | null
+          digital_twin_state?: Json
+          energy_profile?: Json
+          environment_upgrade_actions?: Json
+          exposure_insight?: string | null
+          exposure_score?: number | null
+          family_dynamics_score?: number | null
+          family_insight?: string | null
+          family_value_orientation?: string | null
+          fear_profile?: Json
+          friend_circle_insight?: string | null
+          friend_circle_score?: number | null
+          id?: string
+          identity_bridge?: string | null
+          identity_gap_score?: number | null
+          last_inferred_at?: string | null
+          life_story_summary?: string | null
+          mentor_memory_graph?: Json
+          parent_bridge_status?: Json
+          primary_fear?: string | null
+          reality_constraints?: Json
+          signal_gaps?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ambition_density?: string | null
+          career_experiment_status?: Json
+          childhood_pattern_tags?: Json
+          confidence_score?: number | null
+          created_at?: string
+          current_identity?: string | null
+          decision_style?: Database["public"]["Enums"]["decision_style"] | null
+          desired_identity?: string | null
+          digital_twin_state?: Json
+          energy_profile?: Json
+          environment_upgrade_actions?: Json
+          exposure_insight?: string | null
+          exposure_score?: number | null
+          family_dynamics_score?: number | null
+          family_insight?: string | null
+          family_value_orientation?: string | null
+          fear_profile?: Json
+          friend_circle_insight?: string | null
+          friend_circle_score?: number | null
+          id?: string
+          identity_bridge?: string | null
+          identity_gap_score?: number | null
+          last_inferred_at?: string | null
+          life_story_summary?: string | null
+          mentor_memory_graph?: Json
+          parent_bridge_status?: Json
+          primary_fear?: string | null
+          reality_constraints?: Json
+          signal_gaps?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       student_profiles: {
         Row: {
           age: number | null
@@ -975,6 +1077,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      decision_style: "explorer" | "analyzer" | "executor" | "avoider"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1103,6 +1206,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      decision_style: ["explorer", "analyzer", "executor", "avoider"],
     },
   },
 } as const
