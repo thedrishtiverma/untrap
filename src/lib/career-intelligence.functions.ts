@@ -247,6 +247,7 @@ export const saarthiChatV2 = createServerFn({ method: "POST" })
       { data: progress },
       { data: history },
       { data: memories },
+      { data: moat },
     ] = await Promise.all([
       context.supabase.from("student_profiles").select("*").eq("user_id", context.userId).maybeSingle(),
       context.supabase.from("career_reports").select("*").eq("user_id", context.userId).maybeSingle(),
@@ -256,6 +257,7 @@ export const saarthiChatV2 = createServerFn({ method: "POST" })
       context.supabase.from("user_progress").select("*").eq("user_id", context.userId).maybeSingle(),
       context.supabase.from("ai_chat_history").select("user_message,ai_response").eq("user_id", context.userId).order("created_at", { ascending: false }).limit(8),
       context.supabase.from("student_memories").select("memory_type,content,importance").eq("user_id", context.userId).order("importance", { ascending: false }).limit(10),
+      context.supabase.from("student_moat_profile").select("*").eq("user_id", context.userId).maybeSingle(),
     ]);
 
     // Pull career-database context for the student's top 3 matches
