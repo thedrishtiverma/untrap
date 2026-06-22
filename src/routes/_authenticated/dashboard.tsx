@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
 import { ArrowUpRight, ClipboardList, MessageCircle, Sparkles, Target } from "lucide-react";
+import { MoatMeters, type MoatRow } from "@/components/MoatMeters";
+import { useServerFn } from "@tanstack/react-start";
+import { generateMoatProfile } from "@/lib/moat-intelligence.functions";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard · UNTRAP" }] }),
@@ -21,6 +25,18 @@ interface State {
 function Dashboard() {
   const navigate = useNavigate();
   const [s, setS] = useState<State | null>(null);
+  const [moat, setMoat] = useState<MoatRow | null>(null);
+  const [generating, setGenerating] = useState(false);
+  const genMoat = useServerFn(generateMoatProfile);
+
+  const loadMoat = async (userId: string) => {
+    const { data } = await supabase
+      .from("student_moat_profile")
+      .select("*")
+      .eq("user_id", userId)
+      .maybeSingle();
+    setMoat((data as unknown as MoatRow) ?? null);
+  };
 
   useEffect(() => {
     (async () => {
@@ -45,8 +61,23 @@ function Dashboard() {
         hasReport: !!report,
         nextTask: next ? { id: next.id, title: next.title, description: next.description } : undefined,
       });
+      void loadMoat(user.id);
     })();
   }, [navigate]);
+
+  const handleGenerateMoat = async () => {
+    setGenerating(true);
+    try {
+      await genMoat();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) await loadMoat(user.id);
+      toast.success("Your invisible-forces map is ready");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not map invisible forces");
+    } finally {
+      setGenerating(false);
+    }
+  };
 
   if (!s) return <AppShell><div className="h-40 animate-pulse rounded-3xl bg-secondary" /></AppShell>;
 
@@ -104,6 +135,10 @@ function Dashboard() {
           </div>
           <p className="mt-3 text-xs text-foreground/55">{s.done} of {s.total || "—"} tasks completed</p>
         </div>
+
+        {/* Invisible Forces — UNTRAP moat */}
+        <MoatMeters moat={moat} onGenerate={handleGenerateMoat} generating={generating} />
+
 
         {/* Today's mission */}
         <div className="rounded-[24px] border border-foreground/8 bg-card p-5 shadow-soft">
