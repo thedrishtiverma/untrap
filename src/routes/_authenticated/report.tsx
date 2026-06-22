@@ -142,3 +142,67 @@ function Skeleton() {
     </div>
   );
 }
+
+function InvisibleForces({ moat }: { moat: MoatRow }) {
+  const forces = [
+    { icon: <Heart className="h-4 w-4" />, label: "Family", score: moat.family_dynamics_score, sub: moat.family_value_orientation, insight: moat.family_insight },
+    { icon: <Users className="h-4 w-4" />, label: "Friend circle", score: moat.friend_circle_score, sub: moat.ambition_density, insight: moat.friend_circle_insight },
+    { icon: <Eye className="h-4 w-4" />, label: "Exposure", score: moat.exposure_score, sub: "awareness", insight: moat.exposure_insight },
+  ].filter((f) => typeof f.score === "number");
+
+  return (
+    <Card title="Invisible forces shaping you" icon={<Sparkles className="h-4 w-4" />}>
+      <p className="-mt-1 mb-4 text-xs text-muted-foreground">
+        Your career isn't just interest. Family, friends, exposure, fears, and identity quietly steer every decision. Here's what UNTRAP sees.
+      </p>
+      <div className="space-y-4">
+        {forces.map((f) => (
+          <div key={f.label}>
+            <div className="flex items-baseline justify-between">
+              <div className="flex items-center gap-2 text-sm font-semibold">
+                {f.icon} {f.label}
+                {f.sub && <span className="text-[10px] font-medium text-muted-foreground">· {f.sub}</span>}
+              </div>
+              <span className="text-sm font-extrabold">{f.score}<span className="text-[10px] text-muted-foreground">/100</span></span>
+            </div>
+            <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-secondary">
+              <div className="h-full rounded-full bg-foreground" style={{ width: `${f.score}%` }} />
+            </div>
+            {f.insight && <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">{f.insight}</p>}
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-5 grid grid-cols-2 gap-3">
+        {moat.decision_style && (
+          <div className="rounded-2xl bg-secondary/60 p-3">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              <Brain className="h-3 w-3" /> Decision style
+            </div>
+            <p className="mt-1 text-sm font-bold capitalize">{moat.decision_style}</p>
+          </div>
+        )}
+        {moat.primary_fear && (
+          <div className="rounded-2xl bg-secondary/60 p-3">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Invisible barrier</div>
+            <p className="mt-1 text-sm font-bold capitalize">{moat.primary_fear.replace(/_/g, " ")}</p>
+          </div>
+        )}
+      </div>
+
+      {moat.current_identity && moat.desired_identity && (
+        <div className="mt-4 rounded-2xl border border-border p-3">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+            <Compass className="h-3 w-3" /> Identity gap · {moat.identity_gap_score ?? 0}/100
+          </div>
+          <p className="mt-1.5 text-sm">
+            <span className="text-muted-foreground">{moat.current_identity}</span>
+            <span className="mx-2 text-muted-foreground/50">→</span>
+            <span className="font-bold">{moat.desired_identity}</span>
+          </p>
+          {moat.identity_bridge && <p className="mt-1 text-xs text-muted-foreground">{moat.identity_bridge}</p>}
+        </div>
+      )}
+    </Card>
+  );
+}
