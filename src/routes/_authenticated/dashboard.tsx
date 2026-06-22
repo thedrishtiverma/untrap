@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
 import { ArrowUpRight, ClipboardList, MessageCircle, Sparkles, Target } from "lucide-react";
+import { MoatMeters, type MoatRow } from "@/components/MoatMeters";
+import { useServerFn } from "@tanstack/react-start";
+import { generateMoatProfile } from "@/lib/moat-intelligence.functions";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard · UNTRAP" }] }),
