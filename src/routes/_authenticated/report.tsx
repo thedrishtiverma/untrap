@@ -21,14 +21,19 @@ interface Report {
 
 function ReportPage() {
   const [report, setReport] = useState<Report | null>(null);
+  const [moat, setMoat] = useState<MoatRow | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
-      const { data } = await supabase.from("career_reports").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).maybeSingle();
-      setReport(data as Report | null);
+      const [{ data: rpt }, { data: m }] = await Promise.all([
+        supabase.from("career_reports").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).maybeSingle(),
+        supabase.from("student_moat_profile").select("*").eq("user_id", user.id).maybeSingle(),
+      ]);
+      setReport(rpt as Report | null);
+      setMoat((m as unknown as MoatRow) ?? null);
       setLoading(false);
     })();
   }, []);
