@@ -140,7 +140,7 @@ function Hero() {
         <div className="animate-break-up">
           <span className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-card/70 px-3 py-1 text-xs font-semibold text-foreground/70 backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            The AI career companion built for YOU
+            Identity first. Career next.
           </span>
 
           <h1 className="mt-6 text-5xl font-extrabold leading-[1.02] tracking-tight text-foreground sm:text-7xl">
@@ -149,9 +149,10 @@ function Hero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-foreground/65">
-            UNTRAP helps students understand themselves, discover the right career directions, and
-            build a personalized roadmap with AI guidance.
+            Before you pick a career, understand yourself. UNTRAP is the AI companion that maps who
+            you are, what shapes you, and the path that actually fits — then walks it with you.
           </p>
+
 
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <Link
