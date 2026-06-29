@@ -83,18 +83,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { title: "UNTRAP — Discover Yourself. Design Your Future." },
-      { name: "description", content: "AI career companion for Indian students. 
-Stop guessing your future. UNTRAP helps students discover who they are, explore the right paths, and take meaningful s" },
+      { name: "description", content: "Escape career confusion. Discover your strengths, explore the right paths, and build a personalized roadmap for your future with UNTRAP." },
       { name: "author", content: "UNTRAP" },
       { name: "theme-color", content: "#080808" },
       { property: "og:title", content: "UNTRAP — Discover Yourself. Design Your Future." },
-      { property: "og:description", content: "AI career companion for Indian students. 
-Stop guessing your future. UNTRAP helps students discover who they are, explore the right paths, and take meaningful s" },
+      { property: "og:description", content: "Escape career confusion. Discover your strengths, explore the right paths, and build a personalized roadmap for your future with UNTRAP." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "UNTRAP — Discover Yourself. Design Your Future." },
-      { name: "twitter:description", content: "AI career companion for Indian students. 
-Stop guessing your future. UNTRAP helps students discover who they are, explore the right paths, and take meaningful s" },
+      { name: "twitter:description", content: "Escape career confusion. Discover your strengths, explore the right paths, and build a personalized roadmap for your future with UNTRAP." },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/XI1B85lPdNT7EJ9nEFiXhf8AVzK2/social-images/social-1782369819417-Screenshot_2026-06-25_at_12.11.40_PM.webp" },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/XI1B85lPdNT7EJ9nEFiXhf8AVzK2/social-images/social-1782369819417-Screenshot_2026-06-25_at_12.11.40_PM.webp" },
     ],
