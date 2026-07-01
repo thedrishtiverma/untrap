@@ -1066,13 +1066,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
       import_career_profiles: { Args: { _payload: Json }; Returns: number }
     }
     Enums: {
