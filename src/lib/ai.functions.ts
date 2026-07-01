@@ -170,7 +170,7 @@ export const generate30DayRoadmap = createServerFn({ method: "POST" })
       duration: `${data.duration_days} days`,
       generated_plan: JSON.parse(JSON.stringify(plan)), status: "active",
     }).select().single();
-    if (error) throw new Error(error.message);
+    if (error) { console.error("[server] db error", error?.message); throw new Error("Something went wrong. Please try again."); }
 
     const tasks = plan.weeks.flatMap((w) => w.tasks.map((t) => ({
       roadmap_id: roadmap.id, user_id: uid,
