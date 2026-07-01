@@ -62,7 +62,7 @@ Suggest 4 career paths. Be warm, specific, and realistic. Avoid generic advice.`
       })
       .select()
       .single();
-    if (error) throw new Error(error.message);
+    if (error) console.error("[server] db error", error?.message); throw new Error("Something went wrong. Please try again.");
     return inserted;
   });
 
@@ -103,7 +103,7 @@ Week 1 = clarity & self-research. Week 2 = skill exploration. Week 3 = build som
       description: t.description,
     }));
     const { error } = await context.supabase.from("roadmap_tasks").insert(rows);
-    if (error) throw new Error(error.message);
+    if (error) console.error("[server] db error", error?.message); throw new Error("Something went wrong. Please try again.");
     return { count: rows.length };
   });
 

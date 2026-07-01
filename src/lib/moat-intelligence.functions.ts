@@ -187,7 +187,7 @@ Rules:
     const { error } = await context.supabase
       .from("student_moat_profile")
       .upsert(row, { onConflict: "user_id" });
-    if (error) throw new Error(error.message);
+    if (error) console.error("[server] db error", error?.message); throw new Error("Something went wrong. Please try again.");
 
     await context.supabase.from("analytics_events").insert({
       user_id: context.userId,

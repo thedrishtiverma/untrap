@@ -91,7 +91,7 @@ Be specific to THIS student (mention their actual interests, strengths, constrai
         first_step: m.first_step ?? null,
       }));
       const { error } = await context.supabase.from("career_matches").insert(rows);
-      if (error) throw new Error(error.message);
+      if (error) console.error("[server] db error", error?.message); throw new Error("Something went wrong. Please try again.");
     }
 
     await context.supabase.from("analytics_events").insert({
@@ -362,7 +362,7 @@ export const importCareerProfiles = createServerFn({ method: "POST" })
     const { data: count, error } = await context.supabase.rpc("import_career_profiles", {
       _payload: data.profiles as never,
     });
-    if (error) throw new Error(error.message);
+    if (error) console.error("[server] db error", error?.message); throw new Error("Something went wrong. Please try again.");
     return { imported: count ?? 0 };
   });
 
@@ -374,7 +374,7 @@ export const listCareerProfiles = createServerFn({ method: "GET" })
       .from("career_profiles")
       .select("id,career_name,category,short_description,career_identity")
       .order("career_name");
-    if (error) throw new Error(error.message);
+    if (error) console.error("[server] db error", error?.message); throw new Error("Something went wrong. Please try again.");
     return { profiles: data ?? [] };
   });
 
@@ -387,6 +387,6 @@ export const getCareerProfile = createServerFn({ method: "POST" })
       .select("*")
       .eq("career_name", data.career_name)
       .maybeSingle();
-    if (error) throw new Error(error.message);
+    if (error) console.error("[server] db error", error?.message); throw new Error("Something went wrong. Please try again.");
     return { profile };
   });

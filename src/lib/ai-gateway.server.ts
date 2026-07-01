@@ -38,7 +38,7 @@ export async function callLovableAI({
   if (res.status === 402) throw new Error("AI credits exhausted. Please add credits in your workspace billing.");
   if (!res.ok) {
     const txt = await res.text().catch(() => "");
-    throw new Error(`AI request failed (${res.status}): ${txt.slice(0, 200)}`);
+    console.error("[server] AI gateway error", res.status, txt.slice(0,500)); throw new Error("AI service is temporarily unavailable. Please try again.");
   }
 
   const data = (await res.json()) as {

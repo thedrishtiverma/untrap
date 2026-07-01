@@ -211,7 +211,7 @@ export const setTaskCompleted = createServerFn({ method: "POST" })
     const { error } = await context.supabase.from("daily_tasks")
       .update({ completed: data.completed, completion_date: data.completed ? new Date().toISOString() : null })
       .eq("id", data.task_id).eq("user_id", context.userId);
-    if (error) throw new Error(error.message);
+    if (error) console.error("[server] db error", error?.message); throw new Error("Something went wrong. Please try again.");
 
     if (data.completed) {
       const { data: prog } = await context.supabase.from("user_progress")
@@ -288,7 +288,7 @@ export const submitWeeklyReflection = createServerFn({ method: "POST" })
     const { error } = await context.supabase.from("weekly_reflections").insert({
       user_id: context.userId, ...data,
     });
-    if (error) throw new Error(error.message);
+    if (error) console.error("[server] db error", error?.message); throw new Error("Something went wrong. Please try again.");
     await context.supabase.from("analytics_events").insert({
       user_id: context.userId, event_name: "weekly_reflection_completed",
       properties: { week: data.week_number, confidence: data.confidence_rating },
