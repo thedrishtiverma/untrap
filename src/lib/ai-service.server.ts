@@ -26,8 +26,8 @@ export async function loadPrompt(supabase: SB, name: string): Promise<PromptRow>
     .eq("name", name).eq("active", true)
     .order("version", { ascending: false })
     .limit(1).maybeSingle();
-  if (error) console.error("[server] prompt load failed", name, error?.message); throw new Error("Service temporarily unavailable. Please try again.");
-  if (!data) console.error("[server] prompt not found", name); throw new Error("Service temporarily unavailable. Please try again.");
+  if (error) { console.error("[server] prompt load failed", name, error?.message); throw new Error("Service temporarily unavailable. Please try again."); }
+  if (!data) { console.error("[server] prompt not found", name); throw new Error("Service temporarily unavailable. Please try again."); }
   const row = data as PromptRow;
   cache.set(name, { row, at: Date.now() });
   return row;
