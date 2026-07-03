@@ -19,36 +19,29 @@ export function AppShell({ children }: { children: ReactNode }) {
     path === to || (to !== "/dashboard" && path.startsWith(to));
 
   return (
-    <div className="min-h-dvh untrap-ivory transition-colors duration-300">
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground focus:shadow-lg"
-      >
-        Skip to content
-      </a>
-      <header className="sticky top-0 z-20 border-b border-border/70 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 md:py-5">
+    <div className="min-h-screen untrap-ivory transition-colors duration-300">
+      <header className="sticky top-0 z-20 border-b border-foreground/8 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-5 md:py-6">
           <Link to="/dashboard" aria-label="UNTRAP home" className="flex items-center">
             <Logo size="md" />
           </Link>
 
           {/* Desktop top-nav */}
-          <nav aria-label="Primary" className="hidden md:flex items-center gap-0.5 rounded-full border border-border/70 bg-surface/60 p-1 backdrop-blur">
+          <nav className="hidden md:flex items-center gap-1">
             {navItems.map(({ to, label, icon: Icon }) => {
               const active = isActive(to);
               return (
                 <Link
                   key={to}
                   to={to}
-                  aria-current={active ? "page" : undefined}
                   className={cn(
-                    "inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[13px] font-medium tracking-tight transition-colors min-h-0",
+                    "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition",
                     active
-                      ? "bg-foreground text-background"
-                      : "text-muted-foreground hover:bg-surface-hover hover:text-foreground",
+                      ? "bg-foreground text-background shadow-pop"
+                      : "text-foreground/60 hover:bg-foreground/5 hover:text-foreground",
                   )}
                 >
-                  <Icon className="h-3.5 w-3.5" strokeWidth={2.2} />
+                  <Icon className="h-4 w-4" strokeWidth={2.2} />
                   {label}
                 </Link>
               );
@@ -61,11 +54,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main id="main" className="mx-auto max-w-3xl px-5 pt-8 pb-32 md:max-w-5xl md:pb-16">{children}</main>
+      <main className="mx-auto max-w-3xl px-5 pt-6 pb-32 md:max-w-5xl md:pb-12">{children}</main>
 
       {/* Mobile bottom-nav */}
-      <nav aria-label="Primary" className="fixed inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background/95 backdrop-blur md:hidden">
-        <ul className="mx-auto flex max-w-2xl items-stretch justify-between px-2 py-1.5">
+      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-foreground/8 bg-background/95 backdrop-blur md:hidden">
+        <ul className="mx-auto flex max-w-2xl items-stretch justify-between px-2 py-2">
           {navItems.map(({ to, label, icon: Icon }) => {
             const active = isActive(to);
             return (
@@ -73,15 +66,14 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Link
                   to={to}
                   aria-label={label}
-                  aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex flex-col items-center gap-0.5 rounded-2xl py-1.5 text-[10px] font-semibold tracking-wide transition min-h-11",
-                    active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+                    "flex flex-col items-center gap-1 rounded-2xl py-1.5 text-[10px] font-bold tracking-wide transition min-h-11",
+                    active ? "text-foreground" : "text-foreground/45 hover:text-foreground",
                   )}
                 >
                   <span
                     className={cn(
-                      "flex h-9 w-9 items-center justify-center rounded-xl transition",
+                      "flex h-9 w-9 items-center justify-center rounded-2xl transition",
                       active ? "bg-foreground text-background" : "bg-transparent",
                     )}
                   >

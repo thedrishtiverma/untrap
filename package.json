@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.2.9",
-    "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/open-sauce-sans": "^5.2.5",
     "@hookform/resolvers": "^5.2.2",
     "@lovable.dev/cloud-auth-js": "^1.1.2",
