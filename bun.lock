@@ -6,6 +6,7 @@
       "name": "tanstack_start_ts",
       "dependencies": {
         "@fontsource-variable/fraunces": "^5.2.9",
+        "@fontsource/ibm-plex-mono": "^5.2.7",
         "@fontsource/open-sauce-sans": "^5.2.5",
         "@hookform/resolvers": "^5.2.2",
         "@lovable.dev/cloud-auth-js": "^1.1.2",
@@ -217,6 +218,8 @@
     "@floating-ui/utils": ["@floating-ui/utils@0.2.11", "", {}, "sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg=="],
 
     "@fontsource-variable/fraunces": ["@fontsource-variable/fraunces@5.2.9", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@fontsource-variable/fraunces/-/fraunces-5.2.9.tgz", {}, "sha512-Y6IjunlN9Ni723np+GIgAaKzCDBrPRrqNi01TZxHs5wtHYROWFM9W6yiT+/gGwSjWIRD18oX17kD/BRWekc/Lw=="],
+
+    "@fontsource/ibm-plex-mono": ["@fontsource/ibm-plex-mono@5.2.7", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@fontsource/ibm-plex-mono/-/ibm-plex-mono-5.2.7.tgz", {}, "sha512-MKAb8qV+CaiMQn2B0dIi1OV3565NYzp3WN5b4oT6LTkk+F0jR6j0ZN+5BKJiIhffDC3rtBULsYZE65+0018z9w=="],
 
     "@fontsource/open-sauce-sans": ["@fontsource/open-sauce-sans@5.2.5", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@fontsource/open-sauce-sans/-/open-sauce-sans-5.2.5.tgz", {}, "sha512-OBgV5xFpy4/mHrSr6/yGMEgkEjf/5uN1WoihtxZUleqsvSQopE2VY1csoLikuzbGICd7p4aAFNg67R4zLd2yDQ=="],
 
