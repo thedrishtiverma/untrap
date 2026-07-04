@@ -4,14 +4,18 @@ import {
   ArrowRight,
   ArrowUpRight,
   Brain,
+  Check,
   Compass,
   FileText,
   HeartHandshake,
   Layers,
+  MapPin,
   MessageCircle,
   Quote,
   ScrollText,
+  ShieldCheck,
   Sparkles,
+  Star,
   Target,
   Users,
 } from "lucide-react";
@@ -90,13 +94,48 @@ function Landing() {
       <Differentiator />
       <SaarthiSection />
       <ReportPreview />
+      <IndiaTrustSection />
       <TrustSection />
       <MissionSection />
       <FinalCTA />
       <Footer />
+      <StickyMobileCTA />
     </div>
   );
 }
+
+/* ---------- STICKY MOBILE CTA ---------- */
+function StickyMobileCTA() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 480);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <div
+      aria-hidden={!show}
+      className={`fixed inset-x-0 bottom-0 z-40 px-4 pb-[max(env(safe-area-inset-bottom),12px)] pt-3 md:hidden transition-all duration-300 ${
+        show ? "translate-y-0 opacity-100" : "translate-y-full opacity-0 pointer-events-none"
+      }`}
+    >
+      <div className="mx-auto flex max-w-md items-center justify-between gap-3 rounded-full border border-foreground/10 bg-background/95 px-2 py-2 shadow-pop backdrop-blur">
+        <span className="pl-3 text-xs font-semibold text-foreground/70">
+          5-min start · Free
+        </span>
+        <Link
+          to="/auth"
+          className="inline-flex items-center gap-1.5 rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-accent-foreground orange-glow"
+        >
+          Discover My Path
+          <ArrowUpRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 
 /* ---------- NAV ---------- */
 function Nav() {
@@ -153,8 +192,9 @@ function Hero() {
             you are, what shapes you, and the path that actually fits — then walks it with you.
           </p>
 
+          <IdentityTeaser />
 
-          <div className="mt-9 flex flex-wrap items-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
               to="/auth"
               className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-4 text-base font-semibold text-accent-foreground orange-glow transition hover:translate-y-[-2px]"
@@ -181,7 +221,176 @@ function Hero() {
   );
 }
 
-/* Confusion → Intelligence layer → Clarity */
+/* ---------- Identity Teaser (3-question mini quiz → Future Map preview) ---------- */
+type TeaserKey = "feeling" | "goal" | "pressure";
+const teaserQuestions: {
+  key: TeaserKey;
+  prompt: string;
+  options: { label: string; value: string }[];
+}[] = [
+  {
+    key: "feeling",
+    prompt: "Right now, I feel…",
+    options: [
+      { label: "Stuck", value: "stuck" },
+      { label: "Confused", value: "confused" },
+      { label: "Curious", value: "curious" },
+    ],
+  },
+  {
+    key: "goal",
+    prompt: "I want clarity on…",
+    options: [
+      { label: "My career", value: "career" },
+      { label: "Skills to learn", value: "skills" },
+      { label: "My purpose", value: "purpose" },
+    ],
+  },
+  {
+    key: "pressure",
+    prompt: "Family expectations feel…",
+    options: [
+      { label: "Heavy", value: "heavy" },
+      { label: "Mixed", value: "mixed" },
+      { label: "Supportive", value: "supportive" },
+    ],
+  },
+];
+
+function IdentityTeaser() {
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState<Partial<Record<TeaserKey, string>>>({});
+  const done = step >= teaserQuestions.length;
+
+  if (done)
+    return (
+      <FutureMapPreview
+        answers={answers}
+        onRestart={() => {
+          setStep(0);
+          setAnswers({});
+        }}
+      />
+    );
+
+  const q = teaserQuestions[step];
+  const progress = (step / teaserQuestions.length) * 100;
+
+  return (
+    <div className="mt-8 rounded-3xl border border-foreground/10 bg-card/80 p-5 shadow-soft backdrop-blur">
+      <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-widest text-foreground/50">
+        <span className="inline-flex items-center gap-2">
+          <Sparkles className="h-3.5 w-3.5 text-accent" />
+          60-second identity teaser
+        </span>
+        <span>
+          {step + 1} / {teaserQuestions.length}
+        </span>
+      </div>
+      <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-foreground/10">
+        <div
+          className="h-full bg-accent transition-all duration-500"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+      <p className="mt-4 text-lg font-semibold text-foreground">{q.prompt}</p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {q.options.map((o) => (
+          <button
+            key={o.value}
+            type="button"
+            onClick={() => {
+              setAnswers((a) => ({ ...a, [q.key]: o.value }));
+              setStep((s) => s + 1);
+            }}
+            className="rounded-full border border-foreground/15 bg-background px-4 py-2 text-sm font-semibold text-foreground/85 transition hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:text-accent-foreground"
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
+      <p className="mt-3 text-xs text-foreground/45">
+        No signup. Just a taste of what UNTRAP builds for you.
+      </p>
+    </div>
+  );
+}
+
+function FutureMapPreview({
+  answers,
+  onRestart,
+}: {
+  answers: Partial<Record<TeaserKey, string>>;
+  onRestart: () => void;
+}) {
+  const feeling = answers.feeling ?? "curious";
+  const goal = answers.goal ?? "career";
+  const pressure = answers.pressure ?? "mixed";
+
+  const headline =
+    feeling === "stuck"
+      ? "You're not stuck. You're between systems."
+      : feeling === "confused"
+        ? "You don't lack ability — you lack a mirror."
+        : "Curiosity is your unfair advantage.";
+
+  const focus =
+    goal === "career"
+      ? "Career directions that fit your identity — not the crowd's."
+      : goal === "skills"
+        ? "The next 3 skills that compound for someone like you."
+        : "A purpose statement that survives peer pressure.";
+
+  const familyLine =
+    pressure === "heavy"
+      ? "A calm script to talk to your parents — with proof, not emotion."
+      : pressure === "mixed"
+        ? "How to align family hopes with what actually fits you."
+        : "How to turn family support into your biggest advantage.";
+
+  return (
+    <div className="mt-8 rounded-3xl border border-accent/40 bg-card p-5 shadow-pop animate-break-up">
+      <div className="flex items-center justify-between">
+        <span className="inline-flex items-center gap-2 rounded-full bg-accent/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-accent">
+          <Sparkles className="h-3 w-3" /> Your Future Map · preview
+        </span>
+        <button
+          type="button"
+          onClick={onRestart}
+          className="text-[11px] font-semibold text-foreground/50 hover:text-foreground"
+        >
+          Restart
+        </button>
+      </div>
+      <p className="mt-4 font-serif text-2xl italic leading-tight text-foreground">
+        "{headline}"
+      </p>
+      <ul className="mt-4 space-y-2 text-sm text-foreground/80">
+        <li className="flex items-start gap-2">
+          <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+          <span>{focus}</span>
+        </li>
+        <li className="flex items-start gap-2">
+          <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+          <span>{familyLine}</span>
+        </li>
+        <li className="flex items-start gap-2">
+          <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+          <span>A 30-day roadmap you can start tomorrow, from anywhere in India.</span>
+        </li>
+      </ul>
+      <Link
+        to="/auth"
+        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-bold text-background transition hover:opacity-90"
+      >
+        Unlock my full Future Map
+        <ArrowRight className="h-4 w-4" />
+      </Link>
+    </div>
+  );
+}
+
+/* Confusion → Intelligence layer → Clarity (theme-aware, premium) */
 function HeroTransformation() {
   const fragments = [
     "Engineering?",
@@ -193,12 +402,18 @@ function HeroTransformation() {
   ];
   return (
     <div className="relative mx-auto aspect-[5/6] w-full max-w-[480px]">
+      {/* Ambient theme-aware halo behind the core */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 clarity-halo rounded-full blur-2xl"
+      />
+
       {/* LEFT — floating confusion */}
       <div className="absolute inset-y-0 left-0 w-[44%]">
         {fragments.map((f, i) => (
           <span
             key={f}
-            className="absolute rounded-2xl border border-foreground/10 bg-card/80 px-3 py-1.5 text-xs font-medium text-foreground/55 shadow-soft backdrop-blur"
+            className="absolute rounded-2xl border border-foreground/10 bg-card/85 px-3 py-1.5 text-xs font-medium text-foreground/55 shadow-soft backdrop-blur"
             style={{
               top: `${8 + i * 14}%`,
               left: `${(i % 2) * 18}%`,
@@ -213,9 +428,15 @@ function HeroTransformation() {
 
       {/* CENTER — UNTRAP intelligence core */}
       <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div className="relative grid h-28 w-28 place-items-center rounded-full bg-foreground text-background shadow-[0_30px_80px_-20px_oklch(0.16_0.005_80_/_0.5)]">
-          <span aria-hidden className="absolute inset-0 rounded-full ring-[10px] ring-accent/15 animate-breakthrough" />
-          <span aria-hidden className="absolute -inset-3 rounded-full ring-1 ring-foreground/10" />
+        <div className="relative grid h-28 w-28 place-items-center rounded-full bg-foreground text-background shadow-[0_30px_80px_-20px_oklch(0.16_0.005_80_/_0.55)] dark:shadow-[0_30px_80px_-15px_oklch(0.68_0.20_39_/_0.4)]">
+          <span
+            aria-hidden
+            className="absolute inset-0 rounded-full ring-[10px] ring-accent/20 animate-breakthrough"
+          />
+          <span
+            aria-hidden
+            className="absolute -inset-3 rounded-full ring-1 ring-foreground/10 dark:ring-white/10"
+          />
           <Sparkles className="h-7 w-7" />
           <span className="absolute -bottom-7 text-[10px] font-bold uppercase tracking-[0.25em] text-foreground/60">
             UNTRAP
@@ -234,10 +455,17 @@ function HeroTransformation() {
           <div
             key={s.step}
             style={{ animation: `break-up 600ms cubic-bezier(.2,.7,.2,1) ${i * 120}ms both` }}
-            className={`flex items-center gap-3 rounded-2xl px-4 py-3 shadow-soft ${
-              s.tone === "ink" ? "bg-foreground text-background" : "bg-accent text-accent-foreground"
+            className={`relative flex items-center gap-3 overflow-hidden rounded-2xl px-4 py-3 shadow-soft ${
+              s.tone === "ink"
+                ? "bg-foreground text-background dark:ring-1 dark:ring-white/10"
+                : "bg-accent text-accent-foreground orange-glow"
             }`}
           >
+            <span
+              aria-hidden
+              className="clarity-sweep pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-white/25 to-transparent"
+              style={{ animationDelay: `${i * 400}ms` }}
+            />
             <span
               className={`text-[10px] font-bold tracking-widest ${
                 s.tone === "ink" ? "text-background/60" : "text-accent-foreground/80"
@@ -252,6 +480,7 @@ function HeroTransformation() {
     </div>
   );
 }
+
 
 /* ---------- SECTION 2 · PAIN MIRROR ---------- */
 function PainMirror() {
@@ -655,6 +884,96 @@ function ReportPreview() {
           </div>
         </Reveal>
       </div>
+    </section>
+  );
+}
+
+/* ---------- SECTION 8.5 · INDIA-RELEVANT TRUST ---------- */
+function IndiaTrustSection() {
+  const proofs = [
+    {
+      icon: HeartHandshake,
+      title: "Speaks your family's language",
+      body: "Scripts and reasoning designed for Indian parents — with proof they can trust, not just Western career advice.",
+    },
+    {
+      icon: MapPin,
+      title: "Built for tier-2 & tier-3 realities",
+      body: "Roadmaps that respect budgets, hostel life, and small-town internet — no fantasy 'move to Bangalore' plans.",
+    },
+    {
+      icon: Check,
+      title: "Practical next steps, this week",
+      body: "Every insight ends with a tiny action you can start tonight — not a 40-page report you'll never open.",
+    },
+  ];
+  return (
+    <section className="mx-auto max-w-6xl px-5 pb-20 sm:px-8">
+      <Reveal>
+        <div className="flex items-center gap-2">
+          <span className="h-px w-8 bg-accent" />
+          <span className="text-xs font-bold uppercase tracking-[0.3em] text-accent">
+            Why students trust UNTRAP
+          </span>
+        </div>
+        <h2 className="mt-4 max-w-3xl text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
+          Built for Indian students — not translated from somewhere else.
+        </h2>
+      </Reveal>
+
+      <div className="mt-10 grid gap-4 md:grid-cols-3">
+        {proofs.map((p, i) => (
+          <Reveal key={p.title} delay={i * 100}>
+            <div className="lift h-full rounded-3xl border border-foreground/8 bg-card p-6 shadow-soft">
+              <div className="grid h-11 w-11 place-items-center rounded-2xl bg-accent/15 text-accent">
+                <p.icon className="h-5 w-5" strokeWidth={2} />
+              </div>
+              <h3 className="mt-5 text-lg font-bold">{p.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-foreground/65">{p.body}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+
+      <Reveal delay={280}>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-foreground/8 bg-card/70 px-6 py-5 shadow-soft backdrop-blur">
+          <div className="flex items-center gap-3">
+            <div className="flex -space-x-2">
+              {["A", "R", "K", "S"].map((c, i) => (
+                <span
+                  key={c}
+                  className={`grid h-9 w-9 place-items-center rounded-full border-2 border-background text-xs font-bold text-background ${
+                    ["bg-foreground", "bg-accent", "bg-foreground/70", "bg-accent/80"][i]
+                  }`}
+                >
+                  {c}
+                </span>
+              ))}
+            </div>
+            <div>
+              <div className="flex items-center gap-1 text-accent">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-3.5 w-3.5 fill-current" strokeWidth={0} />
+                ))}
+                <span className="ml-2 text-xs font-bold text-foreground">4.9 / 5</span>
+              </div>
+              <p className="text-xs text-foreground/60">
+                From students across 60+ cities — Bengaluru to Bhagalpur.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-foreground/70">
+            <span className="inline-flex items-center gap-1.5">
+              <ShieldCheck className="h-4 w-4 text-accent" />
+              Private by design · your data stays yours
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Sparkles className="h-4 w-4 text-accent" />
+              English · Hindi · Hinglish
+            </span>
+          </div>
+        </div>
+      </Reveal>
     </section>
   );
 }
