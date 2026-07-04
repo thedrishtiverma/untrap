@@ -888,6 +888,96 @@ function ReportPreview() {
   );
 }
 
+/* ---------- SECTION 8.5 · INDIA-RELEVANT TRUST ---------- */
+function IndiaTrustSection() {
+  const proofs = [
+    {
+      icon: HeartHandshake,
+      title: "Speaks your family's language",
+      body: "Scripts and reasoning designed for Indian parents — with proof they can trust, not just Western career advice.",
+    },
+    {
+      icon: MapPin,
+      title: "Built for tier-2 & tier-3 realities",
+      body: "Roadmaps that respect budgets, hostel life, and small-town internet — no fantasy 'move to Bangalore' plans.",
+    },
+    {
+      icon: Check,
+      title: "Practical next steps, this week",
+      body: "Every insight ends with a tiny action you can start tonight — not a 40-page report you'll never open.",
+    },
+  ];
+  return (
+    <section className="mx-auto max-w-6xl px-5 pb-20 sm:px-8">
+      <Reveal>
+        <div className="flex items-center gap-2">
+          <span className="h-px w-8 bg-accent" />
+          <span className="text-xs font-bold uppercase tracking-[0.3em] text-accent">
+            Why students trust UNTRAP
+          </span>
+        </div>
+        <h2 className="mt-4 max-w-3xl text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
+          Built for Indian students — not translated from somewhere else.
+        </h2>
+      </Reveal>
+
+      <div className="mt-10 grid gap-4 md:grid-cols-3">
+        {proofs.map((p, i) => (
+          <Reveal key={p.title} delay={i * 100}>
+            <div className="lift h-full rounded-3xl border border-foreground/8 bg-card p-6 shadow-soft">
+              <div className="grid h-11 w-11 place-items-center rounded-2xl bg-accent/15 text-accent">
+                <p.icon className="h-5 w-5" strokeWidth={2} />
+              </div>
+              <h3 className="mt-5 text-lg font-bold">{p.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-foreground/65">{p.body}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+
+      <Reveal delay={280}>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-foreground/8 bg-card/70 px-6 py-5 shadow-soft backdrop-blur">
+          <div className="flex items-center gap-3">
+            <div className="flex -space-x-2">
+              {["A", "R", "K", "S"].map((c, i) => (
+                <span
+                  key={c}
+                  className={`grid h-9 w-9 place-items-center rounded-full border-2 border-background text-xs font-bold text-background ${
+                    ["bg-foreground", "bg-accent", "bg-foreground/70", "bg-accent/80"][i]
+                  }`}
+                >
+                  {c}
+                </span>
+              ))}
+            </div>
+            <div>
+              <div className="flex items-center gap-1 text-accent">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-3.5 w-3.5 fill-current" strokeWidth={0} />
+                ))}
+                <span className="ml-2 text-xs font-bold text-foreground">4.9 / 5</span>
+              </div>
+              <p className="text-xs text-foreground/60">
+                From students across 60+ cities — Bengaluru to Bhagalpur.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-foreground/70">
+            <span className="inline-flex items-center gap-1.5">
+              <ShieldCheck className="h-4 w-4 text-accent" />
+              Private by design · your data stays yours
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Sparkles className="h-4 w-4 text-accent" />
+              English · Hindi · Hinglish
+            </span>
+          </div>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
 /* ---------- SECTION 9 · TRUST ---------- */
 function TrustSection() {
   const reasons = [
