@@ -94,13 +94,48 @@ function Landing() {
       <Differentiator />
       <SaarthiSection />
       <ReportPreview />
+      <IndiaTrustSection />
       <TrustSection />
       <MissionSection />
       <FinalCTA />
       <Footer />
+      <StickyMobileCTA />
     </div>
   );
 }
+
+/* ---------- STICKY MOBILE CTA ---------- */
+function StickyMobileCTA() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 480);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <div
+      aria-hidden={!show}
+      className={`fixed inset-x-0 bottom-0 z-40 px-4 pb-[max(env(safe-area-inset-bottom),12px)] pt-3 md:hidden transition-all duration-300 ${
+        show ? "translate-y-0 opacity-100" : "translate-y-full opacity-0 pointer-events-none"
+      }`}
+    >
+      <div className="mx-auto flex max-w-md items-center justify-between gap-3 rounded-full border border-foreground/10 bg-background/95 px-2 py-2 shadow-pop backdrop-blur">
+        <span className="pl-3 text-xs font-semibold text-foreground/70">
+          5-min start · Free
+        </span>
+        <Link
+          to="/auth"
+          className="inline-flex items-center gap-1.5 rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-accent-foreground orange-glow"
+        >
+          Discover My Path
+          <ArrowUpRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 
 /* ---------- NAV ---------- */
 function Nav() {
