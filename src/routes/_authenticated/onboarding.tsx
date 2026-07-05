@@ -6,7 +6,11 @@ import { toast } from "sonner";
 import { Loader2, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/onboarding")({
-  head: () => ({ meta: [{ title: "Set up · UNTRAP" }] }),
+  head: () => ({ meta: [
+    { title: "Set up · UNTRAP" },
+    { name: "description", content: "Set up your UNTRAP profile so Saarthi can personalize your career discovery journey." },
+    { name: "robots", content: "noindex" },
+  ] }),
   component: Onboarding,
 });
 
