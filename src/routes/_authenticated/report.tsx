@@ -6,7 +6,11 @@ import { Sparkles, Target, TrendingUp, Zap, MapPin, Compass, ArrowRight, Eye, He
 import type { MoatRow } from "@/components/MoatMeters";
 
 export const Route = createFileRoute("/_authenticated/report")({
-  head: () => ({ meta: [{ title: "Your career report · UNTRAP" }] }),
+  head: () => ({ meta: [
+    { title: "Your career report · UNTRAP" },
+    { name: "description", content: "Your personalized AI career clarity report — strengths, matched paths, and next steps." },
+    { name: "robots", content: "noindex" },
+  ] }),
   component: ReportPage,
 });
 
