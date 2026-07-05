@@ -62,6 +62,7 @@ function ReportPage() {
   return (
     <AppShell>
       <div className="space-y-5">
+        <h1 className="sr-only">Your Career Clarity Report</h1>
         <div className="untrap-gradient rounded-3xl p-6 text-primary-foreground shadow-pop">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-primary-foreground/80">
             <Sparkles className="h-3.5 w-3.5" /> Your career personality
