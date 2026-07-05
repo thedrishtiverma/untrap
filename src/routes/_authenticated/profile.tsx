@@ -6,7 +6,11 @@ import { LogOut, Loader2, User } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/profile")({
-  head: () => ({ meta: [{ title: "Profile · UNTRAP" }] }),
+  head: () => ({ meta: [
+    { title: "Profile · UNTRAP" },
+    { name: "description", content: "Manage your UNTRAP profile, preferences, and account details." },
+    { name: "robots", content: "noindex" },
+  ] }),
   component: ProfilePage,
 });
 
