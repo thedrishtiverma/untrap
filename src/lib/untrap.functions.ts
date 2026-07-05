@@ -181,7 +181,7 @@ Total tasks ≈ duration_days. Tasks must be specific and doable.` },
       generated_plan: JSON.parse(JSON.stringify(plan)),
       status: "active",
     }).select().single();
-    if (rErr) throw new Error(rErr.message);
+    if (rErr) { console.error("[server] db error", rErr?.message); throw new Error("Something went wrong. Please try again."); }
 
     const taskRows = plan.weeks.flatMap((w) => w.tasks.map((t) => ({
       roadmap_id: roadmap.id,
