@@ -57,6 +57,7 @@ function ChatPage() {
 
   return (
     <AppShell>
+      <h1 className="sr-only">Chat with Saarthi</h1>
       <div className="mb-4 flex items-center gap-3 rounded-3xl border border-border bg-card p-4 shadow-card">
         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
           <Sparkles className="h-6 w-6" />
