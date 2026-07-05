@@ -7,7 +7,16 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "Sign in · UNTRAP" }, { name: "description", content: "Sign in or create your UNTRAP account." }] }),
+  head: () => ({
+    meta: [
+      { title: "Sign in · UNTRAP" },
+      { name: "description", content: "Sign in or create your free UNTRAP account to discover your strengths and design a career path built around you." },
+      { property: "og:title", content: "Sign in · UNTRAP" },
+      { property: "og:description", content: "Sign in or create your free UNTRAP account to start your career clarity journey." },
+      { property: "og:url", content: "https://untrap.lovable.app/auth" },
+    ],
+    links: [{ rel: "canonical", href: "https://untrap.lovable.app/auth" }],
+  }),
   component: AuthPage,
 });
 
