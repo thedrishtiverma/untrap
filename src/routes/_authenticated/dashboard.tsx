@@ -94,7 +94,7 @@ function Dashboard() {
         <header>
           <p className="text-sm font-semibold text-foreground/55">{greeting},</p>
           <h1 className="mt-1 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            {s.name}.
+            Welcome back, {s.name}.
           </h1>
         </header>
 
