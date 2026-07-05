@@ -9,7 +9,11 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/chat")({
-  head: () => ({ meta: [{ title: "Saarthi AI · UNTRAP" }] }),
+  head: () => ({ meta: [
+    { title: "Chat with Saarthi · UNTRAP" },
+    { name: "description", content: "Chat with Saarthi, your always-on AI career mentor for Indian students." },
+    { name: "robots", content: "noindex" },
+  ] }),
   component: ChatPage,
 });
 
