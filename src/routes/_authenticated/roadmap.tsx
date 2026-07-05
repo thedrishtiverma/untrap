@@ -9,7 +9,11 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/roadmap")({
-  head: () => ({ meta: [{ title: "30-day roadmap · UNTRAP" }] }),
+  head: () => ({ meta: [
+    { title: "30-day roadmap · UNTRAP" },
+    { name: "description", content: "Your personalized 30-day roadmap — weekly tasks to move from confusion to career clarity." },
+    { name: "robots", content: "noindex" },
+  ] }),
   component: RoadmapPage,
 });
 

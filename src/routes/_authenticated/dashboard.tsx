@@ -9,7 +9,11 @@ import { generateMoatProfile } from "@/lib/moat-intelligence.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard · UNTRAP" }] }),
+  head: () => ({ meta: [
+    { title: "Dashboard · UNTRAP" },
+    { name: "description", content: "Your UNTRAP dashboard — track your career clarity progress, roadmap, and next steps." },
+    { name: "robots", content: "noindex" },
+  ] }),
   component: Dashboard,
 });
 
@@ -90,7 +94,7 @@ function Dashboard() {
         <header>
           <p className="text-sm font-semibold text-foreground/55">{greeting},</p>
           <h1 className="mt-1 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            {s.name}.
+            Welcome back, {s.name}.
           </h1>
         </header>
 

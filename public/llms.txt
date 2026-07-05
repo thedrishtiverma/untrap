@@ -1,0 +1,9 @@
+# UNTRAP
+
+> The AI career companion for Indian students. Discover yourself, find the path that fits, and design your future with Saarthi — your always-on AI mentor.
+
+UNTRAP helps students aged 15–24 (especially from Tier-2 and Tier-3 cities in India) escape career confusion. It combines a personalized assessment, an AI-generated career clarity report, and a 30-day action roadmap with an always-on mentor called Saarthi.
+
+## Pages
+
+- [Home](/): Landing page explaining what UNTRAP is and how the journey works.
