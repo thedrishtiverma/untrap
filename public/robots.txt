@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /auth
+Disallow: /dashboard
+Disallow: /onboarding
+Disallow: /assessment
+Disallow: /report
+Disallow: /chat
+Disallow: /profile
+Disallow: /roadmap
+
+Sitemap: https://untrap.lovable.app/sitemap.xml
