@@ -8,7 +8,11 @@ import { ArrowRight, Loader2, ArrowLeft, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/assessment")({
-  head: () => ({ meta: [{ title: "Career quiz · UNTRAP" }] }),
+  head: () => ({ meta: [
+    { title: "Career quiz · UNTRAP" },
+    { name: "description", content: "Take the UNTRAP career quiz — a short assessment to reveal your strengths and matching career paths." },
+    { name: "robots", content: "noindex" },
+  ] }),
   component: Assessment,
 });
 
