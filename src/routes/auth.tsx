@@ -17,11 +17,16 @@ export const Route = createFileRoute("/auth")({
     ],
     links: [{ rel: "canonical", href: "https://untrap.lovable.app/auth" }],
   }),
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") ? s.next : undefined,
+  }),
   component: AuthPage,
 });
 
 function AuthPage() {
   const navigate = useNavigate();
+  const search = Route.useSearch();
+  const nextPath = search.next ?? "/onboarding";
   const [mode, setMode] = useState<"signup" | "login">("signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,7 +40,7 @@ function AuthPage() {
       if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
           email, password,
-          options: { data: { name }, emailRedirectTo: window.location.origin },
+          options: { data: { name }, emailRedirectTo: window.location.origin + nextPath },
         });
         if (error) throw error;
         toast.success("Welcome! Let's set up your profile.");
@@ -44,7 +49,12 @@ function AuthPage() {
         if (error) throw error;
         toast.success("Welcome back");
       }
-      navigate({ to: "/onboarding" });
+      // Use full navigation for consent path so route state hydrates cleanly.
+      if (nextPath.startsWith("/.lovable/")) {
+        window.location.href = nextPath;
+      } else {
+        navigate({ to: nextPath });
+      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -54,10 +64,14 @@ function AuthPage() {
 
   async function handleGoogle() {
     setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/onboarding" });
+    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + nextPath });
     if (result.error) { toast.error("Google sign-in failed"); setLoading(false); return; }
     if (result.redirected) return;
-    navigate({ to: "/onboarding" });
+    if (nextPath.startsWith("/.lovable/")) {
+      window.location.href = nextPath;
+    } else {
+      navigate({ to: nextPath });
+    }
   }
 
   return (
