@@ -29,7 +29,10 @@ export default defineTool({
       .update({ completed })
       .eq("id", task_id)
       .eq("user_id", ctx.getUserId());
-    if (error) return { content: [{ type: "text", text: error.message }], isError: true };
+    if (error) {
+      console.error("[mcp:complete_roadmap_task] db error", error.message);
+      return { content: [{ type: "text", text: "Something went wrong. Please try again." }], isError: true };
+    }
     return { content: [{ type: "text", text: `Task ${task_id} → completed=${completed}` }] };
   },
 });
