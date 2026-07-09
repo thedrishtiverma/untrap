@@ -26,7 +26,10 @@ export default defineTool({
       .eq("user_id", ctx.getUserId())
       .order("week")
       .order("task_order");
-    if (error) return { content: [{ type: "text", text: error.message }], isError: true };
+    if (error) {
+      console.error("[mcp:get_my_roadmap] db error", error.message);
+      return { content: [{ type: "text", text: "Something went wrong. Please try again." }], isError: true };
+    }
     return {
       content: [{ type: "text", text: JSON.stringify(data ?? [], null, 2) }],
       structuredContent: { tasks: data ?? [] },
