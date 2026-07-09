@@ -27,7 +27,10 @@ export default defineTool({
       .eq("user_id", ctx.getUserId())
       .order("created_at", { ascending: false })
       .maybeSingle();
-    if (error) return { content: [{ type: "text", text: error.message }], isError: true };
+    if (error) {
+      console.error("[mcp:get_my_career_report] db error", error.message);
+      return { content: [{ type: "text", text: "Something went wrong. Please try again." }], isError: true };
+    }
     if (!data) {
       return {
         content: [{ type: "text", text: "No career report yet. Take the UNTRAP assessment to generate one." }],
