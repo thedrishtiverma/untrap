@@ -14,6 +14,563 @@ export type Database = {
   }
   public: {
     Tables: {
+      ae_answer_history: {
+        Row: {
+          answer_id: string
+          changed_at: string
+          id: string
+          source: string | null
+          user_id: string
+          value: Json | null
+        }
+        Insert: {
+          answer_id: string
+          changed_at?: string
+          id?: string
+          source?: string | null
+          user_id: string
+          value?: Json | null
+        }
+        Update: {
+          answer_id?: string
+          changed_at?: string
+          id?: string
+          source?: string | null
+          user_id?: string
+          value?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ae_answer_history_answer_id_fkey"
+            columns: ["answer_id"]
+            isOneToOne: false
+            referencedRelation: "ae_answers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ae_answers: {
+        Row: {
+          client_updated_at: string | null
+          created_at: string
+          id: string
+          question_id: string
+          server_updated_at: string
+          session_id: string
+          skipped: boolean
+          time_ms: number | null
+          user_id: string
+          value: Json | null
+        }
+        Insert: {
+          client_updated_at?: string | null
+          created_at?: string
+          id?: string
+          question_id: string
+          server_updated_at?: string
+          session_id: string
+          skipped?: boolean
+          time_ms?: number | null
+          user_id: string
+          value?: Json | null
+        }
+        Update: {
+          client_updated_at?: string | null
+          created_at?: string
+          id?: string
+          question_id?: string
+          server_updated_at?: string
+          session_id?: string
+          skipped?: boolean
+          time_ms?: number | null
+          user_id?: string
+          value?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ae_answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "ae_questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ae_answers_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "ae_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ae_audit: {
+        Row: {
+          at: string
+          event: string
+          id: string
+          payload: Json
+          session_id: string | null
+          user_id: string
+        }
+        Insert: {
+          at?: string
+          event: string
+          id?: string
+          payload?: Json
+          session_id?: string | null
+          user_id: string
+        }
+        Update: {
+          at?: string
+          event?: string
+          id?: string
+          payload?: Json
+          session_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ae_audit_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "ae_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ae_autosave_queue: {
+        Row: {
+          attempts: number
+          created_at: string
+          id: string
+          next_attempt_at: string
+          payload: Json
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          id?: string
+          next_attempt_at?: string
+          payload: Json
+          session_id: string
+          user_id: string
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          id?: string
+          next_attempt_at?: string
+          payload?: Json
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ae_autosave_queue_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "ae_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ae_branch_rules: {
+        Row: {
+          created_at: string
+          id: string
+          order_index: number
+          rule: Json
+          source_question_id: string
+          target: Json
+          updated_at: string
+          version_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_index?: number
+          rule: Json
+          source_question_id: string
+          target: Json
+          updated_at?: string
+          version_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_index?: number
+          rule?: Json
+          source_question_id?: string
+          target?: Json
+          updated_at?: string
+          version_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ae_branch_rules_source_question_id_fkey"
+            columns: ["source_question_id"]
+            isOneToOne: false
+            referencedRelation: "ae_questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ae_branch_rules_version_id_fkey"
+            columns: ["version_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ae_dimensions: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          layer_id: string
+          order_index: number
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          layer_id: string
+          order_index: number
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          layer_id?: string
+          order_index?: number
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ae_dimensions_layer_id_fkey"
+            columns: ["layer_id"]
+            isOneToOne: false
+            referencedRelation: "ae_layers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ae_layers: {
+        Row: {
+          created_at: string
+          est_minutes: number | null
+          id: string
+          order_index: number
+          purpose: string | null
+          slug: string
+          title: string
+          updated_at: string
+          version_id: string
+        }
+        Insert: {
+          created_at?: string
+          est_minutes?: number | null
+          id?: string
+          order_index: number
+          purpose?: string | null
+          slug: string
+          title: string
+          updated_at?: string
+          version_id: string
+        }
+        Update: {
+          created_at?: string
+          est_minutes?: number | null
+          id?: string
+          order_index?: number
+          purpose?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string
+          version_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ae_layers_version_id_fkey"
+            columns: ["version_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ae_question_options: {
+        Row: {
+          created_at: string
+          id: string
+          label: Json
+          meta: Json
+          order_index: number
+          question_id: string
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label: Json
+          meta?: Json
+          order_index: number
+          question_id: string
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: Json
+          meta?: Json
+          order_index?: number
+          question_id?: string
+          updated_at?: string
+          value?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ae_question_options_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "ae_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ae_question_types: {
+        Row: {
+          config_schema: Json
+          created_at: string
+          id: string
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          config_schema?: Json
+          created_at?: string
+          id?: string
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          config_schema?: Json
+          created_at?: string
+          id?: string
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ae_questions: {
+        Row: {
+          a11y: Json
+          config: Json
+          created_at: string
+          description: Json | null
+          dimension_id: string | null
+          helper: Json | null
+          id: string
+          layer_id: string
+          order_index: number
+          prompt: Json
+          required: boolean
+          slug: string
+          type_id: string
+          updated_at: string
+          version_id: string
+        }
+        Insert: {
+          a11y?: Json
+          config?: Json
+          created_at?: string
+          description?: Json | null
+          dimension_id?: string | null
+          helper?: Json | null
+          id?: string
+          layer_id: string
+          order_index: number
+          prompt: Json
+          required?: boolean
+          slug: string
+          type_id: string
+          updated_at?: string
+          version_id: string
+        }
+        Update: {
+          a11y?: Json
+          config?: Json
+          created_at?: string
+          description?: Json | null
+          dimension_id?: string | null
+          helper?: Json | null
+          id?: string
+          layer_id?: string
+          order_index?: number
+          prompt?: Json
+          required?: boolean
+          slug?: string
+          type_id?: string
+          updated_at?: string
+          version_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ae_questions_dimension_id_fkey"
+            columns: ["dimension_id"]
+            isOneToOne: false
+            referencedRelation: "ae_dimensions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ae_questions_layer_id_fkey"
+            columns: ["layer_id"]
+            isOneToOne: false
+            referencedRelation: "ae_layers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ae_questions_type_id_fkey"
+            columns: ["type_id"]
+            isOneToOne: false
+            referencedRelation: "ae_question_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ae_questions_version_id_fkey"
+            columns: ["version_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ae_session_progress: {
+        Row: {
+          answered_count: number
+          confidence_score: number | null
+          layer_progress: Json
+          overall_pct: number
+          remaining_count: number
+          session_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answered_count?: number
+          confidence_score?: number | null
+          layer_progress?: Json
+          overall_pct?: number
+          remaining_count?: number
+          session_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answered_count?: number
+          confidence_score?: number | null
+          layer_progress?: Json
+          overall_pct?: number
+          remaining_count?: number
+          session_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ae_session_progress_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: true
+            referencedRelation: "ae_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ae_sessions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          current_layer_id: string | null
+          current_question_id: string | null
+          device: Json
+          id: string
+          last_activity_at: string
+          resume_token: string
+          started_at: string
+          status: string
+          updated_at: string
+          user_id: string
+          version_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          current_layer_id?: string | null
+          current_question_id?: string | null
+          device?: Json
+          id?: string
+          last_activity_at?: string
+          resume_token?: string
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          version_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          current_layer_id?: string | null
+          current_question_id?: string | null
+          device?: Json
+          id?: string
+          last_activity_at?: string
+          resume_token?: string
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          version_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ae_sessions_current_layer_id_fkey"
+            columns: ["current_layer_id"]
+            isOneToOne: false
+            referencedRelation: "ae_layers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ae_sessions_current_question_id_fkey"
+            columns: ["current_question_id"]
+            isOneToOne: false
+            referencedRelation: "ae_questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ae_sessions_version_id_fkey"
+            columns: ["version_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_chat_history: {
         Row: {
           ai_response: string | null
@@ -110,6 +667,36 @@ export type Database = {
         }
         Relationships: []
       }
+      assessment_definitions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       assessment_questions: {
         Row: {
           active_status: boolean
@@ -183,6 +770,47 @@ export type Database = {
             columns: ["question_id"]
             isOneToOne: false
             referencedRelation: "assessment_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assessment_versions: {
+        Row: {
+          created_at: string
+          definition_id: string
+          id: string
+          is_published: boolean
+          published_at: string | null
+          snapshot: Json | null
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          definition_id: string
+          id?: string
+          is_published?: boolean
+          published_at?: string | null
+          snapshot?: Json | null
+          updated_at?: string
+          version: number
+        }
+        Update: {
+          created_at?: string
+          definition_id?: string
+          id?: string
+          is_published?: boolean
+          published_at?: string | null
+          snapshot?: Json | null
+          updated_at?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_versions_definition_id_fkey"
+            columns: ["definition_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_definitions"
             referencedColumns: ["id"]
           },
         ]
