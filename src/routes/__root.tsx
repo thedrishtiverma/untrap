@@ -82,15 +82,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "UNTRAP" },
+      { title: "untrap.in" },
       { name: "description", content: "UNTRAP is the AI career companion built for Indian students. Discover yourself, find the path that fits, and design your future with Saarthi." },
       { name: "author", content: "UNTRAP" },
       { name: "theme-color", content: "#080808" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "UNTRAP" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:title", content: "UNTRAP" },
-      { name: "twitter:title", content: "UNTRAP" },
+      { property: "og:title", content: "untrap.in" },
+      { name: "twitter:title", content: "untrap.in" },
       { property: "og:description", content: "UNTRAP is the AI career companion built for Indian students. Discover yourself, find the path that fits, and design your future with Saarthi." },
       { name: "twitter:description", content: "UNTRAP is the AI career companion built for Indian students. Discover yourself, find the path that fits, and design your future with Saarthi." },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/XI1B85lPdNT7EJ9nEFiXhf8AVzK2/social-images/social-1782369819417-Screenshot_2026-06-25_at_12.11.40_PM.webp" },
@@ -98,7 +98,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "apple-touch-icon", href: "/favicon.svg" },
     ],
     scripts: [

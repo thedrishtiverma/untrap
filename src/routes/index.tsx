@@ -25,21 +25,21 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "UNTRAP — Your future is too important to guess." },
+      { title: "untrap.in" },
       {
         name: "description",
         content:
           "UNTRAP is the AI career companion built for Indian students. Discover yourself, find the path that fits, and design your future with Saarthi.",
       },
-      { property: "og:title", content: "UNTRAP — Your future is too important to guess." },
+      { property: "og:title", content: "untrap.in" },
       {
         property: "og:description",
-        content: "Stop guessing. Start designing. The AI career companion for Indian students.",
+        content: "UNTRAP is the AI career companion built for Indian students. Discover yourself, find the path that fits, and design your future with Saarthi.",
       },
       { property: "og:url", content: "https://untrap.lovable.app/" },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/XI1B85lPdNT7EJ9nEFiXhf8AVzK2/social-images/social-1782369819417-Screenshot_2026-06-25_at_12.11.40_PM.webp" },
-      { name: "twitter:title", content: "UNTRAP — Your future is too important to guess." },
-      { name: "twitter:description", content: "Stop guessing. Start designing. The AI career companion for Indian students." },
+      { name: "twitter:title", content: "untrap.in" },
+      { name: "twitter:description", content: "UNTRAP is the AI career companion built for Indian students. Discover yourself, find the path that fits, and design your future with Saarthi." },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/XI1B85lPdNT7EJ9nEFiXhf8AVzK2/social-images/social-1782369819417-Screenshot_2026-06-25_at_12.11.40_PM.webp" },
     ],
     links: [{ rel: "canonical", href: "https://untrap.lovable.app/" }],
