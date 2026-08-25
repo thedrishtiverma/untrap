@@ -265,6 +265,86 @@ export type Database = {
           },
         ]
       }
+      ae_evidence: {
+        Row: {
+          answer_id: string | null
+          confidence: number
+          construct: string
+          created_at: string
+          id: string
+          kind: string
+          layer_slug: string
+          question_id: string
+          session_id: string
+          source: string
+          strength: number
+          user_id: string
+          version_id: string
+          weight: number
+        }
+        Insert: {
+          answer_id?: string | null
+          confidence?: number
+          construct: string
+          created_at?: string
+          id?: string
+          kind?: string
+          layer_slug: string
+          question_id: string
+          session_id: string
+          source: string
+          strength: number
+          user_id: string
+          version_id: string
+          weight?: number
+        }
+        Update: {
+          answer_id?: string | null
+          confidence?: number
+          construct?: string
+          created_at?: string
+          id?: string
+          kind?: string
+          layer_slug?: string
+          question_id?: string
+          session_id?: string
+          source?: string
+          strength?: number
+          user_id?: string
+          version_id?: string
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ae_evidence_answer_id_fkey"
+            columns: ["answer_id"]
+            isOneToOne: false
+            referencedRelation: "ae_answers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ae_evidence_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "ae_questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ae_evidence_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "ae_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ae_evidence_version_id_fkey"
+            columns: ["version_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ae_layers: {
         Row: {
           created_at: string
@@ -1321,6 +1401,72 @@ export type Database = {
             columns: ["career_id"]
             isOneToOne: false
             referencedRelation: "careers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_intelligence_profile: {
+        Row: {
+          completed_at: string | null
+          constructs: Json
+          created_at: string
+          dimensions_measured: number
+          evidence_count: number
+          id: string
+          insights: Json
+          layer_slug: string
+          layer_version: string
+          overall_confidence: number | null
+          session_id: string | null
+          updated_at: string
+          user_id: string
+          version_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          constructs?: Json
+          created_at?: string
+          dimensions_measured?: number
+          evidence_count?: number
+          id?: string
+          insights?: Json
+          layer_slug: string
+          layer_version?: string
+          overall_confidence?: number | null
+          session_id?: string | null
+          updated_at?: string
+          user_id: string
+          version_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          constructs?: Json
+          created_at?: string
+          dimensions_measured?: number
+          evidence_count?: number
+          id?: string
+          insights?: Json
+          layer_slug?: string
+          layer_version?: string
+          overall_confidence?: number | null
+          session_id?: string | null
+          updated_at?: string
+          user_id?: string
+          version_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_intelligence_profile_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "ae_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_intelligence_profile_version_id_fkey"
+            columns: ["version_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_versions"
             referencedColumns: ["id"]
           },
         ]
