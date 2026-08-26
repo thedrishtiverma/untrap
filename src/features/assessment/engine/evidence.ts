@@ -14,6 +14,8 @@ export interface EvidenceObject extends SignalSpec {
   questionSlug: string;
   kind: "primary" | "secondary";
   source: string;
+  /** Reliability of this interpretation (behaviour > self-report). */
+  confidence: number;
 }
 
 /** Interpretation reliability per interaction format. */
