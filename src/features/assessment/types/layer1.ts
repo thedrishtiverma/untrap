@@ -50,7 +50,7 @@ export interface Layer1Option {
 export interface ShowIfRule {
   questionSlug: string;
   op: "eq" | "in" | "lte" | "gte" | "answered";
-  value?: unknown;
+  value?: string | number | boolean | (string | number)[];
 }
 
 export interface Layer1QuestionConfig {
