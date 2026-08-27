@@ -198,7 +198,7 @@ export async function startOrResumeSession(
       status: "in_progress",
       current_layer_id: content.layer.id,
       current_question_id: content.questions[0]?.id ?? null,
-      device,
+      device: device as never,
     })
     .select("id, status, started_at, completed_at")
     .single();
