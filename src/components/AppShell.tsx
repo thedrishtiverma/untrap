@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { to: "/dashboard", label: "Home", icon: Home },
-  { to: "/assessment", label: "Journey", icon: Compass },
+  { to: "/assessment-v2", label: "Journey", icon: Compass },
   { to: "/roadmap", label: "Roadmap", icon: Map },
   { to: "/chat", label: "Saarthi", icon: MessageCircle },
   { to: "/profile", label: "Profile", icon: User },
