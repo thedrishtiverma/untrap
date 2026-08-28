@@ -91,19 +91,14 @@ export function QuestionCard({
       aria-labelledby={`q-${question.slug}-prompt`}
       className="motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-3 motion-safe:duration-400"
     >
-      {question.context ? (
-        <p className="mb-3 text-[13px] font-medium leading-relaxed text-muted-foreground">
-          {question.context}
-        </p>
-      ) : null}
       <h2
         id={`q-${question.slug}-prompt`}
         className="text-balance text-[22px] font-bold leading-tight tracking-tight sm:text-2xl"
       >
         {question.prompt}
       </h2>
-      {question.helper ? (
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{question.helper}</p>
+      {question.description ? (
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{question.description}</p>
       ) : null}
 
       <div className="mt-6">
