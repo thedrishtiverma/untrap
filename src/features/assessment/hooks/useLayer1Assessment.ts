@@ -66,7 +66,7 @@ export function useLayer1Assessment() {
         } else {
           setStage(res.session.answers.length > 0 ? "questions" : "welcome");
           if (res.session.answers.length > 0) {
-            const visible = visibleQuestions(res.session.content ?? res.content.questions, res.session.answers);
+            const visible = visibleQuestions(res.content.questions, res.session.answers);
             const answered = new Set(
               res.session.answers.filter((a) => !a.skipped && hasValue(a.value)).map((a) => a.questionSlug),
             );
