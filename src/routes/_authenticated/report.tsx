@@ -4,6 +4,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
 import { Sparkles, Target, TrendingUp, Zap, MapPin, Compass, ArrowRight, Eye, Heart, Users, Brain } from "lucide-react";
 import type { MoatRow } from "@/components/MoatMeters";
+import { useServerFn } from "@tanstack/react-start";
+import { getLayer1Profile } from "@/features/assessment/api/layer1.functions";
+import { Layer1ProfileCard } from "@/features/assessment/components/Layer1ProfileCard";
+import type { Layer1Profile } from "@/features/assessment/types/layer1";
 
 export const Route = createFileRoute("/_authenticated/report")({
   head: () => ({ meta: [
@@ -26,32 +30,36 @@ interface Report {
 function ReportPage() {
   const [report, setReport] = useState<Report | null>(null);
   const [moat, setMoat] = useState<MoatRow | null>(null);
+  const [layer1Profile, setLayer1Profile] = useState<Layer1Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const loadLayer1Profile = useServerFn(getLayer1Profile);
 
   useEffect(() => {
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
-      const [{ data: rpt }, { data: m }] = await Promise.all([
+      const [{ data: rpt }, { data: m }, profile] = await Promise.all([
         supabase.from("career_reports").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).maybeSingle(),
         supabase.from("student_moat_profile").select("*").eq("user_id", user.id).maybeSingle(),
+        loadLayer1Profile().catch(() => null),
       ]);
       setReport(rpt as Report | null);
       setMoat((m as unknown as MoatRow) ?? null);
+      setLayer1Profile(profile);
       setLoading(false);
     })();
-  }, []);
+  }, [loadLayer1Profile]);
 
   if (loading) return <AppShell><Skeleton /></AppShell>;
 
-  if (!report) {
+  if (!report && !layer1Profile) {
     return (
       <AppShell>
         <div className="rounded-3xl border border-dashed border-border bg-card p-8 text-center">
           <Compass className="mx-auto h-10 w-10 text-primary" />
           <h2 className="mt-4 text-xl font-bold">No report yet</h2>
           <p className="mt-1 text-sm text-muted-foreground">Take the 6-question quiz to unlock your AI career clarity report.</p>
-          <Link to="/assessment" className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-pop">
+           <Link to="/assessment-v2" className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-pop">
             Start the quiz <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -63,6 +71,19 @@ function ReportPage() {
     <AppShell>
       <div className="space-y-5">
         <h1 className="sr-only">Your Career Clarity Report</h1>
+        {layer1Profile ? <Layer1ProfileCard profile={layer1Profile} /> : null}
+        {!report ? (
+          <div className="rounded-3xl border border-border bg-card p-6 shadow-card">
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              Your Layer 1 patterns are ready. Complete the career assessment to connect them to practical career directions.
+            </p>
+            <Link to="/assessment-v2" className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-pop">
+              Continue the journey <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        ) : null}
+        {report ? (
+        <>
         <div className="untrap-gradient rounded-3xl p-6 text-primary-foreground shadow-pop">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-primary-foreground/80">
             <Sparkles className="h-3.5 w-3.5" /> Your career personality
@@ -121,6 +142,8 @@ function ReportPage() {
         <Link to="/roadmap" className="flex items-center justify-center gap-2 rounded-2xl bg-accent px-4 py-3.5 text-sm font-semibold text-accent-foreground shadow-pop">
           Build my 30-day roadmap <ArrowRight className="h-4 w-4" />
         </Link>
+        </>
+        ) : null}
       </div>
     </AppShell>
   );

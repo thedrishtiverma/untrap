@@ -13,8 +13,8 @@ Phase 0 scaffolding for the UNTRAP Student Intelligence Assessment.
 - `state/` — session React context + selectors (Phase 1).
 - `utils/` — timers, a11y, offline queue (Phase 1).
 
-Routes for the new engine will live under `src/routes/_authenticated/assessment-v2/`
-so the legacy `/assessment` flow continues to work during rollout.
+The live Layer 1 experience is available at `/assessment-v2` under the
+authenticated route tree. The legacy `/assessment` flow has been retired.
 
 ## Database
 

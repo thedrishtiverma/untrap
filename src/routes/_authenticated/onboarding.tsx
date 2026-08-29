@@ -48,7 +48,7 @@ function Onboarding() {
       });
       if (error) throw error;
       toast.success("All set! Let's take the quiz.");
-      navigate({ to: "/assessment" });
+      navigate({ to: "/assessment-v2" });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not save");
     } finally {
