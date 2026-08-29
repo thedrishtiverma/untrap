@@ -8,6 +8,7 @@ import { useServerFn } from "@tanstack/react-start";
 
 import {
   completeLayer1Session,
+  getLayer1Profile,
   saveLayer1Answer,
   startLayer1Session,
   trackLayer1Event,
@@ -31,6 +32,7 @@ export function useLayer1Assessment() {
   const start = useServerFn(startLayer1Session);
   const save = useServerFn(saveLayer1Answer);
   const complete = useServerFn(completeLayer1Session);
+  const getProfile = useServerFn(getLayer1Profile);
   const track = useServerFn(trackLayer1Event);
 
   const [stage, setStage] = useState<Stage>("loading");
@@ -62,6 +64,9 @@ export function useLayer1Assessment() {
         setSessionId(res.session.sessionId);
         setAnswers(res.session.answers);
         if (res.session.status === "completed") {
+          const existingProfile = await getProfile().catch(() => null);
+          if (cancelled) return;
+          setProfile(existingProfile);
           setStage("done");
         } else {
           setStage(res.session.answers.length > 0 ? "questions" : "welcome");

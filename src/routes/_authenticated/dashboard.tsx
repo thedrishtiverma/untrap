@@ -7,6 +7,9 @@ import { MoatMeters, type MoatRow } from "@/components/MoatMeters";
 import { useServerFn } from "@tanstack/react-start";
 import { generateMoatProfile } from "@/lib/moat-intelligence.functions";
 import { toast } from "sonner";
+import { getLayer1Profile } from "@/features/assessment/api/layer1.functions";
+import { Layer1ProfileCard } from "@/features/assessment/components/Layer1ProfileCard";
+import type { Layer1Profile } from "@/features/assessment/types/layer1";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [
@@ -23,6 +26,7 @@ interface State {
   done: number;
   total: number;
   hasReport: boolean;
+  layer1Profile: Layer1Profile | null;
   nextTask?: { id: string; title: string; description: string };
 }
 
@@ -32,6 +36,7 @@ function Dashboard() {
   const [moat, setMoat] = useState<MoatRow | null>(null);
   const [generating, setGenerating] = useState(false);
   const genMoat = useServerFn(generateMoatProfile);
+  const loadLayer1Profile = useServerFn(getLayer1Profile);
 
   const loadMoat = async (userId: string) => {
     const { data } = await supabase
@@ -46,10 +51,11 @@ function Dashboard() {
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
-      const [{ data: profile }, { data: report }, { data: tasks }] = await Promise.all([
+      const [{ data: profile }, { data: report }, { data: tasks }, layer1Profile] = await Promise.all([
         supabase.from("profiles").select("name,onboarded").eq("id", user.id).maybeSingle(),
         supabase.from("career_reports").select("career_paths").eq("user_id", user.id).maybeSingle(),
         supabase.from("roadmap_tasks").select("id,title,description,completed,task_order").eq("user_id", user.id).order("task_order"),
+        loadLayer1Profile().catch(() => null),
       ]);
 
       if (!profile?.onboarded) { navigate({ to: "/onboarding" }); return; }
@@ -63,11 +69,12 @@ function Dashboard() {
         done: list.filter((t) => t.completed).length,
         total: list.length,
         hasReport: !!report,
+        layer1Profile,
         nextTask: next ? { id: next.id, title: next.title, description: next.description } : undefined,
       });
       void loadMoat(user.id);
     })();
-  }, [navigate]);
+  }, [loadLayer1Profile, navigate]);
 
   const handleGenerateMoat = async () => {
     setGenerating(true);
@@ -116,17 +123,29 @@ function Dashboard() {
                 View full report <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </>
+          ) : s.layer1Profile ? (
+            <>
+              <p className="text-xs font-semibold uppercase tracking-widest text-background/55">Layer 1 complete</p>
+              <h2 className="mt-3 max-w-sm text-2xl font-extrabold leading-tight text-background">
+                Your working patterns are ready to explore.
+              </h2>
+              <Link to="/assessment-v2" className="mt-5 inline-flex items-center gap-2 rounded-full bg-background px-4 py-2 text-xs font-semibold text-foreground hover:translate-y-[-1px] transition">
+                Review my patterns <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+            </>
           ) : (
             <>
               <h2 className="mt-2 max-w-xs text-2xl font-bold leading-tight text-background">
                 Take the quiz to unlock your direction.
               </h2>
-              <Link to="/assessment" className="mt-5 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground orange-glow hover:translate-y-[-1px] transition">
+              <Link to="/assessment-v2" className="mt-5 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground orange-glow hover:translate-y-[-1px] transition">
                 Start 5-min quiz <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </>
           )}
         </div>
+
+        {s.layer1Profile ? <Layer1ProfileCard profile={s.layer1Profile} /> : null}
 
         {/* Progress */}
         <div className="rounded-[24px] border border-foreground/8 bg-card p-5 shadow-soft">
@@ -184,7 +203,7 @@ function Dashboard() {
           <ArrowUpRight className="h-5 w-5 text-foreground/40 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
         </Link>
 
-        <Link to="/assessment" className="flex items-center gap-3 rounded-2xl bg-secondary p-4 text-sm font-medium text-foreground/70 hover:text-foreground">
+        <Link to="/assessment-v2" className="flex items-center gap-3 rounded-2xl bg-secondary p-4 text-sm font-medium text-foreground/70 hover:text-foreground">
           <ClipboardList className="h-4 w-4 text-accent" />
           Retake the quiz anytime
         </Link>
