@@ -343,8 +343,9 @@ export async function completeLayer1(
   const completedAt = new Date().toISOString();
 
   if (evidence.length > 0) {
+    const persistedEvidence = mergeEvidenceSignals(evidence);
     const { error: eErr } = await db.from("ae_evidence").upsert(
-      evidence.map((e) => ({
+      persistedEvidence.map((e) => ({
         user_id: userId,
         session_id: sessionId,
         question_id: e.questionId,
@@ -438,6 +439,34 @@ export async function loadProfile(db: DB, userId: string): Promise<Layer1Profile
     evidenceCount: data.evidence_count,
     completedAt: data.completed_at,
   };
+}
+
+/**
+ * A single response can emit the same construct more than once (for example,
+ * when a student selects multiple options). The database intentionally keeps
+ * one row per question/construct/kind, so fold those signals before upserting
+ * rather than asking Postgres to update the same conflict target twice.
+ */
+function mergeEvidenceSignals(evidence: EvidenceObject[]): EvidenceObject[] {
+  const merged = new Map<string, EvidenceObject>();
+
+  for (const signal of evidence) {
+    const key = `${signal.questionId}:${signal.construct}:${signal.kind}`;
+    const existing = merged.get(key);
+    if (!existing) {
+      merged.set(key, { ...signal });
+      continue;
+    }
+
+    const existingWeight = existing.weight;
+    const nextWeight = existingWeight + signal.weight;
+    existing.strength =
+      (existing.strength * existingWeight + signal.strength * signal.weight) / nextWeight;
+    existing.confidence = Math.max(existing.confidence, signal.confidence);
+    existing.weight = nextWeight;
+  }
+
+  return [...merged.values()];
 }
 
 // ---------------------------------------------------------------- analytics
