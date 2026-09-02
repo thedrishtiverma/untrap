@@ -18,7 +18,7 @@ import {
   type Layer1SessionState,
 } from "../types/layer1";
 import { hasValue, isLayerComplete, validateAnswerValue, visibleQuestions } from "../engine/adaptive";
-import { deriveAllEvidence } from "../engine/evidence";
+import { deriveAllEvidence, type EvidenceObject } from "../engine/evidence";
 import { inferLayer1 } from "../engine/inference";
 import { buildInsights } from "../engine/insights";
 
