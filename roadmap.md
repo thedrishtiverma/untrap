@@ -1,0 +1,6 @@
+- [ ] Verify signed-in Layer 1 assessment end to end
+- [ ] Replace Layer 1 seed content with Bible-backed Psychological Intelligence questions
+- [ ] Implement Layer 2 assessment and profile aggregation
+- [ ] Build evidence-based career report from Layer 1 + Layer 2
+- [ ] Verify dashboard/report profile cards
+- [ ] Security scan and publish MCP-enabled app
