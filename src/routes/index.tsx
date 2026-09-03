@@ -1031,15 +1031,15 @@ function MissionSection() {
   return (
     <section className="mx-auto mb-24 max-w-6xl px-5 sm:px-8">
       <Reveal>
-        <div className="untrap-obsidian relative overflow-hidden rounded-[40px] p-10 text-background sm:p-16">
+        <div className="untrap-obsidian dark:untrap-silver relative overflow-hidden rounded-[40px] p-10 text-background dark:text-foreground sm:p-16">
           <span className="text-xs font-bold uppercase tracking-[0.3em] text-accent">
             Our mission
           </span>
-          <h2 className="mt-5 max-w-3xl font-serif text-4xl font-light leading-[1.05] text-background sm:text-6xl">
+          <h2 className="mt-5 max-w-3xl font-serif text-4xl font-light leading-[1.05] text-background dark:text-foreground sm:text-6xl">
             Every student deserves the chance to discover{" "}
             <span className="italic">who they can become</span>.
           </h2>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-background/70 sm:text-lg">
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-background/70 dark:text-foreground/70 sm:text-lg">
             Millions of students make life-changing decisions without ever understanding themselves.
             UNTRAP exists to give every student a personal guide for their journey — patient, honest,
             and always on their side.
