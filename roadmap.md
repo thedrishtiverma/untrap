@@ -4,3 +4,7 @@
 - [ ] Build evidence-based career report from Layer 1 + Layer 2
 - [ ] Verify dashboard/report profile cards
 - [ ] Security scan and publish MCP-enabled app
+- [ ] Continue requested career report and Layer 2 assessment wiring
+- [ ] Build UNTRAP Vocational family decision-support module from uploaded SIH brief
+- [ ] Add role-scoped access and verified-data-only safeguards for vocational features
+- [ ] Verify new vocational journeys and existing career report flows
