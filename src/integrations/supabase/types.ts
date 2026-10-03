@@ -1802,6 +1802,578 @@ export type Database = {
           },
         ]
       }
+      vocational_concerns: {
+        Row: {
+          ai_response: Json | null
+          concern_category: string
+          concern_text: string
+          created_at: string
+          decision_id: string
+          id: string
+          raised_by: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          ai_response?: Json | null
+          concern_category: string
+          concern_text: string
+          created_at?: string
+          decision_id: string
+          id?: string
+          raised_by: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          ai_response?: Json | null
+          concern_category?: string
+          concern_text?: string
+          created_at?: string
+          decision_id?: string
+          id?: string
+          raised_by?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocational_concerns_decision_id_fkey"
+            columns: ["decision_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_decisions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vocational_counsellor_requests: {
+        Row: {
+          assigned_counsellor_id: string | null
+          concern_category: string | null
+          conversation_summary: string | null
+          created_at: string
+          decision_id: string | null
+          id: string
+          location_text: string | null
+          requested_by: string
+          requester_role: string
+          resolution_summary: string | null
+          status: string
+          topic: string
+          trade_id: string | null
+          updated_at: string
+          urgency: string
+        }
+        Insert: {
+          assigned_counsellor_id?: string | null
+          concern_category?: string | null
+          conversation_summary?: string | null
+          created_at?: string
+          decision_id?: string | null
+          id?: string
+          location_text?: string | null
+          requested_by: string
+          requester_role?: string
+          resolution_summary?: string | null
+          status?: string
+          topic: string
+          trade_id?: string | null
+          updated_at?: string
+          urgency?: string
+        }
+        Update: {
+          assigned_counsellor_id?: string | null
+          concern_category?: string | null
+          conversation_summary?: string | null
+          created_at?: string
+          decision_id?: string | null
+          id?: string
+          location_text?: string | null
+          requested_by?: string
+          requester_role?: string
+          resolution_summary?: string | null
+          status?: string
+          topic?: string
+          trade_id?: string | null
+          updated_at?: string
+          urgency?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocational_counsellor_requests_decision_id_fkey"
+            columns: ["decision_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_decisions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vocational_counsellor_requests_trade_id_fkey"
+            columns: ["trade_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_trades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vocational_data_sources: {
+        Row: {
+          collected_at: string | null
+          created_at: string
+          id: string
+          last_updated: string | null
+          name: string
+          notes: string | null
+          source_url: string | null
+          verification_status: string
+        }
+        Insert: {
+          collected_at?: string | null
+          created_at?: string
+          id?: string
+          last_updated?: string | null
+          name: string
+          notes?: string | null
+          source_url?: string | null
+          verification_status?: string
+        }
+        Update: {
+          collected_at?: string | null
+          created_at?: string
+          id?: string
+          last_updated?: string | null
+          name?: string
+          notes?: string | null
+          source_url?: string | null
+          verification_status?: string
+        }
+        Relationships: []
+      }
+      vocational_decision_participants: {
+        Row: {
+          created_at: string
+          decision_id: string
+          id: string
+          participant_role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          decision_id: string
+          id?: string
+          participant_role: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          decision_id?: string
+          id?: string
+          participant_role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocational_decision_participants_decision_id_fkey"
+            columns: ["decision_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_decisions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vocational_decisions: {
+        Row: {
+          created_at: string
+          id: string
+          invite_code: string
+          learner_notes: string | null
+          learner_priorities: Json
+          owner_user_id: string
+          parent_notes: string | null
+          parent_priorities: Json
+          shortlisted_trade_ids: string[]
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invite_code?: string
+          learner_notes?: string | null
+          learner_priorities?: Json
+          owner_user_id: string
+          parent_notes?: string | null
+          parent_priorities?: Json
+          shortlisted_trade_ids?: string[]
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invite_code?: string
+          learner_notes?: string | null
+          learner_priorities?: Json
+          owner_user_id?: string
+          parent_notes?: string | null
+          parent_priorities?: Json
+          shortlisted_trade_ids?: string[]
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      vocational_job_roles: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          title: string
+          trade_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          title: string
+          trade_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          title?: string
+          trade_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocational_job_roles_trade_id_fkey"
+            columns: ["trade_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_trades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vocational_locations: {
+        Row: {
+          area_type: string | null
+          created_at: string
+          district: string | null
+          id: string
+          state: string
+        }
+        Insert: {
+          area_type?: string | null
+          created_at?: string
+          district?: string | null
+          id?: string
+          state: string
+        }
+        Update: {
+          area_type?: string | null
+          created_at?: string
+          district?: string | null
+          id?: string
+          state?: string
+        }
+        Relationships: []
+      }
+      vocational_outcome_metrics: {
+        Row: {
+          created_at: string
+          id: string
+          label: string
+          last_updated: string
+          location_id: string | null
+          metric_type: string
+          source_id: string
+          trade_id: string
+          value_text: string
+          verification_status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label: string
+          last_updated: string
+          location_id?: string | null
+          metric_type: string
+          source_id: string
+          trade_id: string
+          value_text: string
+          verification_status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string
+          last_updated?: string
+          location_id?: string | null
+          metric_type?: string
+          source_id?: string
+          trade_id?: string
+          value_text?: string
+          verification_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocational_outcome_metrics_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vocational_outcome_metrics_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_data_sources"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vocational_outcome_metrics_trade_id_fkey"
+            columns: ["trade_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_trades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vocational_progression_pathways: {
+        Row: {
+          created_at: string
+          explanation: string | null
+          id: string
+          order_index: number
+          stage: string
+          trade_id: string
+        }
+        Insert: {
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          order_index: number
+          stage: string
+          trade_id: string
+        }
+        Update: {
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          order_index?: number
+          stage?: string
+          trade_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocational_progression_pathways_trade_id_fkey"
+            columns: ["trade_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_trades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vocational_qualifications: {
+        Row: {
+          awarding_body: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          nsqf_level: number | null
+        }
+        Insert: {
+          awarding_body?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          nsqf_level?: number | null
+        }
+        Update: {
+          awarding_body?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          nsqf_level?: number | null
+        }
+        Relationships: []
+      }
+      vocational_saved_trades: {
+        Row: {
+          created_at: string
+          trade_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          trade_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          trade_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocational_saved_trades_trade_id_fkey"
+            columns: ["trade_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_trades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vocational_staff_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vocational_trades: {
+        Row: {
+          created_at: string
+          description: string | null
+          description_hi: string | null
+          education_background: string | null
+          id: string
+          is_published: boolean
+          misconceptions: Json
+          name: string
+          name_hi: string | null
+          nsqf_level: number | null
+          qualification_id: string | null
+          safety_information: string | null
+          sector: string | null
+          slug: string
+          training_duration: string | null
+          updated_at: string
+          who_it_may_suit: string | null
+          work_environment: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          description_hi?: string | null
+          education_background?: string | null
+          id?: string
+          is_published?: boolean
+          misconceptions?: Json
+          name: string
+          name_hi?: string | null
+          nsqf_level?: number | null
+          qualification_id?: string | null
+          safety_information?: string | null
+          sector?: string | null
+          slug: string
+          training_duration?: string | null
+          updated_at?: string
+          who_it_may_suit?: string | null
+          work_environment?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          description_hi?: string | null
+          education_background?: string | null
+          id?: string
+          is_published?: boolean
+          misconceptions?: Json
+          name?: string
+          name_hi?: string | null
+          nsqf_level?: number | null
+          qualification_id?: string | null
+          safety_information?: string | null
+          sector?: string | null
+          slug?: string
+          training_duration?: string | null
+          updated_at?: string
+          who_it_may_suit?: string | null
+          work_environment?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocational_trades_qualification_id_fkey"
+            columns: ["qualification_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_qualifications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vocational_training_providers: {
+        Row: {
+          created_at: string
+          id: string
+          location_id: string | null
+          name: string
+          source_id: string | null
+          trade_id: string | null
+          verification_status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location_id?: string | null
+          name: string
+          source_id?: string | null
+          trade_id?: string | null
+          verification_status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location_id?: string | null
+          name?: string
+          source_id?: string | null
+          trade_id?: string | null
+          verification_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocational_training_providers_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vocational_training_providers_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_data_sources"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vocational_training_providers_trade_id_fkey"
+            columns: ["trade_id"]
+            isOneToOne: false
+            referencedRelation: "vocational_trades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       weekly_reflections: {
         Row: {
           confidence_rating: number | null
@@ -1841,6 +2413,11 @@ export type Database = {
     }
     Functions: {
       import_career_profiles: { Args: { _payload: Json }; Returns: number }
+      join_vocational_decision: {
+        Args: { _invite_code: string; _participant_role: string }
+        Returns: string
+      }
+      vocational_insights: { Args: never; Returns: Json }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
