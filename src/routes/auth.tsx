@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Logo } from "@/components/Logo";
@@ -30,35 +30,63 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const navigate = useNavigate();
   const search = Route.useSearch();
-  const nextPath = search.next ?? "/onboarding";
+  const nextPath = search.next ?? "/dashboard";
   const [mode, setMode] = useState<"signup" | "login">("signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
+
+  // Already signed in (OAuth return, refresh): move onward instead of
+  // showing the sign-in form again. The route guard handles onboarding.
+  useEffect(() => {
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      if (nextPath.startsWith("/.lovable/")) {
+        window.location.href = nextPath;
+      } else {
+        navigate({ to: nextPath, replace: true });
+      }
+    })();
+    // Run once on mount; nextPath is stable for the page's lifetime.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function continueAfterAuth() {
+    // Use full navigation for consent path so route state hydrates cleanly.
+    if (nextPath.startsWith("/.lovable/")) {
+      window.location.href = nextPath;
+    } else {
+      navigate({ to: nextPath });
+    }
+  }
 
   async function handleEmail(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email, password,
           options: { data: { name }, emailRedirectTo: window.location.origin + nextPath },
         });
         if (error) throw error;
+        // No session means email confirmation is required — don't navigate
+        // into the protected app until the user confirms.
+        if (!data.session) {
+          setAwaitingConfirmation(true);
+          toast.success("Check your email to confirm your account");
+          return;
+        }
         toast.success("Welcome! Let's set up your profile.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success("Welcome back");
       }
-      // Use full navigation for consent path so route state hydrates cleanly.
-      if (nextPath.startsWith("/.lovable/")) {
-        window.location.href = nextPath;
-      } else {
-        navigate({ to: nextPath });
-      }
+      continueAfterAuth();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -71,11 +99,7 @@ function AuthPage() {
     const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + nextPath });
     if (result.error) { toast.error("Google sign-in failed"); setLoading(false); return; }
     if (result.redirected) return;
-    if (nextPath.startsWith("/.lovable/")) {
-      window.location.href = nextPath;
-    } else {
-      navigate({ to: nextPath });
-    }
+    continueAfterAuth();
   }
 
   return (
@@ -96,40 +120,58 @@ function AuthPage() {
           </p>
         </div>
 
-        <button
-          onClick={handleGoogle}
-          disabled={loading}
-          className="mt-8 flex w-full items-center justify-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-sm font-semibold shadow-sm transition hover:bg-secondary disabled:opacity-60"
-        >
-          <GoogleIcon /> Continue with Google
-        </button>
+        {awaitingConfirmation ? (
+          <div className="mt-8 rounded-2xl border border-border bg-card p-5 text-sm">
+            <p className="font-semibold">Confirm your email</p>
+            <p className="mt-1 text-muted-foreground">
+              We sent a confirmation link to <span className="font-medium text-foreground">{email}</span>. Open it, then come back and sign in.
+            </p>
+            <button
+              type="button"
+              onClick={() => { setAwaitingConfirmation(false); setMode("login"); }}
+              className="mt-3 text-sm font-semibold text-accent hover:underline"
+            >
+              I&apos;ve confirmed — sign in
+            </button>
+          </div>
+        ) : (
+          <>
+            <button
+              onClick={handleGoogle}
+              disabled={loading}
+              className="mt-8 flex w-full items-center justify-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-sm font-semibold shadow-sm transition hover:bg-secondary disabled:opacity-60"
+            >
+              <GoogleIcon /> Continue with Google
+            </button>
 
-        <div className="my-6 flex items-center gap-3 text-xs uppercase tracking-widest text-muted-foreground">
-          <span className="h-px flex-1 bg-border" /> or email <span className="h-px flex-1 bg-border" />
-        </div>
+            <div className="my-6 flex items-center gap-3 text-xs uppercase tracking-widest text-muted-foreground">
+              <span className="h-px flex-1 bg-border" /> or email <span className="h-px flex-1 bg-border" />
+            </div>
 
-        <form onSubmit={handleEmail} className="space-y-3">
-          {mode === "signup" && (
-            <Field label="Name">
-              <input value={name} onChange={(e) => setName(e.target.value)} required placeholder="Your name" className={inputCls} />
-            </Field>
-          )}
-          <Field label="Email">
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com" className={inputCls} />
-          </Field>
-          <Field label="Password">
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} placeholder="At least 6 characters" className={inputCls} />
-          </Field>
+            <form onSubmit={handleEmail} className="space-y-3">
+              {mode === "signup" && (
+                <Field label="Name">
+                  <input value={name} onChange={(e) => setName(e.target.value)} required placeholder="Your name" className={inputCls} />
+                </Field>
+              )}
+              <Field label="Email">
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com" className={inputCls} />
+              </Field>
+              <Field label="Password">
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} placeholder="At least 6 characters" className={inputCls} />
+              </Field>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-accent px-4 py-3.5 text-sm font-semibold text-accent-foreground orange-glow transition hover:translate-y-[-1px] disabled:opacity-60"
-          >
-            {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-            {mode === "signup" ? "Start discovering" : "Sign in"}
-          </button>
-        </form>
+              <button
+                type="submit"
+                disabled={loading}
+                className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-accent px-4 py-3.5 text-sm font-semibold text-accent-foreground orange-glow transition hover:translate-y-[-1px] disabled:opacity-60"
+              >
+                {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+                {mode === "signup" ? "Start discovering" : "Sign in"}
+              </button>
+            </form>
+          </>
+        )}
 
         <button
           type="button"
