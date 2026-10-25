@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/_authenticated/profile")({
 
 function ProfilePage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const [email, setEmail] = useState("");
@@ -23,7 +25,7 @@ function ProfilePage() {
   useEffect(() => {
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      if (!user) { setLoading(false); return; }
       setEmail(user.email ?? "");
       const { data } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
       setProfile(data);
@@ -32,9 +34,13 @@ function ProfilePage() {
   }, []);
 
   async function signOut() {
+    // Clear protected queries before the session drops so the back button
+    // can't restore a signed-in shell and no stale fetches fire 401s.
+    await queryClient.cancelQueries();
+    queryClient.clear();
     await supabase.auth.signOut();
     toast.success("Signed out");
-    navigate({ to: "/" });
+    navigate({ to: "/auth", replace: true });
   }
 
   return (
