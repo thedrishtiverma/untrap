@@ -1,10 +1,28 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { chatWithSaarthi } from "@/lib/career.functions";
 import { AppShell } from "@/components/AppShell";
-import { Loader2, Send, Sparkles } from "lucide-react";
+import { BreakMark } from "@/components/BreakMark";
+import {
+  Conversation,
+  ConversationContent,
+  ConversationEmptyState,
+  ConversationScrollButton,
+} from "@/components/ai-elements/conversation";
+import {
+  Message,
+  MessageContent,
+  MessageResponse,
+} from "@/components/ai-elements/message";
+import {
+  PromptInput,
+  PromptInputFooter,
+  PromptInputSubmit,
+  PromptInputTextarea,
+} from "@/components/ai-elements/prompt-input";
+import { Shimmer } from "@/components/ai-elements/shimmer";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -19,12 +37,17 @@ export const Route = createFileRoute("/_authenticated/chat")({
 
 interface Msg { id: string; role: "user" | "assistant"; content: string }
 
+const STARTERS = [
+  "Which stream should I pick after Class 10?",
+  "My family wants engineering, but I love design",
+  "What skills should I build this month?",
+  "I feel lost about my future — help me start",
+] as const;
+
 function ChatPage() {
   const chat = useServerFn(chatWithSaarthi);
   const [msgs, setMsgs] = useState<Msg[]>([]);
-  const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
-  const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     (async () => {
@@ -36,17 +59,13 @@ function ChatPage() {
     })();
   }, []);
 
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs.length, sending]);
-
-  async function send(e: React.FormEvent) {
-    e.preventDefault();
-    const text = input.trim();
-    if (!text || sending) return;
-    setInput("");
-    setMsgs((m) => [...m, { id: crypto.randomUUID(), role: "user", content: text }]);
+  async function deliver(text: string) {
+    const trimmed = text.trim();
+    if (!trimmed || sending) return;
     setSending(true);
+    setMsgs((m) => [...m, { id: crypto.randomUUID(), role: "user", content: trimmed }]);
     try {
-      const { reply } = await chat({ data: { message: text } });
+      const { reply } = await chat({ data: { message: trimmed } });
       setMsgs((m) => [...m, { id: crypto.randomUUID(), role: "assistant", content: reply }]);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Saarthi couldn't reply");
@@ -58,58 +77,116 @@ function ChatPage() {
   return (
     <AppShell>
       <h1 className="sr-only">Chat with Saarthi</h1>
-      <div className="mb-4 flex items-center gap-3 rounded-3xl border border-border bg-card p-4 shadow-card">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
-          <Sparkles className="h-6 w-6" />
-        </div>
-        <div>
-          <p className="text-base font-bold">Saarthi AI</p>
-          <p className="text-xs text-muted-foreground">Your career mentor · always here</p>
-        </div>
-      </div>
 
-      <div className="space-y-3 pb-4">
-        {msgs.length === 0 && (
-          <div className="rounded-2xl bg-primary/5 p-4 text-sm text-muted-foreground">
-            Hey 👋 I'm Saarthi. Ask me anything — confusion about subjects, dealing with family pressure, what to learn next, anything.
-          </div>
-        )}
-        {msgs.map((m) => (
-          <div key={m.id} className={cn("flex", m.role === "user" ? "justify-end" : "justify-start")}>
-            <div className={cn("max-w-[85%] whitespace-pre-wrap rounded-3xl px-4 py-3 text-sm leading-relaxed shadow-sm",
-              m.role === "user"
-                ? "rounded-br-md bg-primary text-primary-foreground"
-                : "rounded-bl-md border border-border bg-card text-foreground")}>
-              {m.content}
+      <div className="flex h-[calc(100svh-14.5rem)] min-h-[560px] flex-col md:h-[calc(100svh-9.5rem)]">
+        {/* Saarthi identity */}
+        <header className="shrink-0 rounded-3xl border border-border bg-card p-4 shadow-card">
+          <div className="flex items-center gap-3.5">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-accent text-accent-foreground shadow-inner">
+              <BreakMark size={30} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                Your career mentor
+              </p>
+              <div className="mt-0.5 flex items-center gap-2.5">
+                <h2 className="font-serif text-xl font-semibold leading-none">Saarthi</h2>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  Online
+                </span>
+              </div>
             </div>
           </div>
-        ))}
-        {sending && (
-          <div className="flex justify-start">
-            <div className="rounded-3xl rounded-bl-md border border-border bg-card px-4 py-3 text-sm text-muted-foreground">
-              <Loader2 className="inline h-4 w-4 animate-spin" /> Saarthi is thinking…
-            </div>
-          </div>
-        )}
-        <div ref={endRef} />
-      </div>
+        </header>
 
-      <form onSubmit={send} className="fixed inset-x-0 bottom-[68px] z-20 mx-auto max-w-2xl px-5">
-        <div className="flex items-end gap-2 rounded-3xl border border-border bg-card p-2 shadow-pop">
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(e); } }}
-            placeholder="Ask Saarthi anything…"
-            rows={1}
-            className="max-h-32 min-h-[40px] flex-1 resize-none bg-transparent px-3 py-2 text-sm outline-none"
-          />
-          <button type="submit" disabled={sending || !input.trim()}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground disabled:opacity-50">
-            {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-          </button>
+        {/* Transcript */}
+        <Conversation className="mt-3 min-h-0 flex-1 overflow-hidden rounded-3xl border border-border bg-card/40 shadow-card">
+          <ConversationContent className="space-y-5 px-4 py-5 sm:px-5">
+            {msgs.length === 0 && !sending && (
+              <ConversationEmptyState className="h-full justify-center py-8">
+                <div className="flex flex-col items-center gap-3 text-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-accent text-accent-foreground shadow-card">
+                    <BreakMark size={34} animated />
+                  </div>
+                  <h2 className="font-serif text-2xl font-semibold tracking-tight">
+                    Hey, I&apos;m Saarthi 👋
+                  </h2>
+                  <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+                    Confusion about subjects, family pressure, what to learn next —
+                    ask me anything. I answer with your journey in mind.
+                  </p>
+                  <div className="mt-2 flex flex-wrap justify-center gap-2">
+                    {STARTERS.map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        onClick={() => deliver(s)}
+                        className="rounded-full border border-border bg-background px-3.5 py-2 text-xs font-medium text-foreground/75 transition hover:border-foreground/20 hover:bg-foreground/5 hover:text-foreground"
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </ConversationEmptyState>
+            )}
+
+            {msgs.map((m) => (
+              <Message key={m.id} from={m.role}>
+                <MessageContent
+                  className={cn(
+                    m.role === "user"
+                      ? "max-w-[85%] rounded-2xl rounded-br-md bg-primary! px-4 py-3 text-primary-foreground!"
+                      : "max-w-full",
+                  )}
+                >
+                  {m.role === "user" ? (
+                    m.content
+                  ) : (
+                    <MessageResponse className="text-[15px] leading-relaxed">
+                      {m.content}
+                    </MessageResponse>
+                  )}
+                </MessageContent>
+              </Message>
+            ))}
+
+            {sending && (
+              <Message from="assistant">
+                <MessageContent className="text-sm text-muted-foreground">
+                  <Shimmer duration={1.6}>Saarthi is thinking…</Shimmer>
+                </MessageContent>
+              </Message>
+            )}
+          </ConversationContent>
+          <ConversationScrollButton variant="outline" />
+        </Conversation>
+
+        {/* Composer */}
+        <div className="mt-3 shrink-0">
+          <PromptInput
+            onSubmit={async ({ text }) => deliver(text)}
+            className="rounded-3xl border border-border bg-card shadow-pop"
+          >
+            <PromptInputTextarea
+              placeholder="Ask Saarthi anything…"
+              className="min-h-11 px-4 pt-3.5 text-sm"
+            />
+            <PromptInputFooter className="items-center justify-between px-3 pb-2.5 pt-1">
+              <span className="text-[11px] text-muted-foreground">
+                <span className="hidden sm:inline">Enter to send · Shift+Enter for a new line</span>
+                <span className="sm:hidden">Saarthi gives guidance, not verdicts</span>
+              </span>
+              <PromptInputSubmit
+                status={sending ? "submitted" : "ready"}
+                disabled={sending}
+                className="rounded-2xl"
+              />
+            </PromptInputFooter>
+          </PromptInput>
         </div>
-      </form>
+      </div>
     </AppShell>
   );
 }
