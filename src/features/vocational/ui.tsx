@@ -40,6 +40,15 @@ export function useVocLang() {
   return { lang, setLang };
 }
 
+export function VocLangProvider({ children }: { children: React.ReactNode }) {
+  const value = useVocLang();
+  return <VocLangContext.Provider value={value}>{children}</VocLangContext.Provider>;
+}
+
+export function useVocLangContext() {
+  return useContext(VocLangContext);
+}
+
 export function LangToggle({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
   return (
     <div className="inline-flex rounded-full border border-border bg-card p-0.5 text-xs font-semibold">
