@@ -23,8 +23,11 @@ import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authentic
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedReportRouteImport } from './routes/_authenticated/report'
 import { Route as AuthenticatedRoadmapRouteImport } from './routes/_authenticated/roadmap'
+import { Route as AuthenticatedVocationalRouteRouteImport } from './routes/_authenticated/vocational/route'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as AuthenticatedVocationalIndexRouteImport } from './routes/_authenticated/vocational/index'
+import { Route as AuthenticatedVocationalTradesRouteImport } from './routes/_authenticated/vocational/trades'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -98,6 +101,12 @@ const AuthenticatedRoadmapRoute = AuthenticatedRoadmapRouteImport.update({
   path: '/roadmap',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedVocationalRouteRoute =
+  AuthenticatedVocationalRouteRouteImport.update({
+    id: '/vocational',
+    path: '/vocational',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   id: '/.lovable/oauth/consent',
   path: '/.lovable/oauth/consent',
@@ -109,12 +118,25 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticatedVocationalIndexRoute =
+  AuthenticatedVocationalIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedVocationalRouteRoute,
+  } as any)
+const AuthenticatedVocationalTradesRoute =
+  AuthenticatedVocationalTradesRouteImport.update({
+    id: '/trades',
+    path: '/trades',
+    getParentRoute: () => AuthenticatedVocationalRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/mcp': typeof McpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/vocational': typeof AuthenticatedVocationalRouteRouteWithChildren
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/assessment-v2': typeof AuthenticatedAssessmentV2Route
@@ -126,6 +148,8 @@ export interface FileRoutesByFullPath {
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/vocational/trades': typeof AuthenticatedVocationalTradesRoute
+  '/vocational/': typeof AuthenticatedVocationalIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -143,6 +167,8 @@ export interface FileRoutesByTo {
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/vocational/trades': typeof AuthenticatedVocationalTradesRoute
+  '/vocational': typeof AuthenticatedVocationalIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -151,6 +177,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/mcp': typeof McpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_authenticated/vocational': typeof AuthenticatedVocationalRouteRouteWithChildren
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/assessment-v2': typeof AuthenticatedAssessmentV2Route
@@ -162,6 +189,8 @@ export interface FileRoutesById {
   '/_authenticated/roadmap': typeof AuthenticatedRoadmapRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/_authenticated/vocational/trades': typeof AuthenticatedVocationalTradesRoute
+  '/_authenticated/vocational/': typeof AuthenticatedVocationalIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -170,6 +199,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/mcp'
     | '/sitemap.xml'
+    | '/vocational'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/assessment-v2'
@@ -181,6 +211,8 @@ export interface FileRouteTypes {
     | '/roadmap'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/vocational/trades'
+    | '/vocational/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -198,6 +230,8 @@ export interface FileRouteTypes {
     | '/roadmap'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/vocational/trades'
+    | '/vocational'
   id:
     | '__root__'
     | '/'
@@ -205,6 +239,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/mcp'
     | '/sitemap.xml'
+    | '/_authenticated/vocational'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/assessment-v2'
@@ -216,6 +251,8 @@ export interface FileRouteTypes {
     | '/_authenticated/roadmap'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/_authenticated/vocational/trades'
+    | '/_authenticated/vocational/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -330,6 +367,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRoadmapRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/vocational': {
+      id: '/_authenticated/vocational'
+      path: '/vocational'
+      fullPath: '/vocational'
+      preLoaderRoute: typeof AuthenticatedVocationalRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/.lovable/oauth/consent': {
       id: '/.lovable/oauth/consent'
       path: '/.lovable/oauth/consent'
@@ -344,10 +388,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/vocational/': {
+      id: '/_authenticated/vocational/'
+      path: '/'
+      fullPath: '/vocational/'
+      preLoaderRoute: typeof AuthenticatedVocationalIndexRouteImport
+      parentRoute: typeof AuthenticatedVocationalRouteRoute
+    }
+    '/_authenticated/vocational/trades': {
+      id: '/_authenticated/vocational/trades'
+      path: '/trades'
+      fullPath: '/vocational/trades'
+      preLoaderRoute: typeof AuthenticatedVocationalTradesRouteImport
+      parentRoute: typeof AuthenticatedVocationalRouteRoute
+    }
   }
 }
 
+interface AuthenticatedVocationalRouteRouteChildren {
+  AuthenticatedVocationalTradesRoute: typeof AuthenticatedVocationalTradesRoute
+  AuthenticatedVocationalIndexRoute: typeof AuthenticatedVocationalIndexRoute
+}
+
+const AuthenticatedVocationalRouteRouteChildren: AuthenticatedVocationalRouteRouteChildren =
+  {
+    AuthenticatedVocationalTradesRoute: AuthenticatedVocationalTradesRoute,
+    AuthenticatedVocationalIndexRoute: AuthenticatedVocationalIndexRoute,
+  }
+
+const AuthenticatedVocationalRouteRouteWithChildren =
+  AuthenticatedVocationalRouteRoute._addFileChildren(
+    AuthenticatedVocationalRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedVocationalRouteRoute: typeof AuthenticatedVocationalRouteRouteWithChildren
   AuthenticatedAssessmentV2Route: typeof AuthenticatedAssessmentV2Route
   AuthenticatedChatRoute: typeof AuthenticatedChatRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -358,6 +433,8 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedVocationalRouteRoute:
+    AuthenticatedVocationalRouteRouteWithChildren,
   AuthenticatedAssessmentV2Route: AuthenticatedAssessmentV2Route,
   AuthenticatedChatRoute: AuthenticatedChatRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
