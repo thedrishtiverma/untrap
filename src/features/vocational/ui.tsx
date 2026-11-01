@@ -13,14 +13,6 @@ const VocLangContext = createContext<{ lang: Lang; setLang: (l: Lang) => void }>
   lang: "en",
   setLang: () => {},
 });
-import { supabase } from "@/integrations/supabase/client";
-import { BadgeCheck, ArrowDown, ShieldAlert } from "lucide-react";
-import { cn } from "@/lib/utils";
-import {
-  UNAVAILABLE_EVIDENCE,
-  UNAVAILABLE_EVIDENCE_HI,
-  type Lang,
-} from "./constants";
 
 /** Language for vocational pages: defaults to the learner's profile language. */
 export function useVocLang() {
