@@ -27,7 +27,10 @@ import { Route as AuthenticatedVocationalRouteRouteImport } from './routes/_auth
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as AuthenticatedVocationalIndexRouteImport } from './routes/_authenticated/vocational/index'
+import { Route as AuthenticatedVocationalCompareRouteImport } from './routes/_authenticated/vocational/compare'
 import { Route as AuthenticatedVocationalTradesRouteImport } from './routes/_authenticated/vocational/trades'
+import { Route as AuthenticatedVocationalTradesIndexRouteImport } from './routes/_authenticated/vocational/trades/index'
+import { Route as AuthenticatedVocationalTradesSlugRouteImport } from './routes/_authenticated/vocational/trades/$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -124,11 +127,29 @@ const AuthenticatedVocationalIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedVocationalRouteRoute,
   } as any)
+const AuthenticatedVocationalCompareRoute =
+  AuthenticatedVocationalCompareRouteImport.update({
+    id: '/compare',
+    path: '/compare',
+    getParentRoute: () => AuthenticatedVocationalRouteRoute,
+  } as any)
 const AuthenticatedVocationalTradesRoute =
   AuthenticatedVocationalTradesRouteImport.update({
     id: '/trades',
     path: '/trades',
     getParentRoute: () => AuthenticatedVocationalRouteRoute,
+  } as any)
+const AuthenticatedVocationalTradesIndexRoute =
+  AuthenticatedVocationalTradesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedVocationalTradesRoute,
+  } as any)
+const AuthenticatedVocationalTradesSlugRoute =
+  AuthenticatedVocationalTradesSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => AuthenticatedVocationalTradesRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -148,8 +169,11 @@ export interface FileRoutesByFullPath {
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
-  '/vocational/trades': typeof AuthenticatedVocationalTradesRoute
+  '/vocational/compare': typeof AuthenticatedVocationalCompareRoute
+  '/vocational/trades': typeof AuthenticatedVocationalTradesRouteWithChildren
   '/vocational/': typeof AuthenticatedVocationalIndexRoute
+  '/vocational/trades/$slug': typeof AuthenticatedVocationalTradesSlugRoute
+  '/vocational/trades/': typeof AuthenticatedVocationalTradesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -167,8 +191,10 @@ export interface FileRoutesByTo {
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
-  '/vocational/trades': typeof AuthenticatedVocationalTradesRoute
+  '/vocational/compare': typeof AuthenticatedVocationalCompareRoute
   '/vocational': typeof AuthenticatedVocationalIndexRoute
+  '/vocational/trades/$slug': typeof AuthenticatedVocationalTradesSlugRoute
+  '/vocational/trades': typeof AuthenticatedVocationalTradesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -189,8 +215,11 @@ export interface FileRoutesById {
   '/_authenticated/roadmap': typeof AuthenticatedRoadmapRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
-  '/_authenticated/vocational/trades': typeof AuthenticatedVocationalTradesRoute
+  '/_authenticated/vocational/compare': typeof AuthenticatedVocationalCompareRoute
+  '/_authenticated/vocational/trades': typeof AuthenticatedVocationalTradesRouteWithChildren
   '/_authenticated/vocational/': typeof AuthenticatedVocationalIndexRoute
+  '/_authenticated/vocational/trades/$slug': typeof AuthenticatedVocationalTradesSlugRoute
+  '/_authenticated/vocational/trades/': typeof AuthenticatedVocationalTradesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -211,8 +240,11 @@ export interface FileRouteTypes {
     | '/roadmap'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/vocational/compare'
     | '/vocational/trades'
     | '/vocational/'
+    | '/vocational/trades/$slug'
+    | '/vocational/trades/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -230,8 +262,10 @@ export interface FileRouteTypes {
     | '/roadmap'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
-    | '/vocational/trades'
+    | '/vocational/compare'
     | '/vocational'
+    | '/vocational/trades/$slug'
+    | '/vocational/trades'
   id:
     | '__root__'
     | '/'
@@ -251,8 +285,11 @@ export interface FileRouteTypes {
     | '/_authenticated/roadmap'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/_authenticated/vocational/compare'
     | '/_authenticated/vocational/trades'
     | '/_authenticated/vocational/'
+    | '/_authenticated/vocational/trades/$slug'
+    | '/_authenticated/vocational/trades/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -395,6 +432,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVocationalIndexRouteImport
       parentRoute: typeof AuthenticatedVocationalRouteRoute
     }
+    '/_authenticated/vocational/compare': {
+      id: '/_authenticated/vocational/compare'
+      path: '/compare'
+      fullPath: '/vocational/compare'
+      preLoaderRoute: typeof AuthenticatedVocationalCompareRouteImport
+      parentRoute: typeof AuthenticatedVocationalRouteRoute
+    }
     '/_authenticated/vocational/trades': {
       id: '/_authenticated/vocational/trades'
       path: '/trades'
@@ -402,17 +446,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVocationalTradesRouteImport
       parentRoute: typeof AuthenticatedVocationalRouteRoute
     }
+    '/_authenticated/vocational/trades/': {
+      id: '/_authenticated/vocational/trades/'
+      path: '/'
+      fullPath: '/vocational/trades/'
+      preLoaderRoute: typeof AuthenticatedVocationalTradesIndexRouteImport
+      parentRoute: typeof AuthenticatedVocationalTradesRoute
+    }
+    '/_authenticated/vocational/trades/$slug': {
+      id: '/_authenticated/vocational/trades/$slug'
+      path: '/$slug'
+      fullPath: '/vocational/trades/$slug'
+      preLoaderRoute: typeof AuthenticatedVocationalTradesSlugRouteImport
+      parentRoute: typeof AuthenticatedVocationalTradesRoute
+    }
   }
 }
 
+interface AuthenticatedVocationalTradesRouteChildren {
+  AuthenticatedVocationalTradesSlugRoute: typeof AuthenticatedVocationalTradesSlugRoute
+  AuthenticatedVocationalTradesIndexRoute: typeof AuthenticatedVocationalTradesIndexRoute
+}
+
+const AuthenticatedVocationalTradesRouteChildren: AuthenticatedVocationalTradesRouteChildren =
+  {
+    AuthenticatedVocationalTradesSlugRoute:
+      AuthenticatedVocationalTradesSlugRoute,
+    AuthenticatedVocationalTradesIndexRoute:
+      AuthenticatedVocationalTradesIndexRoute,
+  }
+
+const AuthenticatedVocationalTradesRouteWithChildren =
+  AuthenticatedVocationalTradesRoute._addFileChildren(
+    AuthenticatedVocationalTradesRouteChildren,
+  )
+
 interface AuthenticatedVocationalRouteRouteChildren {
-  AuthenticatedVocationalTradesRoute: typeof AuthenticatedVocationalTradesRoute
+  AuthenticatedVocationalCompareRoute: typeof AuthenticatedVocationalCompareRoute
+  AuthenticatedVocationalTradesRoute: typeof AuthenticatedVocationalTradesRouteWithChildren
   AuthenticatedVocationalIndexRoute: typeof AuthenticatedVocationalIndexRoute
 }
 
 const AuthenticatedVocationalRouteRouteChildren: AuthenticatedVocationalRouteRouteChildren =
   {
-    AuthenticatedVocationalTradesRoute: AuthenticatedVocationalTradesRoute,
+    AuthenticatedVocationalCompareRoute: AuthenticatedVocationalCompareRoute,
+    AuthenticatedVocationalTradesRoute:
+      AuthenticatedVocationalTradesRouteWithChildren,
     AuthenticatedVocationalIndexRoute: AuthenticatedVocationalIndexRoute,
   }
 
