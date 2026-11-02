@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Home, Compass, Map, MessageCircle, User } from "lucide-react";
+import { Home, Compass, Wrench, Map, MessageCircle, User } from "lucide-react";
 import type { ReactNode } from "react";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { to: "/dashboard", label: "Home", icon: Home },
   { to: "/assessment-v2", label: "Journey", icon: Compass },
+  { to: "/vocational", label: "Vocational", icon: Wrench },
   { to: "/roadmap", label: "Roadmap", icon: Map },
   { to: "/chat", label: "Saarthi", icon: MessageCircle },
   { to: "/profile", label: "Profile", icon: User },
