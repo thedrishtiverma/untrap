@@ -33,6 +33,7 @@ import { Route as AuthenticatedVocationalFamilyRouteImport } from './routes/_aut
 import { Route as AuthenticatedVocationalInsightsRouteImport } from './routes/_authenticated/vocational/insights'
 import { Route as AuthenticatedVocationalTradesRouteImport } from './routes/_authenticated/vocational/trades'
 import { Route as AuthenticatedVocationalFamilyIndexRouteImport } from './routes/_authenticated/vocational/family/index'
+import { Route as AuthenticatedVocationalFamilyDecisionIdRouteImport } from './routes/_authenticated/vocational/family/$decisionId'
 import { Route as AuthenticatedVocationalTradesIndexRouteImport } from './routes/_authenticated/vocational/trades/index'
 import { Route as AuthenticatedVocationalTradesSlugRouteImport } from './routes/_authenticated/vocational/trades/$slug'
 
@@ -167,6 +168,12 @@ const AuthenticatedVocationalFamilyIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedVocationalFamilyRoute,
   } as any)
+const AuthenticatedVocationalFamilyDecisionIdRoute =
+  AuthenticatedVocationalFamilyDecisionIdRouteImport.update({
+    id: '/$decisionId',
+    path: '/$decisionId',
+    getParentRoute: () => AuthenticatedVocationalFamilyRoute,
+  } as any)
 const AuthenticatedVocationalTradesIndexRoute =
   AuthenticatedVocationalTradesIndexRouteImport.update({
     id: '/',
@@ -203,6 +210,7 @@ export interface FileRoutesByFullPath {
   '/vocational/insights': typeof AuthenticatedVocationalInsightsRoute
   '/vocational/trades': typeof AuthenticatedVocationalTradesRouteWithChildren
   '/vocational/': typeof AuthenticatedVocationalIndexRoute
+  '/vocational/family/$decisionId': typeof AuthenticatedVocationalFamilyDecisionIdRoute
   '/vocational/trades/$slug': typeof AuthenticatedVocationalTradesSlugRoute
   '/vocational/family/': typeof AuthenticatedVocationalFamilyIndexRoute
   '/vocational/trades/': typeof AuthenticatedVocationalTradesIndexRoute
@@ -227,6 +235,7 @@ export interface FileRoutesByTo {
   '/vocational/counsellor': typeof AuthenticatedVocationalCounsellorRoute
   '/vocational/insights': typeof AuthenticatedVocationalInsightsRoute
   '/vocational': typeof AuthenticatedVocationalIndexRoute
+  '/vocational/family/$decisionId': typeof AuthenticatedVocationalFamilyDecisionIdRoute
   '/vocational/trades/$slug': typeof AuthenticatedVocationalTradesSlugRoute
   '/vocational/family': typeof AuthenticatedVocationalFamilyIndexRoute
   '/vocational/trades': typeof AuthenticatedVocationalTradesIndexRoute
@@ -256,6 +265,7 @@ export interface FileRoutesById {
   '/_authenticated/vocational/insights': typeof AuthenticatedVocationalInsightsRoute
   '/_authenticated/vocational/trades': typeof AuthenticatedVocationalTradesRouteWithChildren
   '/_authenticated/vocational/': typeof AuthenticatedVocationalIndexRoute
+  '/_authenticated/vocational/family/$decisionId': typeof AuthenticatedVocationalFamilyDecisionIdRoute
   '/_authenticated/vocational/trades/$slug': typeof AuthenticatedVocationalTradesSlugRoute
   '/_authenticated/vocational/family/': typeof AuthenticatedVocationalFamilyIndexRoute
   '/_authenticated/vocational/trades/': typeof AuthenticatedVocationalTradesIndexRoute
@@ -285,6 +295,7 @@ export interface FileRouteTypes {
     | '/vocational/insights'
     | '/vocational/trades'
     | '/vocational/'
+    | '/vocational/family/$decisionId'
     | '/vocational/trades/$slug'
     | '/vocational/family/'
     | '/vocational/trades/'
@@ -309,6 +320,7 @@ export interface FileRouteTypes {
     | '/vocational/counsellor'
     | '/vocational/insights'
     | '/vocational'
+    | '/vocational/family/$decisionId'
     | '/vocational/trades/$slug'
     | '/vocational/family'
     | '/vocational/trades'
@@ -337,6 +349,7 @@ export interface FileRouteTypes {
     | '/_authenticated/vocational/insights'
     | '/_authenticated/vocational/trades'
     | '/_authenticated/vocational/'
+    | '/_authenticated/vocational/family/$decisionId'
     | '/_authenticated/vocational/trades/$slug'
     | '/_authenticated/vocational/family/'
     | '/_authenticated/vocational/trades/'
@@ -524,6 +537,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedVocationalFamilyIndexRouteImport
       parentRoute: typeof AuthenticatedVocationalFamilyRoute
     }
+    '/_authenticated/vocational/family/$decisionId': {
+      id: '/_authenticated/vocational/family/$decisionId'
+      path: '/$decisionId'
+      fullPath: '/vocational/family/$decisionId'
+      preLoaderRoute: typeof AuthenticatedVocationalFamilyDecisionIdRouteImport
+      parentRoute: typeof AuthenticatedVocationalFamilyRoute
+    }
     '/_authenticated/vocational/trades/': {
       id: '/_authenticated/vocational/trades/'
       path: '/'
@@ -542,11 +562,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedVocationalFamilyRouteChildren {
+  AuthenticatedVocationalFamilyDecisionIdRoute: typeof AuthenticatedVocationalFamilyDecisionIdRoute
   AuthenticatedVocationalFamilyIndexRoute: typeof AuthenticatedVocationalFamilyIndexRoute
 }
 
 const AuthenticatedVocationalFamilyRouteChildren: AuthenticatedVocationalFamilyRouteChildren =
   {
+    AuthenticatedVocationalFamilyDecisionIdRoute:
+      AuthenticatedVocationalFamilyDecisionIdRoute,
     AuthenticatedVocationalFamilyIndexRoute:
       AuthenticatedVocationalFamilyIndexRoute,
   }
