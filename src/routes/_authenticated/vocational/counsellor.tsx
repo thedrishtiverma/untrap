@@ -36,6 +36,7 @@ const STATUS_BADGE: Record<string, string> = {
 
 function CounsellorPage() {
   const { lang } = useVocLangContext();
+  const [userId, setUserId] = useState<string | null>(null);
   const [trades, setTrades] = useState<TradeLite[]>([]);
   const [requests, setRequests] = useState<RequestRow[]>([]);
   const [form, setForm] = useState({
@@ -47,6 +48,8 @@ function CounsellorPage() {
 
   useEffect(() => {
     (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUserId(user?.id ?? null);
       const [{ data: t }, { data: r }] = await Promise.all([
         supabase.from("vocational_trades").select("id,name").eq("is_published", true).order("name"),
         supabase
@@ -61,8 +64,10 @@ function CounsellorPage() {
 
   async function submit() {
     if (!form.topic.trim()) { setError(lang === "hi" ? "विषय लिखें।" : "Please add a topic."); return; }
+    if (!userId) return;
     setBusy(true); setError(null);
     const { error: err } = await supabase.from("vocational_counsellor_requests").insert({
+      requested_by: userId,
       topic: form.topic.trim(),
       concern_category: form.concern_category || null,
       conversation_summary: form.conversation_summary.trim() || null,
