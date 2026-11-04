@@ -54,11 +54,13 @@ function FamilyDecisionList() {
   }, []);
 
   async function createDecision() {
-    if (!userId || !newTitle.trim()) return;
+    if (!newTitle.trim()) return;
     setBusy(true); setError(null);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { setBusy(false); setError("You are signed out — please sign in again."); return; }
     const { data, error: err } = await supabase
       .from("vocational_decisions")
-      .insert({ owner_user_id: userId, title: newTitle.trim() })
+      .insert({ owner_user_id: user.id, title: newTitle.trim() })
       .select("id")
       .single();
     setBusy(false);

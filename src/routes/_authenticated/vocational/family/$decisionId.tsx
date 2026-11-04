@@ -147,10 +147,12 @@ function DecisionRoom() {
 
   async function raiseConcern() {
     const text = newConcern.text.trim();
-    if (!text || !userId) return;
+    if (!text) return;
+    const uid = userId ?? (await supabase.auth.getUser()).data.user?.id;
+    if (!uid) { setError("You are signed out — please sign in again."); return; }
     const { data: inserted, error: err } = await supabase
       .from("vocational_concerns")
-      .insert({ decision_id: decision!.id, raised_by: userId, concern_category: newConcern.category, concern_text: text })
+      .insert({ decision_id: decision!.id, raised_by: uid, concern_category: newConcern.category, concern_text: text })
       .select("id,raised_by,concern_category,concern_text,ai_response,status")
       .single();
     if (err) { setError("Something went wrong. Please try again."); return; }
