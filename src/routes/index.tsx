@@ -459,7 +459,7 @@ function HeroTransformation() {
           <span className="relative block h-3.5 w-3.5 rounded-full border-2 border-accent bg-background">
             <span className="absolute inset-0 rounded-full ring-4 ring-accent/20 animate-breakthrough" />
           </span>
-          <div className="absolute left-5 top-1/2 w-max -translate-y-1/2 rounded-md border border-foreground/15 bg-background/90 px-2 py-1 backdrop-blur">
+          <div className={`absolute top-1/2 w-max -translate-y-1/2 rounded-md ${i === nodes.length - 1 ? "right-5" : "left-5"} border border-foreground/15 bg-background/90 px-2 py-1 backdrop-blur`}>
             <p className="font-mono text-[10px] font-bold tracking-wider text-foreground">{n.label}</p>
             <p className="text-[10px] text-foreground/55">{n.sub}</p>
           </div>
