@@ -183,9 +183,9 @@ function Hero() {
     <section className="mx-auto max-w-6xl px-5 pb-20 pt-6 sm:px-8 sm:pt-12">
       <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="animate-break-up">
-          <span className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-card/70 px-3 py-1 text-xs font-semibold text-foreground/70 backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            Identity first. Career next.
+          <span className="stamp text-foreground/70">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent signal-blink" />
+            Dossier protocol · identity first, career next
           </span>
 
           <h1 className="mt-6 text-5xl font-extrabold leading-[1.02] tracking-tight text-foreground sm:text-7xl">
@@ -355,10 +355,10 @@ function FutureMapPreview({
         : "How to turn family support into your biggest advantage.";
 
   return (
-    <div className="mt-8 rounded-3xl border border-accent/40 bg-card p-5 shadow-pop animate-break-up">
+    <div className="crop-marks mt-8 rounded-lg border border-foreground/15 bg-card p-5 shadow-pop animate-break-up">
       <div className="flex items-center justify-between">
-        <span className="inline-flex items-center gap-2 rounded-full bg-accent/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-accent">
-          <Sparkles className="h-3 w-3" /> Your Future Map · preview
+        <span className="stamp text-accent">
+          <Sparkles className="h-3 w-3" /> Classified dossier · preview
         </span>
         <button
           type="button"
@@ -396,90 +396,86 @@ function FutureMapPreview({
   );
 }
 
-/* Confusion → Intelligence layer → Clarity (theme-aware, premium) */
+/* Cartographic Console — the herd cluster vs your uncharted escape route */
 function HeroTransformation() {
-  const fragments = [
-    "Engineering?",
-    "MBA?",
-    "Government job?",
-    "Startup?",
-    "Which skill?",
-    "Am I wasting time?",
+  const herd = Array.from({ length: 46 }, (_, i) => ({
+    x: 14 + ((i * 37) % 26),
+    y: 58 + ((i * 53) % 26),
+  }));
+  const nodes = [
+    { x: 46, y: 52, label: "IDENTITY", sub: "Layer 1 mapped" },
+    { x: 62, y: 34, label: "SKILL MOAT", sub: "3 compounding skills" },
+    { x: 80, y: 18, label: "ESCAPE ROUTE", sub: "30-day roadmap" },
   ];
   return (
-    <div className="relative mx-auto aspect-[5/6] w-full max-w-[480px]">
-      {/* Ambient theme-aware halo behind the core */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[70%] -translate-x-1/2 -translate-y-1/2 clarity-halo rounded-full blur-2xl"
-      />
+    <div className="crop-marks relative mx-auto aspect-[5/6] w-full max-w-[480px] overflow-hidden rounded-lg border border-foreground/15 bg-card">
+      <div aria-hidden className="absolute inset-0 blueprint-grid" />
+      <div aria-hidden className="absolute inset-0 topo-lines opacity-70" />
 
-      {/* LEFT — floating confusion */}
-      <div className="absolute inset-y-0 left-0 w-[44%]">
-        {fragments.map((f, i) => (
-          <span
-            key={f}
-            className="absolute rounded-2xl border border-foreground/10 bg-card/85 px-3 py-1.5 text-xs font-medium text-foreground/55 shadow-soft backdrop-blur"
-            style={{
-              top: `${8 + i * 14}%`,
-              left: `${(i % 2) * 18}%`,
-              transform: `rotate(${i % 2 ? 4 : -5}deg)`,
-              animation: `rise-loop ${3 + (i % 3)}s ease-in-out ${i * 0.2}s infinite`,
-            }}
-          >
-            {f}
-          </span>
-        ))}
+      {/* Console header */}
+      <div className="relative flex items-center justify-between border-b border-foreground/10 px-4 py-2.5 font-mono text-[10px] uppercase tracking-wider text-foreground/55">
+        <span className="flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full bg-accent signal-blink" /> Future_Map // live
+        </span>
+        <span>28.61°N 77.20°E</span>
       </div>
 
-      {/* CENTER — UNTRAP intelligence core */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div className="relative grid h-28 w-28 place-items-center rounded-full bg-foreground text-background shadow-[0_30px_80px_-20px_oklch(0.16_0.005_80_/_0.55)] dark:shadow-[0_30px_80px_-15px_oklch(0.68_0.20_39_/_0.4)]">
-          <span
-            aria-hidden
-            className="absolute inset-0 rounded-full ring-[10px] ring-accent/20 animate-breakthrough"
-          />
-          <span
-            aria-hidden
-            className="absolute -inset-3 rounded-full ring-1 ring-foreground/10 dark:ring-white/10"
-          />
-          <Sparkles className="h-7 w-7" />
-          <span className="absolute -bottom-7 text-[10px] font-bold uppercase tracking-[0.25em] text-foreground/60">
-            UNTRAP
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
+        <path
+          d="M 27 70 C 38 64, 40 56, 46 52 S 56 38, 62 34 S 74 22, 80 18"
+          fill="none"
+          stroke="var(--accent)"
+          strokeWidth="0.7"
+          vectorEffect="non-scaling-stroke"
+          className="path-trace"
+          style={{ strokeWidth: 2 }}
+        />
+      </svg>
+
+      {/* Herd cluster */}
+      {herd.map((d, i) => (
+        <span
+          key={i}
+          aria-hidden
+          className="absolute h-1.5 w-1.5 rounded-full bg-foreground/35"
+          style={{ left: `${d.x}%`, top: `${d.y}%` }}
+        />
+      ))}
+      <div className="absolute left-[8%] top-[88%] font-mono text-[10px] uppercase tracking-wider text-foreground/50">
+        Herd zone · density 92%
+      </div>
+
+      {/* Escape nodes */}
+      {nodes.map((n, i) => (
+        <div
+          key={n.label}
+          className="absolute -translate-x-1/2 -translate-y-1/2"
+          style={{
+            left: `${n.x}%`,
+            top: `${n.y}%`,
+            animation: `break-up 600ms cubic-bezier(.2,.7,.2,1) ${600 + i * 500}ms both`,
+          }}
+        >
+          <span className="relative block h-3.5 w-3.5 rounded-full border-2 border-accent bg-background">
+            <span className="absolute inset-0 rounded-full ring-4 ring-accent/20 animate-breakthrough" />
           </span>
+          <div className={`absolute top-1/2 w-max -translate-y-1/2 rounded-md ${i === nodes.length - 1 ? "right-5" : "left-5"} border border-foreground/15 bg-background/90 px-2 py-1 backdrop-blur`}>
+            <p className="font-mono text-[10px] font-bold tracking-wider text-foreground">{n.label}</p>
+            <p className="text-[10px] text-foreground/55">{n.sub}</p>
+          </div>
         </div>
-      </div>
+      ))}
 
-      {/* RIGHT — clear future map */}
-      <div className="absolute right-0 top-1/2 w-[52%] -translate-y-1/2 space-y-2.5">
+      {/* Telemetry footer */}
+      <div className="absolute inset-x-0 bottom-0 grid grid-cols-3 border-t border-foreground/10 bg-background/80 font-mono text-[10px] uppercase backdrop-blur">
         {[
-          { step: "01", title: "Career direction", tone: "ink" as const },
-          { step: "02", title: "Skills to learn", tone: "ink" as const },
-          { step: "03", title: "30-day roadmap", tone: "ink" as const },
-          { step: "04", title: "Steady growth", tone: "orange" as const },
-        ].map((s, i) => (
-          <div
-            key={s.step}
-            style={{ animation: `break-up 600ms cubic-bezier(.2,.7,.2,1) ${i * 120}ms both` }}
-            className={`relative flex items-center gap-3 overflow-hidden rounded-2xl px-4 py-3 shadow-soft ${
-              s.tone === "ink"
-                ? "bg-foreground text-background dark:ring-1 dark:ring-white/10"
-                : "bg-accent text-accent-foreground orange-glow"
-            }`}
-          >
-            <span
-              aria-hidden
-              className="clarity-sweep pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-white/25 to-transparent"
-              style={{ animationDelay: `${i * 400}ms` }}
-            />
-            <span
-              className={`text-[10px] font-bold tracking-widest ${
-                s.tone === "ink" ? "text-background/60" : "text-accent-foreground/80"
-              }`}
-            >
-              {s.step}
-            </span>
-            <span className="text-sm font-semibold">{s.title}</span>
+          ["Clarity", "↑ 84%"],
+          ["Herd overlap", "↓ 12%"],
+          ["Status", "Untrapped"],
+        ].map(([k, v]) => (
+          <div key={k} className="border-r border-foreground/10 px-3 py-2 last:border-r-0">
+            <p className="text-foreground/45">{k}</p>
+            <p className="mt-0.5 font-bold text-signal">{v}</p>
           </div>
         ))}
       </div>

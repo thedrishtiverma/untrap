@@ -7,6 +7,7 @@
       "dependencies": {
         "@fontsource-variable/fraunces": "^5.2.9",
         "@fontsource/open-sauce-sans": "^5.2.5",
+        "@fontsource/space-mono": "^5.3.0",
         "@hookform/resolvers": "^5.2.2",
         "@lovable.dev/cloud-auth-js": "^1.1.2",
         "@lovable.dev/mcp-js": "^0.20.0",
@@ -235,6 +236,8 @@
     "@fontsource-variable/fraunces": ["@fontsource-variable/fraunces@5.2.9", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@fontsource-variable/fraunces/-/fraunces-5.2.9.tgz", {}, "sha512-Y6IjunlN9Ni723np+GIgAaKzCDBrPRrqNi01TZxHs5wtHYROWFM9W6yiT+/gGwSjWIRD18oX17kD/BRWekc/Lw=="],
 
     "@fontsource/open-sauce-sans": ["@fontsource/open-sauce-sans@5.2.5", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@fontsource/open-sauce-sans/-/open-sauce-sans-5.2.5.tgz", {}, "sha512-OBgV5xFpy4/mHrSr6/yGMEgkEjf/5uN1WoihtxZUleqsvSQopE2VY1csoLikuzbGICd7p4aAFNg67R4zLd2yDQ=="],
+
+    "@fontsource/space-mono": ["@fontsource/space-mono@5.3.0", "", {}, "sha512-FrpBMOVWn3PRdRHlrZWC55X3kZG/2BTH7SM5ZyS/bky3iKya2BturI5lk+t0RoDQL2JyHzURsVq/EisCsxpI5A=="],
 
     "@hono/node-server": ["@hono/node-server@1.19.14", "https://europe-west1-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@hono/node-server/-/node-server-1.19.14.tgz", { "peerDependencies": { "hono": "^4" } }, "sha512-GwtvgtXxnWsucXvbQXkRgqksiH2Qed37H9xHZocE5sA3N8O8O8/8FA3uclQXxXVzc9XBZuEOMK7+r02FmSpHtw=="],
 

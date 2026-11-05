@@ -99,14 +99,16 @@ function Dashboard() {
     <AppShell>
       <div className="space-y-6 animate-break-up">
         <header>
-          <p className="text-sm font-semibold text-foreground/55">{greeting},</p>
+          <p className="font-mono text-[10px] uppercase tracking-wider text-foreground/45">Dossier // {new Date().toISOString().slice(0, 10)} // status: active</p>
+          <p className="mt-2 text-sm font-semibold text-foreground/55">{greeting},</p>
           <h1 className="mt-1 text-3xl font-extrabold tracking-tight sm:text-4xl">
             Welcome back, {s.name}.
           </h1>
         </header>
 
         {/* Career identity card — Obsidian premium surface */}
-        <div className="untrap-obsidian relative overflow-hidden rounded-[28px] p-6 text-background shadow-pop">
+        <p className="-mb-4 font-mono text-[10px] font-bold uppercase tracking-wider text-accent">[01] Direction file</p>
+        <div className="untrap-obsidian crop-marks relative overflow-hidden rounded-lg p-6 text-background shadow-pop">
           <div className="absolute right-5 top-5 flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-background/70 backdrop-blur">
             <Sparkles className="h-3 w-3 text-accent" /> Direction
           </div>
@@ -148,15 +150,18 @@ function Dashboard() {
         {s.layer1Profile ? <Layer1ProfileCard profile={s.layer1Profile} /> : null}
 
         {/* Progress */}
-        <div className="rounded-[24px] border border-foreground/8 bg-card p-5 shadow-soft">
-          <div className="flex items-baseline justify-between">
-            <p className="text-sm font-bold">30-day progress</p>
+        <div className="relative overflow-hidden rounded-lg border border-foreground/12 bg-card p-5 shadow-soft">
+          <div aria-hidden className="absolute inset-0 blueprint-grid opacity-60" />
+          <div className="relative flex items-baseline justify-between">
+            <p className="font-mono text-[11px] font-bold uppercase tracking-wider">[02] Runway · 30 days</p>
             <span className="text-2xl font-extrabold tracking-tight text-foreground">{pct}<span className="text-sm font-bold text-foreground/40">%</span></span>
           </div>
-          <div className="mt-3 h-2 overflow-hidden rounded-full bg-secondary">
-            <div className="h-full rounded-full bg-foreground transition-all" style={{ width: `${pct}%` }} />
+          <div className="relative mt-3 grid grid-cols-30 gap-[3px]" style={{ gridTemplateColumns: "repeat(30, minmax(0, 1fr))" }}>
+            {Array.from({ length: 30 }, (_, i) => (
+              <span key={i} className={`h-4 rounded-[2px] ${i < Math.round((pct / 100) * 30) ? "bg-accent" : "bg-foreground/10"}`} />
+            ))}
           </div>
-          <p className="mt-3 text-xs text-foreground/55">{s.done} of {s.total || "—"} tasks completed</p>
+          <p className="relative mt-3 font-mono text-[11px] text-foreground/55">{s.done} of {s.total || "—"} tasks completed</p>
         </div>
 
         {/* Invisible Forces — UNTRAP moat */}
@@ -164,9 +169,9 @@ function Dashboard() {
 
 
         {/* Today's mission */}
-        <div className="rounded-[24px] border border-foreground/8 bg-card p-5 shadow-soft">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent">
-            <Target className="h-4 w-4" /> Today's mission
+        <div className="crop-marks rounded-lg border border-foreground/12 bg-card p-5 shadow-soft">
+          <div className="flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-wider text-accent">
+            <Target className="h-4 w-4" /> [03] Today's mission
           </div>
           {s.nextTask ? (
             <>
