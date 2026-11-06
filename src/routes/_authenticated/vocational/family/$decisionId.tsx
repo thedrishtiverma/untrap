@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
@@ -64,6 +64,7 @@ type View = "learner" | "parent" | "together";
 
 function DecisionRoom() {
   const { decisionId } = Route.useParams();
+  const navigate = useNavigate();
   const { lang } = useVocLangContext();
   const facilitate = useServerFn(facilitateConcern);
 
@@ -192,6 +193,19 @@ function DecisionRoom() {
     }
   }
 
+  async function revokeParticipant(participantUserId: string) {
+    const { data: revoked, error: revokeError } = await supabase.rpc("revoke_vocational_decision_participant", {
+      _decision_id: decision!.id,
+      _user_id: participantUserId,
+    });
+    if (revokeError || !revoked) { setError("Access could not be updated. Please try again."); return; }
+    if (participantUserId === userId) {
+      await navigate({ to: "/vocational/family" });
+      return;
+    }
+    setParticipants((current) => current.filter((participant) => participant.user_id !== participantUserId));
+  }
+
   const raiserRole = (raisedBy: string): "learner" | "parent" =>
     participants.find((p) => p.user_id === raisedBy)?.participant_role ?? "learner";
 
@@ -231,6 +245,32 @@ function DecisionRoom() {
           </button>
         ))}
       </div>
+
+      {(isOwner || participants.some((participant) => participant.user_id === userId)) && (
+        <section className="mt-4 rounded-2xl border border-border bg-card/60 p-4" aria-label="Decision room participants">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-xs font-semibold text-foreground">{lang === "hi" ? "रूम के सदस्य" : "Room members"}</p>
+            {!isOwner && (
+              <button type="button" onClick={() => void revokeParticipant(userId!)} className="text-xs font-medium text-destructive hover:underline">
+                {lang === "hi" ? "रूम छोड़ें" : "Leave room"}
+              </button>
+            )}
+          </div>
+          <div className="mt-2 space-y-2">
+            {participants.map((participant) => (
+              <div key={participant.id} className="flex items-center justify-between gap-3 text-xs text-muted-foreground">
+                <span>{participant.participant_role === "parent" ? (lang === "hi" ? "पेरेंट" : "Parent") : (lang === "hi" ? "लर्नर" : "Learner")}{participant.user_id === userId ? (lang === "hi" ? " · आप" : " · You") : ""}</span>
+                {isOwner && participant.user_id !== userId && (
+                  <button type="button" onClick={() => void revokeParticipant(participant.user_id)} className="text-destructive hover:underline">
+                    {lang === "hi" ? "एक्सेस हटाएँ" : "Remove access"}
+                  </button>
+                )}
+              </div>
+            ))}
+            <p className="text-xs text-muted-foreground">{lang === "hi" ? "रूम के मालिक" : "Room owner"}{isOwner ? (lang === "hi" ? " · आप" : " · You") : ""}</p>
+          </div>
+        </section>
+      )}
 
       {(view === "learner" || view === "parent") && (
         <PriorityPanel
