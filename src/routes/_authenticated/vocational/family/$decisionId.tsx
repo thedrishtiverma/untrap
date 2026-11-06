@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
@@ -64,7 +64,6 @@ type View = "learner" | "parent" | "together";
 
 function DecisionRoom() {
   const { decisionId } = Route.useParams();
-  const navigate = useNavigate();
   const { lang } = useVocLangContext();
   const facilitate = useServerFn(facilitateConcern);
 
@@ -200,7 +199,7 @@ function DecisionRoom() {
     });
     if (revokeError || !revoked) { setError("Access could not be updated. Please try again."); return; }
     if (participantUserId === userId) {
-      await navigate({ to: "/vocational/family" });
+      window.location.assign("/vocational/family");
       return;
     }
     setParticipants((current) => current.filter((participant) => participant.user_id !== participantUserId));
