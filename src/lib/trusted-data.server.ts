@@ -1,6 +1,7 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/integrations/supabase/types";
 
-let trustedClient: ReturnType<typeof createClient> | undefined;
+let trustedClient: SupabaseClient<Database> | undefined;
 
 /** Create a server-only service client without treating an opaque key as a JWT. */
 export function getTrustedDataClient() {
@@ -10,7 +11,7 @@ export function getTrustedDataClient() {
   const key = process.env["SUPABASE_SERVICE_ROLE_KEY"];
   if (!url || !key) throw new Error("Trusted data service is unavailable.");
 
-  trustedClient = createClient(url, key, {
+  trustedClient = createClient<Database>(url, key, {
     auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
     global: {
       fetch: (input, init) => {
