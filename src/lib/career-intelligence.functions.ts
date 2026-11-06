@@ -78,9 +78,7 @@ Be specific to THIS student (mention their actual interests, strengths, constrai
     const top = (out.matches ?? []).slice(0, 5);
 
     // Persist
-    await context.supabase.from("career_matches").delete().eq("user_id", context.userId);
-    if (top.length) {
-      const rows = top.map((m) => ({
+    const rows = top.map((m) => ({
         user_id: context.userId,
         career_id: m.career_id ?? null,
         career_name: m.career,
@@ -90,9 +88,8 @@ Be specific to THIS student (mention their actual interests, strengths, constrai
         skill_gap: m.skill_gap ?? [],
         first_step: m.first_step ?? null,
       }));
-      const { error } = await context.supabase.from("career_matches").insert(rows);
-      if (error) { console.error("[server] db error", error?.message); throw new Error("Something went wrong. Please try again."); }
-    }
+    const { replaceCareerMatches } = await import("./trusted-data.server");
+    await replaceCareerMatches(context.userId, rows);
 
     await context.supabase.from("analytics_events").insert({
       user_id: context.userId,

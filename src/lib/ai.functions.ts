@@ -34,9 +34,8 @@ export const matchCareers = createServerFn({ method: "POST" })
       profile, responses, careers, memories,
     });
 
-    await sb.from("career_matches").delete().eq("user_id", uid);
-    if (out.matches?.length) {
-      await sb.from("career_matches").insert(out.matches.slice(0, 5).map((m) => ({
+    const { replaceCareerMatches } = await import("./trusted-data.server");
+    await replaceCareerMatches(uid, (out.matches ?? []).slice(0, 5).map((m) => ({
         user_id: uid,
         career_name: m.career_name,
         match_percentage: Math.min(100, Math.max(0, m.match_score)),
@@ -49,7 +48,6 @@ export const matchCareers = createServerFn({ method: "POST" })
           potential_challenges: m.potential_challenges,
         },
       })));
-    }
     await sb.from("analytics_events").insert({ user_id: uid, event_name: "careers_matched", properties: { count: out.matches?.length ?? 0 } });
     return out;
   });

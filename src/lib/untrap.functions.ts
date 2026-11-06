@@ -76,17 +76,13 @@ Suggest 4 careers, 3-4 traps. Be realistic for Indian Tier-2/3 students.`;
     }).select().single();
 
     // Persist matches
-    await context.supabase.from("career_matches").delete().eq("user_id", context.userId);
-    if (report.recommended_careers?.length) {
-      await context.supabase.from("career_matches").insert(
-        report.recommended_careers.map((c) => ({
+    const { replaceCareerMatches } = await import("./trusted-data.server");
+    await replaceCareerMatches(context.userId, (report.recommended_careers ?? []).map((c) => ({
           user_id: context.userId,
           career_name: c.career_name,
           match_percentage: Math.min(100, Math.max(0, c.match_percentage)),
           reasoning: c.reasoning,
-        }))
-      );
-    }
+        })));
 
     // Persist traps
     await context.supabase.from("user_traps").delete().eq("user_id", context.userId);

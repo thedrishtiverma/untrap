@@ -1,6 +1,7 @@
 // UNTRAP AI Service Layer (server-only).
 // Loads versioned prompts from DB, renders templates, calls Lovable AI.
 import { callLovableAI, callLovableAIJSON, type ChatMsg } from "./ai-gateway.server";
+import { getTrustedDataClient } from "./trusted-data.server";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 type SB = SupabaseClient<any, any, any>;
@@ -20,7 +21,9 @@ const TTL_MS = 60_000;
 export async function loadPrompt(supabase: SB, name: string): Promise<PromptRow> {
   const hit = cache.get(name);
   if (hit && Date.now() - hit.at < TTL_MS) return hit.row;
-  const { data, error } = await supabase
+  // Prompt templates are server-only; authenticated clients no longer have SELECT access.
+  void supabase;
+  const { data, error } = await getTrustedDataClient()
     .from("ai_prompts")
     .select("name,prompt_template,model,temperature,response_format")
     .eq("name", name).eq("active", true)
