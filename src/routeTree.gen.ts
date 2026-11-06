@@ -14,7 +14,6 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as AuthenticatedAssessmentV2RouteImport } from './routes/_authenticated/assessment-v2'
 import { Route as AuthenticatedChatRouteImport } from './routes/_authenticated/chat'
@@ -25,7 +24,6 @@ import { Route as AuthenticatedReportRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedRoadmapRouteImport } from './routes/_authenticated/roadmap'
 import { Route as AuthenticatedVocationalRouteRouteImport } from './routes/_authenticated/vocational/route'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
-import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as AuthenticatedVocationalIndexRouteImport } from './routes/_authenticated/vocational/index'
 import { Route as AuthenticatedVocationalCompareRouteImport } from './routes/_authenticated/vocational/compare'
 import { Route as AuthenticatedVocationalCounsellorRouteImport } from './routes/_authenticated/vocational/counsellor'
@@ -61,12 +59,6 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotmcpChar93ListToolsRoute =
-  Char91DotmcpChar93ListToolsRouteImport.update({
-    id: '/.mcp/list-tools',
-    path: '/.mcp/list-tools',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
   Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
     id: '/.well-known/oauth-protected-resource',
@@ -120,12 +112,6 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotmcpChar93InvokeToolToolRoute =
-  Char91DotmcpChar93InvokeToolToolRouteImport.update({
-    id: '/.mcp/invoke-tool/$tool',
-    path: '/.mcp/invoke-tool/$tool',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const AuthenticatedVocationalIndexRoute =
   AuthenticatedVocationalIndexRouteImport.update({
     id: '/',
@@ -193,7 +179,6 @@ export interface FileRoutesByFullPath {
   '/mcp': typeof McpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/vocational': typeof AuthenticatedVocationalRouteRouteWithChildren
-  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/assessment-v2': typeof AuthenticatedAssessmentV2Route
   '/chat': typeof AuthenticatedChatRoute
@@ -203,7 +188,6 @@ export interface FileRoutesByFullPath {
   '/report': typeof AuthenticatedReportRoute
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/vocational/compare': typeof AuthenticatedVocationalCompareRoute
   '/vocational/counsellor': typeof AuthenticatedVocationalCounsellorRoute
   '/vocational/family': typeof AuthenticatedVocationalFamilyRouteWithChildren
@@ -220,7 +204,6 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/mcp': typeof McpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/assessment-v2': typeof AuthenticatedAssessmentV2Route
   '/chat': typeof AuthenticatedChatRoute
@@ -230,7 +213,6 @@ export interface FileRoutesByTo {
   '/report': typeof AuthenticatedReportRoute
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/vocational/compare': typeof AuthenticatedVocationalCompareRoute
   '/vocational/counsellor': typeof AuthenticatedVocationalCounsellorRoute
   '/vocational/insights': typeof AuthenticatedVocationalInsightsRoute
@@ -248,7 +230,6 @@ export interface FileRoutesById {
   '/mcp': typeof McpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/vocational': typeof AuthenticatedVocationalRouteRouteWithChildren
-  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/assessment-v2': typeof AuthenticatedAssessmentV2Route
   '/_authenticated/chat': typeof AuthenticatedChatRoute
@@ -258,7 +239,6 @@ export interface FileRoutesById {
   '/_authenticated/report': typeof AuthenticatedReportRoute
   '/_authenticated/roadmap': typeof AuthenticatedRoadmapRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/vocational/compare': typeof AuthenticatedVocationalCompareRoute
   '/_authenticated/vocational/counsellor': typeof AuthenticatedVocationalCounsellorRoute
   '/_authenticated/vocational/family': typeof AuthenticatedVocationalFamilyRouteWithChildren
@@ -278,7 +258,6 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/sitemap.xml'
     | '/vocational'
-    | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/assessment-v2'
     | '/chat'
@@ -288,7 +267,6 @@ export interface FileRouteTypes {
     | '/report'
     | '/roadmap'
     | '/.lovable/oauth/consent'
-    | '/.mcp/invoke-tool/$tool'
     | '/vocational/compare'
     | '/vocational/counsellor'
     | '/vocational/family'
@@ -305,7 +283,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/mcp'
     | '/sitemap.xml'
-    | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/assessment-v2'
     | '/chat'
@@ -315,7 +292,6 @@ export interface FileRouteTypes {
     | '/report'
     | '/roadmap'
     | '/.lovable/oauth/consent'
-    | '/.mcp/invoke-tool/$tool'
     | '/vocational/compare'
     | '/vocational/counsellor'
     | '/vocational/insights'
@@ -332,7 +308,6 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/sitemap.xml'
     | '/_authenticated/vocational'
-    | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/assessment-v2'
     | '/_authenticated/chat'
@@ -342,7 +317,6 @@ export interface FileRouteTypes {
     | '/_authenticated/report'
     | '/_authenticated/roadmap'
     | '/.lovable/oauth/consent'
-    | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/vocational/compare'
     | '/_authenticated/vocational/counsellor'
     | '/_authenticated/vocational/family'
@@ -361,10 +335,8 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   McpRoute: typeof McpRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
-  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -402,13 +374,6 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/.mcp/list-tools': {
-      id: '/.mcp/list-tools'
-      path: '/.mcp/list-tools'
-      fullPath: '/.mcp/list-tools'
-      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.well-known/oauth-protected-resource': {
@@ -479,13 +444,6 @@ declare module '@tanstack/react-router' {
       path: '/.lovable/oauth/consent'
       fullPath: '/.lovable/oauth/consent'
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/.mcp/invoke-tool/$tool': {
-      id: '/.mcp/invoke-tool/$tool'
-      path: '/.mcp/invoke-tool/$tool'
-      fullPath: '/.mcp/invoke-tool/$tool'
-      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/vocational/': {
@@ -656,11 +614,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   McpRoute: McpRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
-  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
