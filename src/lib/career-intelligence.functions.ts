@@ -151,7 +151,7 @@ export const generateCareerReportV2 = createServerFn({ method: "POST" })
     const { data: careerDocs } = await catalogDb
       .from("career_profiles")
       .select("*")
-      .in("career_name", matchNames);
+      .in("career_name", matchNames) as { data: { career_name: string }[] | null };
 
     const focusDoc = careerDocs?.find((c) => c.career_name === focusCareer);
 

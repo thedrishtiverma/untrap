@@ -172,7 +172,7 @@ Total tasks ≈ duration_days. Tasks must be specific and doable.` },
     });
 
     // Find career_id if exists
-    const { data: career } = await catalogDb.from("careers").select("id").eq("career_name", data.career_name).maybeSingle();
+    const { data: career } = await catalogDb.from("careers").select("id").eq("career_name", data.career_name).maybeSingle() as { data: { id: string } | null };
 
     await context.supabase.from("user_roadmaps").delete().eq("user_id", context.userId);
     const { data: roadmap, error: rErr } = await context.supabase.from("user_roadmaps").insert({
