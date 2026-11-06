@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep privileged career-match writes and AI prompt reads inside server-only helpers, with each caller authenticated before access, to prevent user-supplied scores or prompt templates from crossing the trust boundary.
