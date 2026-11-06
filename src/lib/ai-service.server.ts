@@ -18,11 +18,10 @@ export interface PromptRow {
 const cache = new Map<string, { row: PromptRow; at: number }>();
 const TTL_MS = 60_000;
 
-export async function loadPrompt(supabase: SB, name: string): Promise<PromptRow> {
+export async function loadPrompt(_supabase: SB, name: string): Promise<PromptRow> {
   const hit = cache.get(name);
   if (hit && Date.now() - hit.at < TTL_MS) return hit.row;
   // Prompt templates are server-only; authenticated clients no longer have SELECT access.
-  void supabase;
   const { data, error } = await getTrustedDataClient()
     .from("ai_prompts")
     .select("name,prompt_template,model,temperature,response_format")
