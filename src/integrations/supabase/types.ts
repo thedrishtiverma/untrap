@@ -1954,6 +1954,7 @@ export type Database = {
           decision_id: string
           id: string
           participant_role: string
+          revoked_at: string | null
           user_id: string
         }
         Insert: {
@@ -1961,6 +1962,7 @@ export type Database = {
           decision_id: string
           id?: string
           participant_role: string
+          revoked_at?: string | null
           user_id: string
         }
         Update: {
@@ -1968,6 +1970,7 @@ export type Database = {
           decision_id?: string
           id?: string
           participant_role?: string
+          revoked_at?: string | null
           user_id?: string
         }
         Relationships: [
@@ -2416,6 +2419,10 @@ export type Database = {
       join_vocational_decision: {
         Args: { _invite_code: string; _participant_role: string }
         Returns: string
+      }
+      revoke_vocational_decision_participant: {
+        Args: { _decision_id: string; _user_id: string }
+        Returns: boolean
       }
       vocational_insights: { Args: never; Returns: Json }
     }
