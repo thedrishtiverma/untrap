@@ -15,6 +15,13 @@
       "when": 1793941899930,
       "tag": "0001_remove_direct_catalog_reads",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793941955477,
+      "tag": "0002_close_direct_catalog_reads",
+      "breakpoints": true
     }
   ]
 }
