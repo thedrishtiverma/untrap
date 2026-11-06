@@ -165,7 +165,7 @@ export const generate30DayRoadmap = createServerFn({ method: "POST" })
       report, constraints,
     });
 
-    const { data: career } = await sb.from("careers").select("id").eq("career_name", data.career_name).maybeSingle();
+    const { data: career } = await catalogDb.from("careers").select("id").eq("career_name", data.career_name).maybeSingle();
     await sb.from("user_roadmaps").delete().eq("user_id", uid);
     const { data: roadmap, error } = await sb.from("user_roadmaps").insert({
       user_id: uid, career_id: career?.id ?? null, goal: plan.goal,

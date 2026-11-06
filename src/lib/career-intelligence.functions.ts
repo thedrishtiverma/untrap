@@ -239,6 +239,8 @@ export const saarthiChatV2 = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => SaarthiInput.parse(d))
   .handler(async ({ data, context }) => {
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const [
       { data: profile },
       { data: report },
@@ -264,7 +266,7 @@ export const saarthiChatV2 = createServerFn({ method: "POST" })
     // Pull career-database context for the student's top 3 matches
     const topNames = (matches ?? []).slice(0, 3).map((m) => m.career_name).filter(Boolean);
     const { data: careerDocs } = topNames.length
-      ? await context.supabase
+      ? await catalogDb
           .from("career_profiles")
           .select("career_name,career_identity,required_skills,common_traps,untrap_first_step,salary_reality_india,financial_barriers,time_commitment")
           .in("career_name", topNames)
