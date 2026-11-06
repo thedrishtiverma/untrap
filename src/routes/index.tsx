@@ -183,11 +183,6 @@ function Hero() {
     <section className="mx-auto max-w-6xl px-5 pb-20 pt-6 sm:px-8 sm:pt-12">
       <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="animate-break-up">
-          <span className="stamp text-foreground/70">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent signal-blink" />
-            Dossier protocol · identity first, career next
-          </span>
-
           <h1 className="mt-6 text-5xl font-extrabold leading-[1.02] tracking-tight text-foreground sm:text-7xl">
             Your future is too important to{" "}
             <span className="font-serif italic font-light">guess</span>.
