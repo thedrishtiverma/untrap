@@ -23,10 +23,12 @@ export const matchCareers = createServerFn({ method: "POST" })
   .handler(async ({ context }) => {
     const sb = context.supabase;
     const uid = context.userId;
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const [{ data: profile }, { data: responses }, { data: careers }, memories] = await Promise.all([
       sb.from("student_profiles").select("*").eq("user_id", uid).maybeSingle(),
       sb.from("assessment_responses").select("question_id,response,score").eq("user_id", uid),
-      sb.from("careers").select("career_name,category,ideal_personality,required_interests,required_strengths,salary_range,growth_outlook").limit(50),
+      catalogDb.from("careers").select("career_name,category,ideal_personality,required_interests,required_strengths,salary_range,growth_outlook").limit(50),
       getRelevantMemories(sb, uid),
     ]);
 
@@ -109,10 +111,12 @@ export const detectStudentTraps = createServerFn({ method: "POST" })
   .handler(async ({ context }) => {
     const sb = context.supabase;
     const uid = context.userId;
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const [{ data: profile }, { data: responses }, { data: catalog }, memories] = await Promise.all([
       sb.from("student_profiles").select("*").eq("user_id", uid).maybeSingle(),
       sb.from("assessment_responses").select("response,score").eq("user_id", uid),
-      sb.from("career_traps").select("trap_name,category,description,solutions"),
+      catalogDb.from("career_traps").select("trap_name,category,description,solutions"),
       getRelevantMemories(sb, uid),
     ]);
 

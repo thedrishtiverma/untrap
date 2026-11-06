@@ -35,10 +35,12 @@ interface ReportShape {
 export const generateCareerReport = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const [{ data: profile }, { data: responses }, { data: careers }] = await Promise.all([
       context.supabase.from("student_profiles").select("*").eq("user_id", context.userId).maybeSingle(),
       context.supabase.from("assessment_responses").select("question_id,response,score").eq("user_id", context.userId),
-      context.supabase.from("careers").select("career_name,category,ideal_personality,required_interests,required_strengths").limit(40),
+      catalogDb.from("careers").select("career_name,category,ideal_personality,required_interests,required_strengths").limit(40),
     ]);
 
     const system = `You are Saarthi, an empathetic Indian career counsellor. Output ONLY valid JSON.`;
@@ -109,10 +111,12 @@ Suggest 4 careers, 3-4 traps. Be realistic for Indian Tier-2/3 students.`;
 export const detectCareerTraps = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const [{ data: profile }, { data: responses }, { data: catalog }] = await Promise.all([
       context.supabase.from("student_profiles").select("*").eq("user_id", context.userId).maybeSingle(),
       context.supabase.from("assessment_responses").select("response,score").eq("user_id", context.userId),
-      context.supabase.from("career_traps").select("trap_name,category,description,solutions"),
+      catalogDb.from("career_traps").select("trap_name,category,description,solutions"),
     ]);
 
     const out = await callLovableAIJSON<{ traps: { trap_name: string; severity: string; explanation: string; solution: string }[] }>({

@@ -20,10 +20,12 @@ interface MatchOut {
 export const generateCareerMatches = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const [{ data: profile }, { data: responses }, { data: careers }] = await Promise.all([
       context.supabase.from("student_profiles").select("*").eq("user_id", context.userId).maybeSingle(),
       context.supabase.from("assessment_responses").select("question_id,response,score").eq("user_id", context.userId),
-      context.supabase
+      catalogDb
         .from("career_profiles")
         .select(
           "id,career_name,category,short_description,career_identity,ideal_personality,interest_alignment,strength_alignment,who_should_consider,who_should_avoid,required_skills,financial_barriers,time_commitment,untrap_first_step",
@@ -132,6 +134,8 @@ export const generateCareerReportV2 = createServerFn({ method: "POST" })
     z.object({ selected_career: z.string().optional() }).parse(d ?? {}),
   )
   .handler(async ({ data, context }) => {
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const [{ data: profile }, { data: responses }, { data: matches }] = await Promise.all([
       context.supabase.from("student_profiles").select("*").eq("user_id", context.userId).maybeSingle(),
       context.supabase.from("assessment_responses").select("question_id,response,score").eq("user_id", context.userId),
@@ -144,7 +148,7 @@ export const generateCareerReportV2 = createServerFn({ method: "POST" })
     const focusCareer = data.selected_career ?? matches[0].career_name;
     const matchNames = matches.map((m) => m.career_name);
 
-    const { data: careerDocs } = await context.supabase
+    const { data: careerDocs } = await catalogDb
       .from("career_profiles")
       .select("*")
       .in("career_name", matchNames);
@@ -369,7 +373,8 @@ export const importCareerProfiles = createServerFn({ method: "POST" })
 export const listCareerProfiles = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data, error } = await context.supabase
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const { data, error } = await getTrustedDataClient()
       .from("career_profiles")
       .select("id,career_name,category,short_description,career_identity")
       .order("career_name");
@@ -381,7 +386,8 @@ export const getCareerProfile = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => z.object({ career_name: z.string() }).parse(d))
   .handler(async ({ data, context }) => {
-    const { data: profile, error } = await context.supabase
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const { data: profile, error } = await getTrustedDataClient()
       .from("career_profiles")
       .select("*")
       .eq("career_name", data.career_name)
