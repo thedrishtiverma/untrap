@@ -150,6 +150,8 @@ export const generate30DayRoadmap = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const sb = context.supabase;
     const uid = context.userId;
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const [{ data: profile }, { data: report }] = await Promise.all([
       sb.from("student_profiles").select("*").eq("user_id", uid).maybeSingle(),
       sb.from("career_reports").select("*").eq("user_id", uid).maybeSingle(),

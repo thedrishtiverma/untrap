@@ -152,6 +152,8 @@ export const generateRoadmapV2 = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => RoadmapInput.parse(d))
   .handler(async ({ data, context }) => {
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const { data: report } = await context.supabase
       .from("career_reports").select("*").eq("user_id", context.userId).maybeSingle();
 
