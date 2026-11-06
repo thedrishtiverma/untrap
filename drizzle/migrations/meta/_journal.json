@@ -8,6 +8,13 @@
       "when": 1793941403494,
       "tag": "0000_tighten_selected_security_findings",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793941899930,
+      "tag": "0001_remove_direct_catalog_reads",
+      "breakpoints": true
     }
   ]
 }
