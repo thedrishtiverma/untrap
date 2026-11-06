@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
@@ -64,7 +64,6 @@ type View = "learner" | "parent" | "together";
 
 function DecisionRoom() {
   const { decisionId } = Route.useParams();
-  const navigate = useNavigate();
   const { lang } = useVocLangContext();
   const facilitate = useServerFn(facilitateConcern);
 
@@ -190,26 +189,6 @@ function DecisionRoom() {
           urgency: "high",
         });
       }
-    }
-  }
-
-  async function revokeParticipant(participantUserId: string) {
-    const { error: revokeError } = await supabase.rpc("revoke_vocational_decision_participant", {
-      _decision_id: decision!.id,
-      _user_id: participantUserId,
-    });
-    if (revokeError) { setError("Access could not be updated. Please try again."); return; }
-
-    if (isOwner) {
-      const { data: refreshedDecision } = await supabase
-        .from("vocational_decisions")
-        .select("invite_code")
-        .eq("id", decision!.id)
-        .maybeSingle();
-      if (refreshedDecision) setDecision((current) => current ? { ...current, ...refreshedDecision } : current);
-      setParticipants((current) => current.filter((participant) => participant.user_id !== participantUserId));
-    } else {
-      await navigate({ to: "/vocational/family" });
     }
   }
 
