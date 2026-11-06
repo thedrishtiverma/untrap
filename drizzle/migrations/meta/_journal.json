@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1793941403494,
+      "tag": "0000_tighten_selected_security_findings",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793941899930,
+      "tag": "0001_remove_direct_catalog_reads",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793941955477,
+      "tag": "0002_close_direct_catalog_reads",
+      "breakpoints": true
+    }
+  ]
+}

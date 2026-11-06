@@ -23,10 +23,12 @@ export const matchCareers = createServerFn({ method: "POST" })
   .handler(async ({ context }) => {
     const sb = context.supabase;
     const uid = context.userId;
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const [{ data: profile }, { data: responses }, { data: careers }, memories] = await Promise.all([
       sb.from("student_profiles").select("*").eq("user_id", uid).maybeSingle(),
       sb.from("assessment_responses").select("question_id,response,score").eq("user_id", uid),
-      sb.from("careers").select("career_name,category,ideal_personality,required_interests,required_strengths,salary_range,growth_outlook").limit(50),
+      catalogDb.from("careers").select("career_name,category,ideal_personality,required_interests,required_strengths,salary_range,growth_outlook").limit(50),
       getRelevantMemories(sb, uid),
     ]);
 
@@ -34,9 +36,8 @@ export const matchCareers = createServerFn({ method: "POST" })
       profile, responses, careers, memories,
     });
 
-    await sb.from("career_matches").delete().eq("user_id", uid);
-    if (out.matches?.length) {
-      await sb.from("career_matches").insert(out.matches.slice(0, 5).map((m) => ({
+    const { replaceCareerMatches } = await import("./trusted-data.server");
+    await replaceCareerMatches(uid, (out.matches ?? []).slice(0, 5).map((m) => ({
         user_id: uid,
         career_name: m.career_name,
         match_percentage: Math.min(100, Math.max(0, m.match_score)),
@@ -49,7 +50,6 @@ export const matchCareers = createServerFn({ method: "POST" })
           potential_challenges: m.potential_challenges,
         },
       })));
-    }
     await sb.from("analytics_events").insert({ user_id: uid, event_name: "careers_matched", properties: { count: out.matches?.length ?? 0 } });
     return out;
   });
@@ -111,10 +111,12 @@ export const detectStudentTraps = createServerFn({ method: "POST" })
   .handler(async ({ context }) => {
     const sb = context.supabase;
     const uid = context.userId;
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const [{ data: profile }, { data: responses }, { data: catalog }, memories] = await Promise.all([
       sb.from("student_profiles").select("*").eq("user_id", uid).maybeSingle(),
       sb.from("assessment_responses").select("response,score").eq("user_id", uid),
-      sb.from("career_traps").select("trap_name,category,description,solutions"),
+      catalogDb.from("career_traps").select("trap_name,category,description,solutions"),
       getRelevantMemories(sb, uid),
     ]);
 
@@ -148,6 +150,8 @@ export const generate30DayRoadmap = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const sb = context.supabase;
     const uid = context.userId;
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const [{ data: profile }, { data: report }] = await Promise.all([
       sb.from("student_profiles").select("*").eq("user_id", uid).maybeSingle(),
       sb.from("career_reports").select("*").eq("user_id", uid).maybeSingle(),
@@ -163,7 +167,7 @@ export const generate30DayRoadmap = createServerFn({ method: "POST" })
       report, constraints,
     });
 
-    const { data: career } = await sb.from("careers").select("id").eq("career_name", data.career_name).maybeSingle();
+    const { data: career } = await catalogDb.from("careers").select("id").eq("career_name", data.career_name).maybeSingle() as { data: { id: string } | null };
     await sb.from("user_roadmaps").delete().eq("user_id", uid);
     const { data: roadmap, error } = await sb.from("user_roadmaps").insert({
       user_id: uid, career_id: career?.id ?? null, goal: plan.goal,

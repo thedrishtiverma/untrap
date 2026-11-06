@@ -35,10 +35,12 @@ interface ReportShape {
 export const generateCareerReport = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const [{ data: profile }, { data: responses }, { data: careers }] = await Promise.all([
       context.supabase.from("student_profiles").select("*").eq("user_id", context.userId).maybeSingle(),
       context.supabase.from("assessment_responses").select("question_id,response,score").eq("user_id", context.userId),
-      context.supabase.from("careers").select("career_name,category,ideal_personality,required_interests,required_strengths").limit(40),
+      catalogDb.from("careers").select("career_name,category,ideal_personality,required_interests,required_strengths").limit(40),
     ]);
 
     const system = `You are Saarthi, an empathetic Indian career counsellor. Output ONLY valid JSON.`;
@@ -76,17 +78,13 @@ Suggest 4 careers, 3-4 traps. Be realistic for Indian Tier-2/3 students.`;
     }).select().single();
 
     // Persist matches
-    await context.supabase.from("career_matches").delete().eq("user_id", context.userId);
-    if (report.recommended_careers?.length) {
-      await context.supabase.from("career_matches").insert(
-        report.recommended_careers.map((c) => ({
+    const { replaceCareerMatches } = await import("./trusted-data.server");
+    await replaceCareerMatches(context.userId, (report.recommended_careers ?? []).map((c) => ({
           user_id: context.userId,
           career_name: c.career_name,
           match_percentage: Math.min(100, Math.max(0, c.match_percentage)),
           reasoning: c.reasoning,
-        }))
-      );
-    }
+        })));
 
     // Persist traps
     await context.supabase.from("user_traps").delete().eq("user_id", context.userId);
@@ -113,10 +111,12 @@ Suggest 4 careers, 3-4 traps. Be realistic for Indian Tier-2/3 students.`;
 export const detectCareerTraps = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const [{ data: profile }, { data: responses }, { data: catalog }] = await Promise.all([
       context.supabase.from("student_profiles").select("*").eq("user_id", context.userId).maybeSingle(),
       context.supabase.from("assessment_responses").select("response,score").eq("user_id", context.userId),
-      context.supabase.from("career_traps").select("trap_name,category,description,solutions"),
+      catalogDb.from("career_traps").select("trap_name,category,description,solutions"),
     ]);
 
     const out = await callLovableAIJSON<{ traps: { trap_name: string; severity: string; explanation: string; solution: string }[] }>({
@@ -152,6 +152,8 @@ export const generateRoadmapV2 = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => RoadmapInput.parse(d))
   .handler(async ({ data, context }) => {
+    const { getTrustedDataClient } = await import("./trusted-data.server");
+    const catalogDb = getTrustedDataClient();
     const { data: report } = await context.supabase
       .from("career_reports").select("*").eq("user_id", context.userId).maybeSingle();
 
@@ -170,7 +172,7 @@ Total tasks ≈ duration_days. Tasks must be specific and doable.` },
     });
 
     // Find career_id if exists
-    const { data: career } = await context.supabase.from("careers").select("id").eq("career_name", data.career_name).maybeSingle();
+    const { data: career } = await catalogDb.from("careers").select("id").eq("career_name", data.career_name).maybeSingle() as { data: { id: string } | null };
 
     await context.supabase.from("user_roadmaps").delete().eq("user_id", context.userId);
     const { data: roadmap, error: rErr } = await context.supabase.from("user_roadmaps").insert({
